@@ -1,0 +1,40 @@
+# Persistent application data
+**/config/
+**/data/
+**/cache/
+**/logs/
+
+# Media
+**/media/
+**/Movies/
+**/TV/
+
+# Environment files
+.env
+*.env
+
+# Docker
+*.pid
+
+# Python
+pycache/
+*.pyc
+.venv/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Future backups
+*.bak
+*.old

@@ -1,0 +1,10 @@
+services:
+  mindless_meals:
+    image: mindless_meals/mindless_meals:latest
+    container_name: mindless_meals
+    restart: unless-stopped
+    ports:
+      - "8096:8096"
+    volumes:
+      - ./config:/config
+      - ./media:/media
