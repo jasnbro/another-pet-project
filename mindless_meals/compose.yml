@@ -1,10 +1,12 @@
 services:
   mindless_meals:
-    image: mindless_meals/mindless_meals:latest
+    image: python:3.12-slim
     container_name: mindless_meals
-    restart: unless-stopped
+    working_dir: /app
+    command: python -m http.server 8000
     ports:
-      - "8096:8096"
+      - "8000:8000"
     volumes:
-      - ./config:/config
-      - ./media:/media
+      - ./app:/app
+      - ./data:/data
+    restart: unless-stopped
