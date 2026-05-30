@@ -8,3 +8,9 @@ services:
       - ./app:/app
       - ./data:/data
     restart: unless-stopped
+    networks:
+     - atlas-proxy
+
+networks:
+  atlas-proxy:
+    external: true

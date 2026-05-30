@@ -34,6 +34,18 @@ http://<atlas-lan-ip>:8096
 Tailscale:
 http://<atlas-tailscale-ip>:8096
 
+Infrastructure Services
+-----------------------
+postgres
+- Shared database server
+- One database per application
+
+Application Services
+--------------------
+jellyfin
+mindless_meals
+future applications
+
 Notes
 -----
 - Use the jasmine user for day-to-day administration.
