@@ -1,0 +1,16 @@
+services:
+  mindless_meals:
+    build: .
+    container_name: mindless_meals
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+      - ./data:/data
+    restart: unless-stopped
+    networks:
+     - atlas-proxy
+
+networks:
+  atlas-proxy:
+    external: true
