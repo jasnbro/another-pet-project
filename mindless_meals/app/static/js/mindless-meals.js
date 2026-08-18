@@ -142,19 +142,18 @@
   }
 
   // ─── APPLYING FILTERS ────────────────────────────────────────
+  // The DOM only stores filter-relevant fields as space-separated data
+  // attributes; recipeMatchesFilters (filtering.js) is the shared,
+  // testable source of truth for the actual matching rules.
   function recipeMatches(article) {
-    const id = Number(article.dataset.id);
-    if (showFavoritesOnly && !favoriteIds.has(id)) return false;
-    if (filters.effort.size && !filters.effort.has(article.dataset.effort)) return false;
-    if (filters.cuisine.size && !filters.cuisine.has(article.dataset.cuisine)) return false;
-
-    const mealTypes = article.dataset.mealTypes.split(" ").filter(Boolean);
-    if (filters.type.size && !mealTypes.some((t) => filters.type.has(t))) return false;
-
-    const other = article.dataset.other.split(" ").filter(Boolean);
-    if (filters.other.size && !other.some((t) => filters.other.has(t))) return false;
-
-    return true;
+    const recipe = {
+      id: Number(article.dataset.id),
+      effort: article.dataset.effort,
+      cuisine: article.dataset.cuisine,
+      meal_types: article.dataset.mealTypes.split(" ").filter(Boolean),
+      other_tags: article.dataset.other.split(" ").filter(Boolean),
+    };
+    return recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly);
   }
 
   function applyFilters() {

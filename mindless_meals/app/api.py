@@ -130,7 +130,7 @@ def save_meal_plan():
     plan = MealPlan(name=name)
     for item in items:
         recipe_id = item.get("recipe_id")
-        if not Recipe.query.get(recipe_id):
+        if not db.session.get(Recipe, recipe_id):
             raise ValidationError(f"Unknown recipe_id: {recipe_id}")
         slot = item.get("slot")
         if slot not in MEAL_TYPE_VALUES:
