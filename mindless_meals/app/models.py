@@ -77,19 +77,27 @@ class Recipe(db.Model):
     source = db.Column(db.String(10), nullable=False, default="user")  # "seed" | "user"
     created_at = db.Column(db.DateTime, nullable=False, default=_utcnow)
 
+    @property
+    def effort_label(self):
+        return EFFORT_LABELS.get(self.effort, self.effort)
+
+    @property
+    def other_tags_display(self):
+        return [other_tag_label(t) for t in (self.other_tags or [])]
+
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "cuisine": self.cuisine,
             "effort": self.effort,
-            "effort_label": EFFORT_LABELS.get(self.effort, self.effort),
+            "effort_label": self.effort_label,
             "ingredients": self.ingredients,
             "sauce": self.sauce,
             "method": self.method,
             "meal_types": self.meal_types or [],
             "other_tags": self.other_tags or [],
-            "other_tags_display": [other_tag_label(t) for t in (self.other_tags or [])],
+            "other_tags_display": self.other_tags_display,
             "portion_note": self.portion_note,
         }
 

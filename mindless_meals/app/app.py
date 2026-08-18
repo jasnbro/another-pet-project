@@ -4,7 +4,7 @@ from flask import Flask, render_template
 
 from api import api
 from db import db
-from models import EFFORT_LEVELS, MEAL_TYPES, Favorite, Recipe
+from models import EFFORT_LEVELS, MEAL_TYPES, Favorite, Recipe, other_tag_label
 from seed import seed_recipes
 
 
@@ -49,15 +49,23 @@ def home():
 
     cuisines = sorted({r.cuisine for r in recipes})
     grouped = {c: [] for c in cuisines}
+    other_tags = set()
     for r in recipes:
         grouped[r.cuisine].append(r)
+        other_tags.update(r.other_tags or [])
+    other_tag_options = sorted(
+        ({"value": t, "label": other_tag_label(t)} for t in other_tags),
+        key=lambda o: o["label"],
+    )
 
     return render_template(
         "index.html",
         grouped_recipes=[(c, grouped[c]) for c in cuisines],
+        cuisines=cuisines,
         favorite_ids=favorite_ids,
         effort_levels=EFFORT_LEVELS,
         meal_types=MEAL_TYPES,
+        other_tag_options=other_tag_options,
         recipes_json=[r.to_dict() for r in recipes],
         favorite_ids_json=list(favorite_ids),
     )
