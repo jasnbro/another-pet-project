@@ -11,20 +11,23 @@
   --hairline: #ddd0b8;
   --ink: #33291f;
   --ink-soft: #5c5040;
-  --ink-muted: #9c9182;
-  --ink-faint: #c4bba9;
+  /* ink-muted/ink-faint/orange/purple/effort-* are tuned to meet
+     WCAG AA contrast (4.5:1 for text, 3:1 for icons/UI boundaries)
+     against both --cream and --cream-deep — see mindless_meals/README.md. */
+  --ink-muted: #6c6454;
+  --ink-faint: #8c8370;
 
-  --orange: #c96f2c;
+  --orange: #9c5017;
   --orange-soft: #e8dcc7;
-  --purple: #8577a8;
+  --purple: #655a8c;
   --purple-soft: #e6e1f0;
-  --green: #5f8a56;
-  --gray: #a89f8f;
+  --green: #46704a;
+  --gray: #8c8370;
 
-  --effort-easiest: #6b9a5c;
-  --effort-easy: #5f8a56;
-  --effort-moderate: #bd8a34;
-  --effort-more: #a35b3e;
+  --effort-easiest: #4f7a44;
+  --effort-easy: #46704a;
+  --effort-moderate: #9c6a1f;
+  --effort-more: #8a4530;
 
   --focus-ring: #4a6fa5;
 

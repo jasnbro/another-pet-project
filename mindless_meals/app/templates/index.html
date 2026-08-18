@@ -41,8 +41,8 @@
     </nav>
 
     <div class="filter-panel" id="panel-effort" data-group="effort" hidden>
-      <p class="filter-panel__title">Effort</p>
-      <div class="filter-panel__options">
+      <p class="filter-panel__title" id="panel-effort-title">Effort</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-effort-title">
         {% for level in effort_levels %}
         <button type="button" class="filter-option" data-group="effort" data-value="{{ level.value }}"
                 aria-pressed="false">{{ level.label }}</button>
@@ -52,8 +52,8 @@
     </div>
 
     <div class="filter-panel" id="panel-type" data-group="type" hidden>
-      <p class="filter-panel__title">Meal Type</p>
-      <div class="filter-panel__options">
+      <p class="filter-panel__title" id="panel-type-title">Meal Type</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-type-title">
         {% for mt in meal_types %}
         <button type="button" class="filter-option" data-group="type" data-value="{{ mt.value }}"
                 aria-pressed="false">{{ mt.label }}</button>
@@ -63,8 +63,8 @@
     </div>
 
     <div class="filter-panel" id="panel-cuisine" data-group="cuisine" hidden>
-      <p class="filter-panel__title">Cuisine</p>
-      <div class="filter-panel__options">
+      <p class="filter-panel__title" id="panel-cuisine-title">Cuisine</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-cuisine-title">
         {% for c in cuisines %}
         <button type="button" class="filter-option" data-group="cuisine" data-value="{{ c }}"
                 aria-pressed="false">{{ c }}</button>
@@ -74,8 +74,8 @@
     </div>
 
     <div class="filter-panel" id="panel-other" data-group="other" hidden>
-      <p class="filter-panel__title">Other</p>
-      <div class="filter-panel__options">
+      <p class="filter-panel__title" id="panel-other-title">Other</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-other-title">
         {% for tag in other_tag_options %}
         <button type="button" class="filter-option" data-group="other" data-value="{{ tag.value }}"
                 aria-pressed="false">{{ tag.label }}</button>
@@ -170,10 +170,10 @@
     </main>
   </div>
 
-  <dialog class="panel" id="add-recipe-dialog">
+  <dialog class="panel" id="add-recipe-dialog" aria-labelledby="add-recipe-title">
     <div class="panel__inner">
       <div class="panel__header">
-        <h2 class="panel__title">Add Recipe</h2>
+        <h2 class="panel__title" id="add-recipe-title">Add Recipe</h2>
         <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
       </div>
       <form id="add-recipe-form" novalidate>
@@ -237,10 +237,10 @@
     </div>
   </dialog>
 
-  <dialog class="panel" id="meal-plan-dialog">
+  <dialog class="panel" id="meal-plan-dialog" aria-labelledby="meal-plan-title">
     <div class="panel__inner">
       <div class="panel__header">
-        <h2 class="panel__title">Save Meal Plan</h2>
+        <h2 class="panel__title" id="meal-plan-title">Save Meal Plan</h2>
         <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
       </div>
       <p class="plan-empty" id="plan-empty-message">
