@@ -69,6 +69,10 @@ class Recipe(db.Model):
     method = db.Column(db.Text, nullable=False, default="")
     meal_types = db.Column(db.JSON, nullable=False, default=list)
     other_tags = db.Column(db.JSON, nullable=False, default=list)
+    # Link to wherever the recipe actually came from — a TikTok/Reels
+    # video, a recipe site, etc. Optional; not validated beyond "looks
+    # like a URL", since this is a personal reference, not a fetched embed.
+    source_url = db.Column(db.String(500), nullable=True)
     # Extension point for future portion guidance (see product spec §13).
     # Deliberately a free-text note rather than structured nutrition data —
     # the product is meant to stay simple portion guidance, not calorie
@@ -99,6 +103,7 @@ class Recipe(db.Model):
             "other_tags": self.other_tags or [],
             "other_tags_display": self.other_tags_display,
             "portion_note": self.portion_note,
+            "source_url": self.source_url,
         }
 
 

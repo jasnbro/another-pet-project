@@ -1,4 +1,4 @@
-"""Add Recipe: creation and validation (product spec §12)."""
+"""Add/Edit Recipe: creation, update, and validation (product spec §12)."""
 
 
 def valid_payload(**overrides):
@@ -55,3 +55,61 @@ def test_unknown_meal_types_are_dropped_not_rejected(client):
     res = client.post("/api/recipes", json=valid_payload(meal_types=["lunch", "elevenses"]))
     assert res.status_code == 201
     assert res.get_json()["meal_types"] == ["lunch"]
+
+
+def test_source_url_is_optional(client):
+    res = client.post("/api/recipes", json=valid_payload())
+    assert res.status_code == 201
+    assert res.get_json()["source_url"] is None
+
+
+def test_source_url_is_persisted_when_valid(client):
+    res = client.post(
+        "/api/recipes", json=valid_payload(source_url="https://www.tiktok.com/@someone/video/123")
+    )
+    assert res.status_code == 201
+    assert res.get_json()["source_url"] == "https://www.tiktok.com/@someone/video/123"
+
+
+def test_source_url_without_scheme_is_rejected(client):
+    res = client.post("/api/recipes", json=valid_payload(source_url="tiktok.com/@someone/video/123"))
+    assert res.status_code == 400
+
+
+def test_update_recipe_persists_changes(client):
+    created = client.post("/api/recipes", json=valid_payload()).get_json()
+
+    res = client.put(
+        "/api/recipes/" + str(created["id"]),
+        json=valid_payload(
+            name="Gochujang Turkey Bowls (updated)",
+            effort="moderate",
+            source_url="https://example.com/gochujang-bowls",
+        ),
+    )
+    assert res.status_code == 200
+    updated = res.get_json()
+    assert updated["id"] == created["id"]
+    assert updated["name"] == "Gochujang Turkey Bowls (updated)"
+    assert updated["effort"] == "moderate"
+    assert updated["source_url"] == "https://example.com/gochujang-bowls"
+
+    # the change is durable, not just the response echo
+    listed = client.get("/api/recipes").get_json()
+    assert len(listed) == 1
+    assert listed[0]["name"] == "Gochujang Turkey Bowls (updated)"
+
+
+def test_update_unknown_recipe_404s(client):
+    res = client.put("/api/recipes/999", json=valid_payload())
+    assert res.status_code == 404
+
+
+def test_update_rejects_invalid_payload_without_changing_recipe(client):
+    created = client.post("/api/recipes", json=valid_payload()).get_json()
+
+    res = client.put("/api/recipes/" + str(created["id"]), json=valid_payload(name=""))
+    assert res.status_code == 400
+
+    listed = client.get("/api/recipes").get_json()
+    assert listed[0]["name"] == "Gochujang Turkey Bowls"
