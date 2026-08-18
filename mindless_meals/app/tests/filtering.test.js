@@ -15,6 +15,7 @@ function emptyFilters() {
 
 const gochujangBowls = {
   id: 1,
+  name: "Gochujang Turkey Bowls",
   effort: "easy",
   cuisine: "East Asian",
   meal_types: ["lunch", "dinner"],
@@ -23,6 +24,7 @@ const gochujangBowls = {
 
 const berryYogurt = {
   id: 2,
+  name: "Berry Yogurt Bowls",
   effort: "easiest",
   cuisine: "Breakfast Rotation",
   meal_types: ["breakfast"],
@@ -85,4 +87,34 @@ test("favorites-only hides non-favorited recipes regardless of other filters", (
     recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set([1, 2]), true),
     true
   );
+});
+
+test("search term matches the recipe name case-insensitively", () => {
+  assert.equal(
+    recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, "gochujang"),
+    true
+  );
+  assert.equal(
+    recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, "GOCHUJANG"),
+    true
+  );
+  assert.equal(
+    recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, "yogurt"),
+    false
+  );
+});
+
+test("empty search term matches everything, same as no search", () => {
+  assert.equal(recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, ""), true);
+});
+
+test("search term combines with other filters as AND", () => {
+  const filters = emptyFilters();
+  filters.cuisine.add("Breakfast Rotation");
+  // matches the cuisine filter but not the search term
+  assert.equal(
+    recipeMatchesFilters(berryYogurt, filters, new Set(), false, "gochujang"),
+    false
+  );
+  assert.equal(recipeMatchesFilters(berryYogurt, filters, new Set(), false, "yogurt"), true);
 });

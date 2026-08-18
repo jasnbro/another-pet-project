@@ -435,6 +435,7 @@ recipes:
   sauce: Salsa + Greek yogurt
   method: Batch cook → freeze individually
   meal_types:
+  - breakfast
   - lunch
   - dinner
   other:

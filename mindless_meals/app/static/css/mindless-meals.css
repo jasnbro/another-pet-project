@@ -180,6 +180,30 @@ button {
   text-transform: uppercase;
 }
 
+/* ─── SEARCH ─────────────────────────────────────────── */
+
+.search-row {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 320px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  padding: 7px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--cream-deep);
+  color: var(--ink);
+}
+
+.search-input::placeholder {
+  color: var(--ink-muted);
+}
+
 /* ─── FILTER PANEL ───────────────────────────────────── */
 
 .filter-panel {
@@ -293,7 +317,8 @@ button {
   margin-bottom: 32px;
 }
 
-.utility-nav button {
+.utility-nav button,
+.utility-nav a {
   background: none;
   border: none;
   display: inline-flex;
@@ -303,6 +328,7 @@ button {
   font-size: 0.85rem;
   color: var(--ink-soft);
   padding: 4px 2px;
+  text-decoration: none;
 }
 
 .utility-nav__dot {
@@ -612,6 +638,7 @@ dialog.panel::backdrop {
 
 .form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: center;
   margin-top: 20px;
@@ -634,6 +661,14 @@ dialog.panel::backdrop {
   border-color: var(--hairline);
   color: var(--ink-soft);
   font-weight: 400;
+}
+
+.btn--danger {
+  background: none;
+  border-color: var(--effort-more);
+  color: var(--effort-more);
+  font-weight: 400;
+  margin-left: auto;
 }
 
 .form-message {

@@ -7,7 +7,8 @@ abstraction without payoff for an app this size.
 """
 import re
 
-from flask import Blueprint, jsonify, request
+import yaml
+from flask import Blueprint, Response, jsonify, request
 
 from db import db
 from models import (
@@ -100,6 +101,62 @@ def update_recipe(recipe_id):
         setattr(recipe, key, value)
     db.session.commit()
     return jsonify(recipe.to_dict())
+
+
+@api.delete("/recipes/<int:recipe_id>")
+def delete_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    Favorite.query.filter_by(recipe_id=recipe_id).delete()
+
+    affected_plan_ids = {
+        item.meal_plan_id for item in MealPlanItem.query.filter_by(recipe_id=recipe_id).all()
+    }
+    MealPlanItem.query.filter_by(recipe_id=recipe_id).delete()
+
+    db.session.delete(recipe)
+    db.session.commit()
+
+    # A meal plan that's now empty because its only recipe(s) were deleted
+    # isn't a plan worth keeping around as "the current plan".
+    for plan_id in affected_plan_ids:
+        plan = db.session.get(MealPlan, plan_id)
+        if plan and not plan.items:
+            db.session.delete(plan)
+    db.session.commit()
+
+    return jsonify({"deleted": True, "id": recipe_id})
+
+
+@api.get("/recipes/export")
+def export_recipes():
+    """Every recipe as YAML, in the same shape seed_data/recipes.yaml
+    uses — this is both a backup and a re-import path: drop the
+    downloaded file in as the seed file and `flask seed` will load
+    anything not already present."""
+    recipes = Recipe.query.order_by(Recipe.cuisine, Recipe.name).all()
+    payload = {
+        "recipes": [
+            {
+                "name": r.name,
+                "cuisine": r.cuisine,
+                "effort": r.effort,
+                "ingredients": r.ingredients,
+                "sauce": r.sauce,
+                "method": r.method,
+                "meal_types": r.meal_types or [],
+                "other": r.other_tags or [],
+                "source_url": r.source_url,
+            }
+            for r in recipes
+        ]
+    }
+    body = yaml.dump(payload, sort_keys=False, allow_unicode=True, width=100)
+    return Response(
+        body,
+        mimetype="application/x-yaml",
+        headers={"Content-Disposition": "attachment; filename=mindless-meals-export.yaml"},
+    )
 
 
 @api.get("/favorites")
