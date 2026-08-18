@@ -38,6 +38,7 @@ def seed_recipes():
             method=entry.get("method", ""),
             meal_types=entry.get("meal_types", []),
             other_tags=entry.get("other", []),
+            source_url=entry.get("source_url"),
             source="seed",
         )
         db.session.add(recipe)

@@ -20,17 +20,24 @@ UI (server-rendered page + a little vanilla JS) → JSON API → database.
   / `MealPlanItem`. Effort levels, meal types, and the known "Other"
   tag vocabulary are defined here as small constants, not separate
   tables — the vocabulary is small and single-user.
-- `app/api.py` — the JSON API (`/api/recipes`, `/api/favorites`,
-  `/api/meal-plans`), including Add Recipe validation.
+- `app/api.py` — the JSON API: CRUD on `/api/recipes` (list, add, edit,
+  delete, plus `/api/recipes/export` for backup), `/api/favorites`,
+  `/api/meal-plans`. Add/Edit share the same validation.
 - `app/seed.py` + `app/seed_data/recipes.yaml` — one-time-authored
   recipe data (originally extracted from an earlier static prototype),
   loaded into the DB on first run. Idempotent by name+cuisine. Recipes
-  added afterwards through the app live only in the database.
+  added afterwards through the app live only in the database — back
+  them up with Export Recipes (or `GET /api/recipes/export`), which
+  writes the same YAML shape the seed loader reads, so a downloaded
+  export can be dropped in as the seed file to restore.
 - `app/templates/index.html` + `app/static/` — the page itself. No
   frontend framework; `static/js/filtering.js` holds the pure
-  Effort/Type/Cuisine/Other/favorites matching logic (shared with its
-  test suite), and `static/js/mindless-meals.js` wires it to the DOM
-  (filter panels, favoriting, the meal-plan draft, Add Recipe).
+  Effort/Type/Cuisine/Other/favorites/search matching logic (shared
+  with its test suite), and `static/js/mindless-meals.js` wires it to
+  the DOM (filter panels, favoriting, the meal-plan draft, and the
+  Add/Edit/Delete Recipe dialog — Add and Edit share one dialog and
+  form; Edit pre-fills from the recipe's own data, already embedded in
+  the page, and submits a `PUT` instead of a `POST`).
 
 Data
 ----

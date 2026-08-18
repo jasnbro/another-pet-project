@@ -12,6 +12,7 @@
     other: new Set(),
   };
   let showFavoritesOnly = false;
+  let searchTerm = "";
   // recipeId -> Set of slot values ("breakfast" | "lunch" | "dinner" | "snack")
   const planDraft = new Map();
 
@@ -147,14 +148,16 @@
   // attributes; recipeMatchesFilters (filtering.js) is the shared,
   // testable source of truth for the actual matching rules.
   function recipeMatches(article) {
+    const id = Number(article.dataset.id);
     const recipe = {
-      id: Number(article.dataset.id),
+      id,
+      name: (recipesById.get(id) || {}).name || "",
       effort: article.dataset.effort,
       cuisine: article.dataset.cuisine,
       meal_types: article.dataset.mealTypes.split(" ").filter(Boolean),
       other_tags: article.dataset.other.split(" ").filter(Boolean),
     };
-    return recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly);
+    return recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly, searchTerm);
   }
 
   function applyFilters() {
@@ -207,6 +210,12 @@
   btnViewFavorites.addEventListener("click", () => {
     showFavoritesOnly = !showFavoritesOnly;
     btnViewFavorites.setAttribute("aria-pressed", String(showFavoritesOnly));
+    applyFilters();
+  });
+
+  // ─── SEARCH ──────────────────────────────────────────────────
+  document.getElementById("recipe-search").addEventListener("input", (e) => {
+    searchTerm = e.target.value.trim();
     applyFilters();
   });
 
@@ -365,6 +374,7 @@
   const addRecipeTitle = document.getElementById("add-recipe-title");
   const recipeIdField = document.getElementById("field-recipe-id");
   const submitRecipeBtn = document.getElementById("btn-submit-recipe");
+  const deleteRecipeBtn = document.getElementById("btn-delete-recipe");
 
   function openRecipeDialog(recipe) {
     addRecipeMessage.textContent = "";
@@ -373,6 +383,7 @@
     if (recipe) {
       addRecipeTitle.textContent = "Edit Recipe";
       submitRecipeBtn.textContent = "Save Changes";
+      deleteRecipeBtn.hidden = false;
       recipeIdField.value = recipe.id;
       addRecipeForm.elements["name"].value = recipe.name;
       addRecipeForm.elements["cuisine"].value = recipe.cuisine;
@@ -392,6 +403,7 @@
     } else {
       addRecipeTitle.textContent = "Add Recipe";
       submitRecipeBtn.textContent = "Add Recipe";
+      deleteRecipeBtn.hidden = true;
       recipeIdField.value = "";
     }
 
@@ -405,6 +417,23 @@
       const recipe = recipesById.get(Number(btn.dataset.recipeId));
       if (recipe) openRecipeDialog(recipe);
     });
+  });
+
+  deleteRecipeBtn.addEventListener("click", async () => {
+    const recipeId = recipeIdField.value;
+    if (!recipeId) return;
+    const recipe = recipesById.get(Number(recipeId));
+    const name = recipe ? recipe.name : "this recipe";
+    if (!window.confirm('Delete "' + name + '"? This also removes it from any favorites or saved meal plans.')) {
+      return;
+    }
+    try {
+      const res = await fetch("/api/recipes/" + recipeId, { method: "DELETE" });
+      if (!res.ok) throw new Error("Could not delete recipe.");
+      window.location.reload();
+    } catch (err) {
+      addRecipeMessage.textContent = err.message;
+    }
   });
 
   addRecipeForm.addEventListener("submit", async (e) => {

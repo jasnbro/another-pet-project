@@ -40,6 +40,11 @@
       </button>
     </nav>
 
+    <div class="search-row">
+      <input type="search" id="recipe-search" class="search-input"
+             placeholder="Search recipes…" aria-label="Search recipes by name" autocomplete="off">
+    </div>
+
     <div class="filter-panel" id="panel-effort" data-group="effort" hidden>
       <p class="filter-panel__title" id="panel-effort-title">Effort</p>
       <div class="filter-panel__options" role="group" aria-labelledby="panel-effort-title">
@@ -99,6 +104,10 @@
         <span class="utility-nav__dot" aria-hidden="true"></span>
         View Favorites
       </button>
+      <a href="{{ url_for('api.export_recipes') }}" download="mindless-meals-export.yaml">
+        <span class="utility-nav__dot" aria-hidden="true"></span>
+        Export Recipes
+      </a>
     </div>
 
     <main id="atlas">
@@ -245,6 +254,7 @@
         <div class="form-actions">
           <button type="submit" class="btn" id="btn-submit-recipe">Add Recipe</button>
           <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+          <button type="button" class="btn btn--danger" id="btn-delete-recipe" hidden>Delete Recipe</button>
         </div>
         <p class="form-message" id="add-recipe-message" role="alert"></p>
       </form>
