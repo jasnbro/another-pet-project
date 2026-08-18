@@ -43,6 +43,7 @@ def validate_recipe_payload(payload):
     method = (payload.get("method") or "").strip()
     effort = (payload.get("effort") or "").strip()
     sauce = (payload.get("sauce") or "").strip() or None
+    source_url = (payload.get("source_url") or "").strip() or None
 
     if not name:
         raise ValidationError("Recipe name is required.")
@@ -54,6 +55,8 @@ def validate_recipe_payload(payload):
         raise ValidationError("Method is required.")
     if effort not in EFFORT_VALUES:
         raise ValidationError(f"Effort must be one of: {', '.join(EFFORT_VALUES)}.")
+    if source_url and not re.match(r"^https?://", source_url, re.IGNORECASE):
+        raise ValidationError("Recipe link must start with http:// or https://.")
 
     meal_types = [m for m in (payload.get("meal_types") or []) if m in MEAL_TYPE_VALUES]
     other_raw = payload.get("other_tags") or []
@@ -66,6 +69,7 @@ def validate_recipe_payload(payload):
         "method": method,
         "effort": effort,
         "sauce": sauce,
+        "source_url": source_url,
         "meal_types": meal_types,
         "other_tags": other_tags,
     }
@@ -85,6 +89,17 @@ def create_recipe():
     db.session.add(recipe)
     db.session.commit()
     return jsonify(recipe.to_dict()), 201
+
+
+@api.put("/recipes/<int:recipe_id>")
+def update_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    payload = request.get_json(silent=True) or {}
+    fields = validate_recipe_payload(payload)
+    for key, value in fields.items():
+        setattr(recipe, key, value)
+    db.session.commit()
+    return jsonify(recipe.to_dict())
 
 
 @api.get("/favorites")

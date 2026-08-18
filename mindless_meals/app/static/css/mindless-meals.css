@@ -394,6 +394,28 @@ button {
   white-space: nowrap;
 }
 
+.edit-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-decoration: underline;
+  padding: 2px 0;
+  flex-shrink: 0;
+}
+
+.edit-toggle:hover {
+  color: var(--ink-soft);
+}
+
+.recipe__source {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--purple);
+}
+
 .recipe__section {
   margin-top: 10px;
   font-size: 0.88rem;

@@ -3,6 +3,7 @@
 
   const data = JSON.parse(document.getElementById("mindless-meals-data").textContent);
   const favoriteIds = new Set(data.favoriteIds);
+  const recipesById = new Map(data.recipes.map((r) => [r.id, r]));
 
   const filters = {
     effort: new Set(),
@@ -353,21 +354,68 @@
     }
   });
 
-  // ─── ADD RECIPE DIALOG ───────────────────────────────────────
+  // ─── ADD / EDIT RECIPE DIALOG ────────────────────────────────
+  // The same dialog and form serve both flows: Add Recipe opens it
+  // empty, Edit opens it pre-filled from the recipe's own data (already
+  // embedded in the page — no extra fetch needed) and remembers the
+  // recipe id in a hidden field so submit knows whether to POST or PUT.
   const addRecipeDialog = document.getElementById("add-recipe-dialog");
+  const addRecipeForm = document.getElementById("add-recipe-form");
   const addRecipeMessage = document.getElementById("add-recipe-message");
+  const addRecipeTitle = document.getElementById("add-recipe-title");
+  const recipeIdField = document.getElementById("field-recipe-id");
+  const submitRecipeBtn = document.getElementById("btn-submit-recipe");
 
-  document.getElementById("btn-add-recipe").addEventListener("click", () => {
+  function openRecipeDialog(recipe) {
     addRecipeMessage.textContent = "";
+    addRecipeForm.reset();
+
+    if (recipe) {
+      addRecipeTitle.textContent = "Edit Recipe";
+      submitRecipeBtn.textContent = "Save Changes";
+      recipeIdField.value = recipe.id;
+      addRecipeForm.elements["name"].value = recipe.name;
+      addRecipeForm.elements["cuisine"].value = recipe.cuisine;
+      addRecipeForm.elements["ingredients"].value = recipe.ingredients;
+      addRecipeForm.elements["sauce"].value = recipe.sauce || "";
+      addRecipeForm.elements["method"].value = recipe.method;
+      addRecipeForm.elements["source_url"].value = recipe.source_url || "";
+      addRecipeForm.querySelectorAll('input[name="effort"]').forEach((el) => {
+        el.checked = el.value === recipe.effort;
+      });
+      addRecipeForm.querySelectorAll('input[name="meal_types"]').forEach((el) => {
+        el.checked = recipe.meal_types.includes(el.value);
+      });
+      addRecipeForm.querySelectorAll('input[name="other_tags"]').forEach((el) => {
+        el.checked = recipe.other_tags.includes(el.value);
+      });
+    } else {
+      addRecipeTitle.textContent = "Add Recipe";
+      submitRecipeBtn.textContent = "Add Recipe";
+      recipeIdField.value = "";
+    }
+
     addRecipeDialog.showModal();
+  }
+
+  document.getElementById("btn-add-recipe").addEventListener("click", () => openRecipeDialog(null));
+
+  document.querySelectorAll(".edit-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const recipe = recipesById.get(Number(btn.dataset.recipeId));
+      if (recipe) openRecipeDialog(recipe);
+    });
   });
 
-  document.getElementById("add-recipe-form").addEventListener("submit", async (e) => {
+  addRecipeForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const otherTags = formData.getAll("other_tags");
-    const customTag = (formData.get("other_tags_custom") || "").trim();
-    if (customTag) otherTags.push(customTag);
+    const customTags = (formData.get("other_tags_custom") || "").split(",");
+    customTags.forEach((t) => {
+      const trimmed = t.trim();
+      if (trimmed) otherTags.push(trimmed);
+    });
 
     const payload = {
       name: formData.get("name"),
@@ -376,13 +424,18 @@
       ingredients: formData.get("ingredients"),
       sauce: formData.get("sauce"),
       method: formData.get("method"),
+      source_url: formData.get("source_url"),
       meal_types: formData.getAll("meal_types"),
       other_tags: otherTags,
     };
 
+    const recipeId = formData.get("recipe_id");
+    const url = recipeId ? "/api/recipes/" + recipeId : "/api/recipes";
+    const method = recipeId ? "PUT" : "POST";
+
     try {
-      const res = await fetch("/api/recipes", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });

@@ -122,6 +122,8 @@
             <span class="effort-tag" style="background: var(--effort-{{ recipe.effort.replace('_','-') }}); color: #fff;">
               {{ recipe.effort_label }}
             </span>
+            <button type="button" class="edit-toggle" data-recipe-id="{{ recipe.id }}"
+                    aria-label="Edit {{ recipe.name }}">Edit</button>
           </div>
 
           <div class="recipe__section">
@@ -137,6 +139,12 @@
           {% endif %}
 
           <div class="recipe__method">{{ recipe.method }}</div>
+
+          {% if recipe.source_url %}
+          <a class="recipe__source" href="{{ recipe.source_url }}" target="_blank" rel="noopener noreferrer">
+            ↗ Recipe Link
+          </a>
+          {% endif %}
 
           {% if recipe.other_tags_display %}
           <div class="recipe__other">
@@ -177,6 +185,7 @@
         <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
       </div>
       <form id="add-recipe-form" novalidate>
+        <input type="hidden" id="field-recipe-id" name="recipe_id" value="">
         <div class="field">
           <label for="field-name">Name</label>
           <input type="text" id="field-name" name="name" required>
@@ -216,6 +225,11 @@
           <label for="field-method">Make</label>
           <input type="text" id="field-method" name="method" placeholder="Stir fry everything → serve over rice" required>
         </div>
+        <div class="field">
+          <label for="field-source-url">Recipe Link (optional)</label>
+          <input type="url" id="field-source-url" name="source_url"
+                 placeholder="https://tiktok.com/... or a recipe site">
+        </div>
         <fieldset class="fieldset">
           <legend>Other (optional)</legend>
           <div class="checkbox-row">
@@ -225,11 +239,11 @@
           </div>
         </fieldset>
         <div class="field">
-          <label for="field-other-custom">Add another tag (optional)</label>
-          <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal">
+          <label for="field-other-custom">Add other tags (optional)</label>
+          <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal, one-pot">
         </div>
         <div class="form-actions">
-          <button type="submit" class="btn">Save Recipe</button>
+          <button type="submit" class="btn" id="btn-submit-recipe">Add Recipe</button>
           <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
         </div>
         <p class="form-message" id="add-recipe-message" role="alert"></p>
