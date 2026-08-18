@@ -1,2 +1,269 @@
-<h1>Mindless Meals</h1>
-<p>I'm alive... d-(\-0_0)-b</p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mindless Meals</title>
+  <meta name="description" content="A quiet meal atlas — what should we eat?">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mindless-meals.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#atlas">Skip to recipes</a>
+
+  <div class="app-shell">
+    <span class="app-mark" aria-hidden="true">🐙</span>
+
+    <header class="app-header">
+      <h1 class="app-title">Mindless Meals</h1>
+    </header>
+
+    <nav class="filter-controls" aria-label="Filter recipes">
+      <button type="button" class="filter-control" id="control-effort" data-group="effort"
+              aria-expanded="false" aria-controls="panel-effort">
+        <span class="filter-control__circle">E<span class="filter-control__count" hidden></span></span>
+        <span class="filter-control__label">Effort</span>
+      </button>
+      <button type="button" class="filter-control" id="control-type" data-group="type"
+              aria-expanded="false" aria-controls="panel-type">
+        <span class="filter-control__circle">T<span class="filter-control__count" hidden></span></span>
+        <span class="filter-control__label">Type</span>
+      </button>
+      <button type="button" class="filter-control" id="control-cuisine" data-group="cuisine"
+              aria-expanded="false" aria-controls="panel-cuisine">
+        <span class="filter-control__circle">C<span class="filter-control__count" hidden></span></span>
+        <span class="filter-control__label">Cuisine</span>
+      </button>
+      <button type="button" class="filter-control" id="control-other" data-group="other"
+              aria-expanded="false" aria-controls="panel-other">
+        <span class="filter-control__circle">O<span class="filter-control__count" hidden></span></span>
+        <span class="filter-control__label">Other</span>
+      </button>
+    </nav>
+
+    <div class="filter-panel" id="panel-effort" data-group="effort" hidden>
+      <p class="filter-panel__title" id="panel-effort-title">Effort</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-effort-title">
+        {% for level in effort_levels %}
+        <button type="button" class="filter-option" data-group="effort" data-value="{{ level.value }}"
+                aria-pressed="false">{{ level.label }}</button>
+        {% endfor %}
+      </div>
+      <button type="button" class="filter-panel__clear" data-clear="effort">Clear Effort</button>
+    </div>
+
+    <div class="filter-panel" id="panel-type" data-group="type" hidden>
+      <p class="filter-panel__title" id="panel-type-title">Meal Type</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-type-title">
+        {% for mt in meal_types %}
+        <button type="button" class="filter-option" data-group="type" data-value="{{ mt.value }}"
+                aria-pressed="false">{{ mt.label }}</button>
+        {% endfor %}
+      </div>
+      <button type="button" class="filter-panel__clear" data-clear="type">Clear Type</button>
+    </div>
+
+    <div class="filter-panel" id="panel-cuisine" data-group="cuisine" hidden>
+      <p class="filter-panel__title" id="panel-cuisine-title">Cuisine</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-cuisine-title">
+        {% for c in cuisines %}
+        <button type="button" class="filter-option" data-group="cuisine" data-value="{{ c }}"
+                aria-pressed="false">{{ c }}</button>
+        {% endfor %}
+      </div>
+      <button type="button" class="filter-panel__clear" data-clear="cuisine">Clear Cuisine</button>
+    </div>
+
+    <div class="filter-panel" id="panel-other" data-group="other" hidden>
+      <p class="filter-panel__title" id="panel-other-title">Other</p>
+      <div class="filter-panel__options" role="group" aria-labelledby="panel-other-title">
+        {% for tag in other_tag_options %}
+        <button type="button" class="filter-option" data-group="other" data-value="{{ tag.value }}"
+                aria-pressed="false">{{ tag.label }}</button>
+        {% endfor %}
+      </div>
+      <button type="button" class="filter-panel__clear" data-clear="other">Clear Other</button>
+    </div>
+
+    <div class="active-filters" id="active-filters" aria-live="polite"></div>
+
+    <div class="utility-nav">
+      <button type="button" id="btn-save-plan" aria-pressed="false">
+        <span class="utility-nav__dot utility-nav__dot--filled" aria-hidden="true"></span>
+        Save Meal Plan
+      </button>
+      <button type="button" id="btn-add-recipe">
+        <span class="utility-nav__dot" aria-hidden="true"></span>
+        Add Recipe
+      </button>
+      <button type="button" id="btn-view-favorites" aria-pressed="false">
+        <span class="utility-nav__dot" aria-hidden="true"></span>
+        View Favorites
+      </button>
+    </div>
+
+    <main id="atlas">
+      {% for cuisine, recipes in grouped_recipes %}
+      <section class="cuisine-section" data-cuisine="{{ cuisine }}">
+        <h2 class="cuisine-section__title">{{ cuisine }}</h2>
+        {% for recipe in recipes %}
+        <article class="recipe"
+                 data-id="{{ recipe.id }}"
+                 data-cuisine="{{ recipe.cuisine }}"
+                 data-effort="{{ recipe.effort }}"
+                 data-meal-types="{{ recipe.meal_types|join(' ') }}"
+                 data-other="{{ recipe.other_tags|join(' ') }}">
+          <div class="recipe__top">
+            <button type="button" class="favorite-toggle" data-recipe-id="{{ recipe.id }}"
+                    aria-pressed="{{ 'true' if recipe.id in favorite_ids else 'false' }}"
+                    aria-label="Favorite {{ recipe.name }}">
+              <span aria-hidden="true">{{ '★' if recipe.id in favorite_ids else '☆' }}</span>
+            </button>
+            <h3 class="recipe__name">{{ recipe.name }}</h3>
+            <span class="effort-tag" style="background: var(--effort-{{ recipe.effort.replace('_','-') }}); color: #fff;">
+              {{ recipe.effort_label }}
+            </span>
+          </div>
+
+          <div class="recipe__section">
+            <div class="recipe__label">Ingredients</div>
+            <div class="recipe__text">{{ recipe.ingredients }}</div>
+          </div>
+
+          {% if recipe.sauce %}
+          <div class="recipe__section">
+            <div class="recipe__label">Sauce</div>
+            <div class="recipe__text">{{ recipe.sauce }}</div>
+          </div>
+          {% endif %}
+
+          <div class="recipe__method">{{ recipe.method }}</div>
+
+          {% if recipe.other_tags_display %}
+          <div class="recipe__other">
+            {% for label in recipe.other_tags_display %}
+            <span class="other-tag">{{ label }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="recipe__slots">
+            {% for mt in meal_types %}
+            {% set applicable = mt.value in recipe.meal_types %}
+            <button type="button"
+                    class="slot-pill{{ ' slot-pill--applicable' if applicable else '' }}"
+                    data-recipe-id="{{ recipe.id }}"
+                    data-slot="{{ mt.value }}"
+                    aria-pressed="false"
+                    {{ 'disabled' if not applicable else '' }}>
+              <span class="slot-pill__dot" aria-hidden="true"></span>{{ mt.label }}
+            </button>
+            {% endfor %}
+          </div>
+        </article>
+        {% endfor %}
+      </section>
+      {% endfor %}
+
+      <p class="empty-state" id="empty-state" hidden>
+        Nothing on the menu matches those filters — try clearing a few.
+      </p>
+    </main>
+  </div>
+
+  <dialog class="panel" id="add-recipe-dialog" aria-labelledby="add-recipe-title">
+    <div class="panel__inner">
+      <div class="panel__header">
+        <h2 class="panel__title" id="add-recipe-title">Add Recipe</h2>
+        <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
+      </div>
+      <form id="add-recipe-form" novalidate>
+        <div class="field">
+          <label for="field-name">Name</label>
+          <input type="text" id="field-name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="field-cuisine">Cuisine</label>
+          <input type="text" id="field-cuisine" name="cuisine" list="cuisine-options" required>
+          <datalist id="cuisine-options">
+            {% for c in cuisines %}<option value="{{ c }}">{% endfor %}
+          </datalist>
+        </div>
+        <fieldset class="fieldset">
+          <legend>Effort</legend>
+          <div class="checkbox-row">
+            {% for level in effort_levels %}
+            <label><input type="radio" name="effort" value="{{ level.value }}" {{ 'checked' if loop.first else '' }}> {{ level.label }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend>Meal Types</legend>
+          <div class="checkbox-row">
+            {% for mt in meal_types %}
+            <label><input type="checkbox" name="meal_types" value="{{ mt.value }}"> {{ mt.label }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="field-ingredients">Ingredients</label>
+          <input type="text" id="field-ingredients" name="ingredients" placeholder="Ground turkey · broccoli · rice" required>
+        </div>
+        <div class="field">
+          <label for="field-sauce">Sauce (optional)</label>
+          <input type="text" id="field-sauce" name="sauce" placeholder="Gochujang · soy · garlic">
+        </div>
+        <div class="field">
+          <label for="field-method">Make</label>
+          <input type="text" id="field-method" name="method" placeholder="Stir fry everything → serve over rice" required>
+        </div>
+        <fieldset class="fieldset">
+          <legend>Other (optional)</legend>
+          <div class="checkbox-row">
+            {% for tag in other_tag_options %}
+            <label><input type="checkbox" name="other_tags" value="{{ tag.value }}"> {{ tag.label }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="field-other-custom">Add another tag (optional)</label>
+          <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn">Save Recipe</button>
+          <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+        </div>
+        <p class="form-message" id="add-recipe-message" role="alert"></p>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog class="panel" id="meal-plan-dialog" aria-labelledby="meal-plan-title">
+    <div class="panel__inner">
+      <div class="panel__header">
+        <h2 class="panel__title" id="meal-plan-title">Save Meal Plan</h2>
+        <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
+      </div>
+      <p class="plan-empty" id="plan-empty-message">
+        Tap a meal type under any recipe to add it to your plan, then save.
+      </p>
+      <ul class="plan-list" id="plan-list"></ul>
+      <div class="form-actions">
+        <button type="button" class="btn" id="btn-save-plan-confirm">Save Plan</button>
+        <button type="button" class="btn btn--secondary" id="btn-clear-plan">Clear</button>
+        <button type="button" class="btn btn--secondary" id="btn-view-recent-plan">View Recent Plan</button>
+      </div>
+      <p class="form-message" id="plan-message" role="alert"></p>
+    </div>
+  </dialog>
+
+  <script id="mindless-meals-data" type="application/json">
+    {{ {
+      "recipes": recipes_json,
+      "favoriteIds": favorite_ids_json,
+      "mealTypes": meal_types
+    }|tojson }}
+  </script>
+  <script src="{{ url_for('static', filename='js/filtering.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/mindless-meals.js') }}" defer></script>
+</body>
+</html>
