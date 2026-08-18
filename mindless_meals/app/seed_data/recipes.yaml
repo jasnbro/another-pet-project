@@ -1,0 +1,613 @@
+recipes:
+- name: Gochujang Turkey Bowls
+  cuisine: East Asian
+  effort: easy
+  ingredients: Ground turkey · broccoli · edamame · rice
+  sauce: Gochujang · soy · garlic · rice vinegar · sesame oil
+  method: Stir fry everything → serve over rice
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Miso Salmon Bowls
+  cuisine: East Asian
+  effort: easy
+  ingredients: Salmon · rice · cucumber · edamame · greens
+  sauce: Miso · soy · ginger · honey
+  method: Roast salmon → assemble bowls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Tofu Stir Fry
+  cuisine: East Asian
+  effort: easy
+  ingredients: Tofu · mixed vegetables · brown rice
+  sauce: Soy · garlic · ginger · chili crisp
+  method: Air fry tofu → stir fry veg
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - reheat
+- name: Egg Roll Bowls
+  cuisine: East Asian
+  effort: easy
+  ingredients: Ground turkey/beef · cabbage mix · carrots
+  sauce: Soy · garlic · ginger · sriracha
+  method: Sauté like deconstructed egg rolls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - high-protein
+  - reheat
+- name: Thai Red Curry
+  cuisine: Southeast Asian
+  effort: easy
+  ingredients: Chicken thighs · broccoli · peppers · rice
+  sauce: Red curry paste · coconut milk · fish sauce · lime
+  method: Simmer together
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - freezer
+  - high-protein
+  - reheat
+- name: Basil Ground Chicken
+  cuisine: Southeast Asian
+  effort: easy
+  ingredients: Ground chicken · green beans · rice
+  sauce: Soy · fish sauce · garlic · chili
+  method: Quick stovetop stir fry
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - high-protein
+- name: Peanut Tofu Bowls
+  cuisine: Southeast Asian
+  effort: easy
+  ingredients: Tofu · broccoli · carrots · rice noodles
+  sauce: Peanut butter · soy · lime · chili crisp
+  method: Roast tofu → toss together
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - reheat
+- name: Lentil Chicken Curry
+  cuisine: Indian / South Asian
+  effort: easy
+  ingredients: Chicken thighs · lentils · spinach
+  sauce: Curry powder · garlic · ginger · tomato
+  method: Simmer until thick
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - high-protein
+  - reheat
+- name: Chana Masala Bowls
+  cuisine: Indian / South Asian
+  effort: easy
+  ingredients: Chickpeas · spinach · rice
+  sauce: Tomato · garam masala · cumin · garlic
+  method: Stovetop simmer
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - reheat
+- name: Sheet Pan Tandoori Chicken
+  cuisine: Indian / South Asian
+  effort: moderate
+  ingredients: Chicken thighs · broccoli · onions
+  sauce: Yogurt · lemon · garam masala · paprika
+  method: Marinate → oven roast
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Chicken Shawarma Bowls
+  cuisine: Mediterranean / Middle Eastern
+  effort: easy
+  ingredients: Chicken thighs · cucumber · tomatoes · rice
+  sauce: Greek yogurt · lemon · garlic
+  method: Roast chicken → build bowls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Lentil Grain Bowls
+  cuisine: Mediterranean / Middle Eastern
+  effort: easy
+  ingredients: Lentils · quinoa · greens · cucumbers
+  sauce: Tahini · lemon · garlic
+  method: Prep components separately → build bowls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - reheat
+- name: Turkey Kofta Plates
+  cuisine: Mediterranean / Middle Eastern
+  effort: easy
+  ingredients: Ground turkey · rice · cucumber salad
+  sauce: Yogurt · herbs · lemon
+  method: Bake or air fry meatballs
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - freezer
+  - high-protein
+  - reheat
+- name: Taco Bowls
+  cuisine: Mexican / Tex-Mex
+  effort: easy
+  ingredients: Ground turkey/beef · black beans · rice · lettuce
+  sauce: Salsa verde + Greek yogurt
+  method: Season protein → assemble bowls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - high-protein
+  - reheat
+- name: Chicken Fajita Meal Prep
+  cuisine: Mexican / Tex-Mex
+  effort: moderate
+  ingredients: Chicken thighs · peppers · onions · rice
+  sauce: Lime · garlic · cumin · chili powder
+  method: Sheet pan roast
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Chipotle Lentil Chili
+  cuisine: Mexican / Tex-Mex
+  effort: easy
+  ingredients: Ground turkey · lentils · beans
+  sauce: Tomato · chipotle · cumin
+  method: Simmer large batch
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - high-protein
+  - reheat
+- name: Jollof-Inspired Turkey Rice
+  cuisine: West African Inspired
+  effort: moderate
+  ingredients: Ground turkey/chicken · rice · peppers · onions
+  sauce: Tomato paste · garlic · ginger · curry · thyme · smoked paprika
+  method: Cook rice in seasoned tomato base
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - freezer
+  - high-protein
+  - reheat
+- name: Peanut Stew
+  cuisine: West African Inspired
+  effort: easy
+  ingredients: Chicken thighs · sweet potatoes · spinach
+  sauce: Peanut butter · tomato · garlic · ginger · chili
+  method: Simmer until thick and comforting
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - freezer
+  - high-protein
+  - reheat
+- name: Suya Bowls
+  cuisine: West African Inspired
+  effort: easy
+  ingredients: Chicken thighs or tofu · rice · cucumbers
+  sauce: null
+  method: Roast or air fry protein
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Black Eyed Pea Stew
+  cuisine: West African Inspired
+  effort: easy
+  ingredients: Black eyed peas · greens · onions
+  sauce: Tomato · garlic · smoked paprika
+  method: Stovetop stew
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - reheat
+- name: Coconut Lentil Curry
+  cuisine: East African Inspired
+  effort: easy
+  ingredients: Lentils · spinach · rice
+  sauce: Coconut milk · curry powder · garlic · ginger
+  method: Simmer until creamy
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - fiber
+  - freezer
+  - reheat
+- name: Berbere Chicken Bowls
+  cuisine: East African Inspired
+  effort: easy
+  ingredients: Chicken thighs · greens · rice
+  sauce: null
+  method: Roast chicken → assemble bowls
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Ethiopian-Inspired Lentils
+  cuisine: East African Inspired
+  effort: easy
+  ingredients: Lentils · onions · spinach
+  sauce: null
+  method: Slow simmer → serve over rice or grains
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - reheat
+- name: Jerk Chicken Bowls
+  cuisine: Caribbean Inspired
+  effort: easy
+  ingredients: Chicken thighs · rice · broccoli/cabbage
+  sauce: Jerk seasoning · lime · garlic · thyme
+  method: Roast or grill chicken
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Curry Chickpeas & Potatoes
+  cuisine: Caribbean Inspired
+  effort: easy
+  ingredients: Chickpeas · potatoes · spinach
+  sauce: Jamaican curry powder · garlic · thyme · coconut milk
+  method: Simmer until thick
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - reheat
+- name: Brown Stew Chicken
+  cuisine: Caribbean Inspired
+  effort: moderate
+  ingredients: Chicken thighs · peppers · onions
+  sauce: Tomato · garlic · thyme · soy sauce
+  method: Braise → serve over rice
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Caribbean Turkey Rice Skillet
+  cuisine: Caribbean Inspired
+  effort: easy
+  ingredients: Ground turkey · rice · beans · peppers
+  sauce: null
+  method: One-pan stovetop
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - high-protein
+  - reheat
+- name: Coconut Lime Salmon
+  cuisine: Caribbean Inspired
+  effort: easy
+  ingredients: Salmon · rice · greens
+  sauce: Coconut milk · lime · garlic · chili
+  method: Roast salmon → spoon sauce over top
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Smothered Turkey Meatballs
+  cuisine: Afro-Caribbean / Southern Fusion
+  effort: easy
+  ingredients: Turkey meatballs · greens · rice
+  sauce: Onion gravy with garlic + herbs
+  method: Bake meatballs → simmer in gravy
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - freezer
+  - high-protein
+  - reheat
+- name: Greens & Beans Bowls
+  cuisine: Afro-Caribbean / Southern Fusion
+  effort: easy
+  ingredients: Black beans · collards/spinach · rice · chicken sausage
+  sauce: Vinegar pepper sauce + garlic
+  method: Sauté and assemble
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - reheat
+- name: Sweet Potato Taco Bowls
+  cuisine: Afro-Caribbean / Southern Fusion
+  effort: easy
+  ingredients: Ground turkey · sweet potatoes · black beans
+  sauce: Lime yogurt sauce + chili seasoning
+  method: Roast sweet potatoes → bowl prep
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - high-protein
+  - reheat
+- name: BBQ Chicken & Cabbage Bowls
+  cuisine: Afro-Caribbean / Southern Fusion
+  effort: easy
+  ingredients: Chicken thighs · cabbage · rice
+  sauce: Lighter BBQ + vinegar hot sauce
+  method: Roast chicken · sauté cabbage
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: High Protein Mac-ish Bowls
+  cuisine: American Comfort (Healthier)
+  effort: easy
+  ingredients: Protein pasta · ground turkey · broccoli
+  sauce: Blended cottage cheese · nutritional yeast · garlic
+  method: Stovetop pasta bowl
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - high-protein
+  - reheat
+- name: Sheet Pan Chicken & Veg
+  cuisine: American Comfort (Healthier)
+  effort: easy
+  ingredients: Chicken legs/thighs · green beans · potatoes
+  sauce: Olive oil · garlic · paprika
+  method: Roast everything together
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - high-protein
+  - reheat
+- name: Breakfast Burritos
+  cuisine: American Comfort (Healthier)
+  effort: easy
+  ingredients: Eggs · turkey sausage · beans · spinach
+  sauce: Salsa + Greek yogurt
+  method: Batch cook → freeze individually
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - freezer
+  - high-protein
+- name: Rotisserie Chicken Soup
+  cuisine: Soup / Stew / Ramen
+  effort: easiest
+  ingredients: Rotisserie chicken · beans · frozen veg
+  sauce: null
+  method: Dump and simmer
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - freezer
+  - high-protein
+  - reheat
+  - soup
+- name: Lazy Ramen Upgrade
+  cuisine: Soup / Stew / Ramen
+  effort: easiest
+  ingredients: Ramen · eggs · tofu/chicken · spinach
+  sauce: Miso · chili crisp · soy sauce
+  method: Enhance packaged ramen
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - soup
+- name: White Bean Chicken Stew
+  cuisine: Soup / Stew / Ramen
+  effort: easy
+  ingredients: Chicken thighs · white beans · kale/spinach
+  sauce: null
+  method: Slow simmer
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - fiber
+  - freezer
+  - high-protein
+  - reheat
+  - soup
+- name: Curry Rotisserie Soup
+  cuisine: Soup / Stew / Ramen
+  effort: easiest
+  ingredients: Rotisserie chicken · chickpeas · spinach
+  sauce: null
+  method: Quick simmer
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - reheat
+  - soup
+- name: Peanut Noodle Bowls
+  cuisine: Soup / Stew / Ramen
+  effort: easiest
+  ingredients: Tofu/chicken · frozen veg · noodles
+  sauce: Peanut butter · soy · chili crisp · lime
+  method: Toss together quickly
+  meal_types:
+  - lunch
+  - dinner
+  other:
+  - bad-week
+  - soup
+- name: Chicken Bite Bowls
+  cuisine: Emergency / Depression / Exhaustion Meals
+  effort: easiest
+  ingredients: Breaded chicken bites · broccoli · microwave rice
+  sauce: Buffalo · teriyaki · or gochujang yogurt
+  method: Air fry + assemble
+  meal_types:
+  - lunch
+  - dinner
+  - snack
+  other:
+  - bad-week
+  - emergency
+  - high-protein
+- name: Freezer Dumpling Bowls
+  cuisine: Emergency / Depression / Exhaustion Meals
+  effort: easiest
+  ingredients: Frozen dumplings · edamame · greens
+  sauce: Soy sauce · vinegar · chili crisp
+  method: Steam + bowl
+  meal_types:
+  - lunch
+  - dinner
+  - snack
+  other:
+  - bad-week
+  - emergency
+- name: Protein Snack Plate
+  cuisine: Emergency / Depression / Exhaustion Meals
+  effort: easiest
+  ingredients: Eggs · fruit · nuts · yogurt · toast
+  sauce: —
+  method: No cooking required
+  meal_types:
+  - lunch
+  - dinner
+  - snack
+  other:
+  - bad-week
+  - emergency
+  - high-protein
+- name: Rotisserie Wraps
+  cuisine: Emergency / Depression / Exhaustion Meals
+  effort: easiest
+  ingredients: Rotisserie chicken · greens · tortillas
+  sauce: Any sauce in fridge
+  method: Quick wrap assembly
+  meal_types:
+  - lunch
+  - dinner
+  - snack
+  other:
+  - bad-week
+  - emergency
+  - high-protein
+- name: Berry Yogurt Bowls
+  cuisine: Breakfast Rotation
+  effort: easiest
+  ingredients: Greek yogurt · berries · chia · walnuts
+  sauce: null
+  method: Assemble in jar
+  meal_types:
+  - breakfast
+  other:
+  - bad-week
+  - fiber
+  - high-protein
+  - reheat
+- name: Savory Oats
+  cuisine: Breakfast Rotation
+  effort: easy
+  ingredients: Oats · eggs · spinach · chili crisp
+  sauce: null
+  method: Stovetop — 10 min
+  meal_types:
+  - breakfast
+  other:
+  - fiber
+  - high-protein
+- name: Egg Muffins
+  cuisine: Breakfast Rotation
+  effort: easy
+  ingredients: Eggs · spinach · turkey sausage
+  sauce: null
+  method: Batch bake in muffin tin
+  meal_types:
+  - breakfast
+  other:
+  - freezer
+  - high-protein
+  - reheat
+- name: Freezer Burritos
+  cuisine: Breakfast Rotation
+  effort: easy
+  ingredients: Eggs · beans · turkey sausage
+  sauce: null
+  method: Batch wrap → freeze → microwave
+  meal_types:
+  - breakfast
+  other:
+  - bad-week
+  - freezer
+  - high-protein

@@ -3,6 +3,7 @@
 **/data/
 **/cache/
 **/logs/
+**/instance/
 
 # Media
 **/media/
