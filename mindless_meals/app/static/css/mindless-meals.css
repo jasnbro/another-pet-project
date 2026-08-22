@@ -498,12 +498,6 @@ button {
   color: var(--ink-soft);
 }
 
-.recipe__method {
-  margin-top: 10px;
-  font-size: 0.88rem;
-  color: var(--ink-soft);
-}
-
 .recipe__other {
   margin-top: 10px;
   display: flex;
