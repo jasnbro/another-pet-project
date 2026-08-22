@@ -242,9 +242,14 @@ button {
   cursor: pointer;
 }
 
+.filter-option:hover:not([aria-pressed="true"]) {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
 .filter-option[aria-pressed="true"] {
-  background: var(--orange);
-  border-color: var(--orange);
+  background: var(--purple);
+  border-color: var(--purple);
   color: #fff;
 }
 
@@ -344,13 +349,23 @@ button {
   border-color: var(--purple);
 }
 
+.utility-nav button:hover:not([aria-pressed="true"]),
+.utility-nav a:hover {
+  color: var(--purple);
+}
+
+.utility-nav button:hover:not([aria-pressed="true"]) .utility-nav__dot,
+.utility-nav a:hover .utility-nav__dot {
+  border-color: var(--purple);
+}
+
 .utility-nav [aria-pressed="true"] {
-  color: var(--orange);
+  color: var(--purple);
 }
 
 .utility-nav [aria-pressed="true"] .utility-nav__dot {
-  border-color: var(--orange);
-  background: var(--orange);
+  border-color: var(--purple);
+  background: var(--purple);
 }
 
 /* ─── ATLAS ──────────────────────────────────────────── */
@@ -394,7 +409,7 @@ button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.4rem;
   color: var(--ink-faint);
   line-height: 1;
   padding: 2px;
@@ -532,6 +547,32 @@ button {
 }
 
 .empty-state[hidden] {
+  display: none;
+}
+
+.show-more-row {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 32px;
+}
+
+.show-more-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 8px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.show-more-btn[hidden] {
   display: none;
 }
 

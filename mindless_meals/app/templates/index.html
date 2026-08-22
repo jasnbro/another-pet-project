@@ -93,7 +93,7 @@
 
     <div class="utility-nav">
       <button type="button" id="btn-save-plan" aria-pressed="false">
-        <span class="utility-nav__dot utility-nav__dot--filled" aria-hidden="true"></span>
+        <span class="utility-nav__dot" id="save-plan-dot" aria-hidden="true"></span>
         Save Meal Plan
       </button>
       <button type="button" id="btn-add-recipe">
@@ -180,6 +180,10 @@
         {% endfor %}
       </section>
       {% endfor %}
+
+      <div class="show-more-row">
+        <button type="button" class="show-more-btn" id="btn-show-more" hidden>Show More</button>
+      </div>
 
       <p class="empty-state" id="empty-state" hidden>
         Nothing on the menu matches those filters — try clearing a few.

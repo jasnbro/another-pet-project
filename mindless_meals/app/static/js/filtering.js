@@ -7,7 +7,9 @@
  * Sets and tests can pass Sets built from plain arrays.
  *
  * `searchTerm` is an optional plain string, matched case-insensitively
- * against the recipe name; "" or omitted matches everything.
+ * against the recipe's name, ingredients, and sauce (flavor ingredients
+ * like citrus or aromatics often live in the sauce line, not the core
+ * ingredients line); "" or omitted matches everything.
  */
 function recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly, searchTerm) {
   if (showFavoritesOnly && !favoriteIds.has(recipe.id)) return false;
@@ -17,7 +19,12 @@ function recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly, s
   if (filters.type.size && !recipe.meal_types.some((t) => filters.type.has(t))) return false;
   if (filters.other.size && !recipe.other_tags.some((t) => filters.other.has(t))) return false;
 
-  if (searchTerm && !recipe.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+  if (searchTerm) {
+    const haystack = [recipe.name, recipe.ingredients, recipe.sauce || ""]
+      .join(" ")
+      .toLowerCase();
+    if (!haystack.includes(searchTerm.toLowerCase())) return false;
+  }
 
   return true;
 }

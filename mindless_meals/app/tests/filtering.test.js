@@ -18,6 +18,8 @@ const gochujangBowls = {
   name: "Gochujang Turkey Bowls",
   effort: "easy",
   cuisine: "East Asian",
+  ingredients: "Ground turkey · broccoli · edamame · rice",
+  sauce: "Gochujang · soy · garlic · rice vinegar · sesame oil",
   meal_types: ["lunch", "dinner"],
   other_tags: ["high-protein", "reheat"],
 };
@@ -27,8 +29,21 @@ const berryYogurt = {
   name: "Berry Yogurt Bowls",
   effort: "easiest",
   cuisine: "Breakfast Rotation",
+  ingredients: "Greek yogurt · berries · chia · walnuts",
+  sauce: null,
   meal_types: ["breakfast"],
   other_tags: ["fiber"],
+};
+
+const coconutLimeSalmon = {
+  id: 3,
+  name: "Coconut Lime Salmon",
+  effort: "easy",
+  cuisine: "Caribbean Inspired",
+  ingredients: "Salmon · rice · greens",
+  sauce: "Coconut milk · lime · garlic · chili",
+  meal_types: ["lunch", "dinner"],
+  other_tags: ["high-protein", "reheat"],
 };
 
 test("no filters and not favorites-only matches everything", () => {
@@ -117,4 +132,34 @@ test("search term combines with other filters as AND", () => {
     false
   );
   assert.equal(recipeMatchesFilters(berryYogurt, filters, new Set(), false, "yogurt"), true);
+});
+
+test("search term also matches an ingredient, not just the name", () => {
+  assert.equal(
+    recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, "turkey"),
+    true
+  );
+  assert.equal(
+    recipeMatchesFilters(berryYogurt, emptyFilters(), new Set(), false, "turkey"),
+    false
+  );
+});
+
+test("search term also matches the sauce line", () => {
+  // "lime" lives in this recipe's sauce, not its core ingredients or name
+  assert.equal(
+    recipeMatchesFilters(coconutLimeSalmon, emptyFilters(), new Set(), false, "lime"),
+    true
+  );
+  assert.equal(
+    recipeMatchesFilters(gochujangBowls, emptyFilters(), new Set(), false, "lime"),
+    false
+  );
+});
+
+test("search term handles a recipe with no sauce without erroring", () => {
+  assert.equal(
+    recipeMatchesFilters(berryYogurt, emptyFilters(), new Set(), false, "chia"),
+    true
+  );
 });
