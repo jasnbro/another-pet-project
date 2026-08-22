@@ -349,6 +349,30 @@ button {
   border-color: var(--purple);
 }
 
+.utility-nav__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--hairline);
+  align-self: center;
+}
+
+/* Add Recipe / Export Recipes are plain actions, not state toggles —
+   no dot, styled as understated underlined links instead (matches
+   .edit-toggle / .filter-panel__clear). The .utility-nav prefix here
+   isn't just convention: .utility-nav__link alone (0,1,0) loses to
+   the base ".utility-nav button, .utility-nav a" rule's
+   text-decoration: none (0,1,1) on specificity, regardless of source
+   order, so it needs the extra class to actually win. */
+.utility-nav .utility-nav__link {
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 2px;
+}
+
+.utility-nav .utility-nav__link:hover {
+  text-decoration-color: var(--purple);
+}
+
 .utility-nav button:hover:not([aria-pressed="true"]),
 .utility-nav a:hover {
   color: var(--purple);
@@ -509,26 +533,17 @@ button {
   background: none;
   border: none;
   font-size: 0.78rem;
-  color: var(--ink-muted);
-  cursor: default;
-  padding: 2px 0;
-}
-
-.slot-pill--applicable {
   color: var(--ink-soft);
   cursor: pointer;
+  padding: 2px 0;
 }
 
 .slot-pill__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1.5px solid var(--ink-faint);
+  border: 1.5px solid var(--gray);
   display: inline-block;
-}
-
-.slot-pill--applicable .slot-pill__dot {
-  border-color: var(--gray);
 }
 
 .slot-pill[aria-pressed="true"] {

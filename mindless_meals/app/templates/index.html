@@ -96,18 +96,13 @@
         <span class="utility-nav__dot" id="save-plan-dot" aria-hidden="true"></span>
         Save Meal Plan
       </button>
-      <button type="button" id="btn-add-recipe">
-        <span class="utility-nav__dot" aria-hidden="true"></span>
-        Add Recipe
-      </button>
       <button type="button" id="btn-view-favorites" aria-pressed="false">
         <span class="utility-nav__dot" aria-hidden="true"></span>
         View Favorites
       </button>
-      <a href="{{ url_for('api.export_recipes') }}" download="mindless-meals-export.yaml">
-        <span class="utility-nav__dot" aria-hidden="true"></span>
-        Export Recipes
-      </a>
+      <span class="utility-nav__divider" aria-hidden="true"></span>
+      <button type="button" id="btn-add-recipe" class="utility-nav__link">Add Recipe</button>
+      <a href="{{ url_for('api.export_recipes') }}" download="mindless-meals-export.yaml" class="utility-nav__link">Export Recipes</a>
     </div>
 
     <main id="atlas">
@@ -165,13 +160,11 @@
 
           <div class="recipe__slots">
             {% for mt in meal_types %}
-            {% set applicable = mt.value in recipe.meal_types %}
             <button type="button"
-                    class="slot-pill{{ ' slot-pill--applicable' if applicable else '' }}"
+                    class="slot-pill"
                     data-recipe-id="{{ recipe.id }}"
                     data-slot="{{ mt.value }}"
-                    aria-pressed="false"
-                    {{ 'disabled' if not applicable else '' }}>
+                    aria-pressed="false">
               <span class="slot-pill__dot" aria-hidden="true"></span>{{ mt.label }}
             </button>
             {% endfor %}

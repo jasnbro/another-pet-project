@@ -248,7 +248,7 @@
     return article ? article.querySelector(".recipe__name").textContent : "Recipe";
   }
 
-  document.querySelectorAll(".slot-pill--applicable").forEach((pill) => {
+  document.querySelectorAll(".slot-pill").forEach((pill) => {
     pill.addEventListener("click", () => {
       const id = Number(pill.dataset.recipeId);
       const slot = pill.dataset.slot;

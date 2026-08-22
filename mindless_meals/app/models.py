@@ -37,7 +37,7 @@ MEAL_TYPE_LABELS = {m["value"]: m["label"] for m in MEAL_TYPES}
 # raw value.
 OTHER_TAG_LABELS = {
     "freezer": "Freezer-Friendly",
-    "reheat": "Leftovers-Friendly",
+    "reheat": "Leftover-Friendly",
     "high-protein": "High-Protein",
     "fiber": "High-Fiber",
     "bad-week": "Bad-Week Meal",
