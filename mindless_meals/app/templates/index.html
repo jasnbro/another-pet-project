@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mindless Meals</title>
   <meta name="description" content="A quiet meal atlas — what should we eat?">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/mindless-meals.css') }}">
+  <link rel="stylesheet" href="{{ asset_url('css/mindless-meals.css') }}">
 </head>
 <body>
   <a class="skip-link" href="#atlas">Skip to recipes</a>
@@ -284,7 +284,7 @@
       "mealTypes": meal_types
     }|tojson }}
   </script>
-  <script src="{{ url_for('static', filename='js/filtering.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/mindless-meals.js') }}" defer></script>
+  <script src="{{ asset_url('js/filtering.js') }}" defer></script>
+  <script src="{{ asset_url('js/mindless-meals.js') }}" defer></script>
 </body>
 </html>

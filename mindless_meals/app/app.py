@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 from api import api
 from db import db
@@ -38,6 +38,21 @@ def create_app(config_overrides=None):
 
     db.init_app(app)
     app.register_blueprint(api)
+
+    @app.template_global()
+    def asset_url(filename):
+        """url_for('static', ...) plus a cache-busting ?v=<mtime> query
+        string, so a browser holding a cached copy of e.g. mindless-
+        meals.js always fetches the new one after a deploy instead of
+        silently running stale JS against fresh HTML (which is exactly
+        how a template change like dropping a CSS class can make every
+        click handler bound to that class quietly stop attaching)."""
+        path = os.path.join(app.static_folder, filename)
+        try:
+            version = int(os.path.getmtime(path))
+        except OSError:
+            version = 0
+        return url_for("static", filename=filename) + f"?v={version}"
 
     with app.app_context():
         db.create_all()
