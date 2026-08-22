@@ -41,9 +41,13 @@ UI (server-rendered page + a little vanilla JS) → JSON API → database.
 - `app/app.py` — Flask application factory (`create_app`), routes for
   `/`, `/health`, and the JSON API blueprint.
 - `app/models.py` — SQLAlchemy models: `Recipe`, `Favorite`, `MealPlan`
-  / `MealPlanItem`. Effort levels, meal types, and the known "Other"
-  tag vocabulary are defined here as small constants, not separate
-  tables — the vocabulary is small and single-user.
+  / `MealPlanItem`, plus `Ingredient` / `RecipeIngredient` and the
+  forward-looking `User` / `UserPreference` / `GroceryList` /
+  `GroceryListItem` (schema only — not wired into the API/UI yet). Effort
+  levels, meal types, and the known "Other" tag vocabulary are defined
+  here as small constants, not separate tables — the vocabulary is small
+  and single-user. See `docs/database.md` for the full schema, ERD, and
+  migration workflow.
 - `app/api.py` — the JSON API: `GET/POST /api/recipes`,
   `PUT/DELETE /api/recipes/<id>`, `GET /api/recipes/export`,
   `GET/POST/DELETE /api/favorites[/<id>]`,
@@ -72,7 +76,11 @@ SQLite by default (Flask's instance folder locally, or `/data` when the
 container's bind mount is present — see `compose.yml`). Point
 `DATABASE_URL` at the shared Postgres service instead for a real
 deployment; no code changes needed either way, since persistence goes
-through SQLAlchemy.
+through SQLAlchemy. Schema changes for Postgres go through Alembic
+migrations (`app/migrations/`) rather than one big schema file — see
+`docs/database.md` for the full setup, ERD, and how to import the
+existing recipes into the normalized ingredient list
+(`flask import-ingredients`).
 
 Of the 48 seed recipes: 9 are `easiest`, 35 `easy`, 4 `moderate`, and
 none yet `more_effort` — that tier exists in the model and Add/Edit
@@ -115,3 +123,7 @@ Known gaps
   data never recorded this. One clear mismatch ("Breakfast Burritos")
   has been corrected; anything else that's wrong is fixable via Edit.
 - Portion guidance has a model field but no UI yet.
+- The normalized ingredient list (`Ingredient`/`RecipeIngredient`) and
+  the forward-looking `User`/`UserPreference`/`GroceryList` tables exist
+  in the schema but aren't wired into `api.py` or the UI yet — see
+  `docs/database.md#known-gaps--deferred-work`.
