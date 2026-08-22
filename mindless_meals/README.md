@@ -14,8 +14,12 @@ Features
 --------
 - **Browse & filter** — 48 seed recipes grouped by cuisine/category (13
   groupings), filterable by Effort, meal Type, Cuisine, and Other
-  (freezer-friendly, high-protein, etc.), plus a plain-text search by
-  name. Filters combine as AND across groups, OR within a group.
+  (freezer-friendly, high-protein, etc.), plus a plain-text search
+  across name, ingredients, and sauce. Filters combine as AND across
+  groups, OR within a group. 25 recipe cards are revealed at a time
+  (Show More reveals another 25, purely client-side — every recipe is
+  already in the page's embedded JSON, so this costs no extra request);
+  narrowing search/filters resets back to the first 25 of the new set.
 - **Favorites** — persisted star toggle per recipe; View Favorites shows
   only those.
 - **Meal planning** — tap a recipe's applicable meal-type pill to add it

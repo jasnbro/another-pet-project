@@ -16,9 +16,18 @@
   // recipeId -> Set of slot values ("breakfast" | "lunch" | "dinner" | "snack")
   const planDraft = new Map();
 
+  // How many matching recipes are revealed at once; "Show More" adds
+  // another page. Purely a client-side reveal — every recipe is already
+  // in the page's embedded JSON, so paging in more costs nothing (no
+  // extra fetch, no extra DB query). Resets to PAGE_SIZE whenever the
+  // filtered/searched result set changes.
+  const PAGE_SIZE = 25;
+  let revealCount = PAGE_SIZE;
+
   const cuisineSections = Array.from(document.querySelectorAll(".cuisine-section"));
   const emptyState = document.getElementById("empty-state");
   const activeFiltersEl = document.getElementById("active-filters");
+  const showMoreBtn = document.getElementById("btn-show-more");
 
   // Map "group::value" -> the option button, built once. Used both to
   // toggle pressed-state and to read display labels for chips, so we
@@ -144,36 +153,50 @@
   }
 
   // ─── APPLYING FILTERS ────────────────────────────────────────
-  // The DOM only stores filter-relevant fields as space-separated data
-  // attributes; recipeMatchesFilters (filtering.js) is the shared,
-  // testable source of truth for the actual matching rules.
+  // recipesById already holds every field (from the page's embedded
+  // JSON), so matching works directly off that rather than re-reading
+  // fragments back out of data-* attributes. recipeMatchesFilters
+  // (filtering.js) is the shared, testable source of truth for the
+  // actual matching rules.
   function recipeMatches(article) {
-    const id = Number(article.dataset.id);
-    const recipe = {
-      id,
-      name: (recipesById.get(id) || {}).name || "",
-      effort: article.dataset.effort,
-      cuisine: article.dataset.cuisine,
-      meal_types: article.dataset.mealTypes.split(" ").filter(Boolean),
-      other_tags: article.dataset.other.split(" ").filter(Boolean),
-    };
+    const recipe = recipesById.get(Number(article.dataset.id));
+    if (!recipe) return false;
     return recipeMatchesFilters(recipe, filters, favoriteIds, showFavoritesOnly, searchTerm);
   }
 
-  function applyFilters() {
+  // resetReveal=false is used only by the Show More button, which wants
+  // to keep whatever's already revealed and just extend it.
+  function applyFilters(resetReveal = true) {
+    if (resetReveal) revealCount = PAGE_SIZE;
+
+    const allArticles = Array.from(document.querySelectorAll(".recipe"));
+    const matching = allArticles.filter(recipeMatches);
+    const revealed = new Set(matching.slice(0, revealCount));
+
     let anyVisible = false;
     cuisineSections.forEach((section) => {
       let sectionVisible = false;
       section.querySelectorAll(".recipe").forEach((article) => {
-        const visible = recipeMatches(article);
-        article.hidden = !visible;
-        if (visible) sectionVisible = true;
+        const isRevealed = revealed.has(article);
+        article.hidden = !isRevealed;
+        if (isRevealed) sectionVisible = true;
       });
       section.hidden = !sectionVisible;
       if (sectionVisible) anyVisible = true;
     });
     emptyState.hidden = anyVisible;
+
+    const remaining = matching.length - revealed.size;
+    showMoreBtn.hidden = remaining <= 0;
+    if (remaining > 0) {
+      showMoreBtn.textContent = "Show More (" + remaining + " more)";
+    }
   }
+
+  showMoreBtn.addEventListener("click", () => {
+    revealCount += PAGE_SIZE;
+    applyFilters(false);
+  });
 
   // ─── FAVORITES ───────────────────────────────────────────────
   document.querySelectorAll(".favorite-toggle").forEach((btn) => {
@@ -250,8 +273,18 @@
   const planEmptyMsg = document.getElementById("plan-empty-message");
   const planMessage = document.getElementById("plan-message");
   const btnSavePlanConfirm = document.getElementById("btn-save-plan-confirm");
+  const savePlanDot = document.getElementById("save-plan-dot");
+
+  // The Save Meal Plan dot only fills in once there's actually a draft
+  // to save — it isn't a permanent decoration, and isn't a "you have
+  // this open" indicator either (there's no persistent open/closed
+  // state for a dialog you can only reach by clicking the button).
+  function updateSavePlanDot() {
+    savePlanDot.classList.toggle("utility-nav__dot--filled", planDraft.size > 0);
+  }
 
   function renderPlanList() {
+    updateSavePlanDot();
     planListEl.innerHTML = "";
     let count = 0;
     planDraft.forEach((slots, id) => {
@@ -485,4 +518,10 @@
       if (e.target === dialog) dialog.close();
     });
   });
+
+  // ─── INITIAL RENDER ──────────────────────────────────────────
+  // The server renders every matching recipe with no hidden attribute;
+  // apply the initial reveal cap (and Show More button state) before
+  // the user does anything.
+  applyFilters();
 })();
