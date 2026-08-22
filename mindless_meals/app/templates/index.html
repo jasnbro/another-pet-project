@@ -142,7 +142,10 @@
           </div>
           {% endif %}
 
-          <div class="recipe__method">{{ recipe.method }}</div>
+          <div class="recipe__section">
+            <div class="recipe__label">Make</div>
+            <div class="recipe__text">{{ recipe.method }}</div>
+          </div>
 
           {% if recipe.source_url %}
           <a class="recipe__source" href="{{ recipe.source_url }}" target="_blank" rel="noopener noreferrer">
