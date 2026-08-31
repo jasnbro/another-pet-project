@@ -13,6 +13,7 @@ from flask import Blueprint, Response, jsonify, request
 from db import db
 from models import (
     EFFORT_VALUES,
+    MEAL_TYPE_LABELS,
     MEAL_TYPE_VALUES,
     Favorite,
     MealPlan,
@@ -141,13 +142,7 @@ def delete_recipe(recipe_id):
     return jsonify({"deleted": True, "id": recipe_id})
 
 
-@api.get("/recipes/export")
-def export_recipes():
-    """Every recipe as YAML, in the same shape seed_data/recipes.yaml
-    uses — this is both a backup and a re-import path: drop the
-    downloaded file in as the seed file and `flask seed` will load
-    anything not already present."""
-    recipes = Recipe.query.order_by(Recipe.cuisine, Recipe.name).all()
+def _recipes_yaml_response(recipes, filename):
     payload = {
         "recipes": [
             {
@@ -168,8 +163,33 @@ def export_recipes():
     return Response(
         body,
         mimetype="application/x-yaml",
-        headers={"Content-Disposition": "attachment; filename=mindless-meals-export.yaml"},
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
     )
+
+
+@api.get("/recipes/export")
+def export_recipes():
+    """Every recipe as YAML, in the same shape seed_data/recipes.yaml
+    uses — this is both a backup and a re-import path: drop the
+    downloaded file in as the seed file and `flask seed` will load
+    anything not already present.
+
+    Optional ?ids=1,2,3 scopes the export to just those recipes -- used
+    by the Export dialog's Favorites/Filtered results/Selected recipes
+    options (product spec v1.1 §4), which compute their own id list
+    client-side (favorites and the active filter/search state are
+    already known in the browser) and reuse this same endpoint rather
+    than each needing their own. No ids param exports every recipe --
+    the original "All recipes" behavior, unchanged."""
+    ids_param = request.args.get("ids", "").strip()
+    query = Recipe.query.order_by(Recipe.cuisine, Recipe.name)
+    if ids_param:
+        try:
+            ids = [int(x) for x in ids_param.split(",") if x.strip()]
+        except ValueError:
+            raise ValidationError("ids must be a comma-separated list of recipe IDs.")
+        query = query.filter(Recipe.id.in_(ids))
+    return _recipes_yaml_response(query.all(), "mindless-meals-export.yaml")
 
 
 @api.get("/favorites")
@@ -202,6 +222,45 @@ def current_meal_plan():
     if not plan:
         return jsonify(None)
     return jsonify(plan.to_dict())
+
+
+@api.get("/meal-plans/current/export")
+def export_current_meal_plan():
+    """The most recently saved meal plan as readable plain text, grouped
+    by slot -- the Export dialog's "Current meal plan" option (product
+    spec v1.1 §4). Plain text rather than YAML: unlike a recipe export,
+    there's no structured data here worth round-tripping, just a plan
+    someone wants to read (or print, or paste somewhere)."""
+    plan = MealPlan.query.order_by(MealPlan.created_at.desc()).first()
+    if not plan:
+        raise ValidationError("No saved meal plan to export yet.")
+
+    by_slot = {}
+    unslotted = []
+    for item in plan.items:
+        recipe_name = item.recipe.name if item.recipe else "(deleted recipe)"
+        if item.slot:
+            by_slot.setdefault(item.slot, []).append(recipe_name)
+        else:
+            unslotted.append(recipe_name)
+
+    lines = [plan.name, "Saved " + plan.created_at.strftime("%Y-%m-%d"), ""]
+    for slot in MEAL_TYPE_VALUES:
+        if slot in by_slot:
+            lines.append(MEAL_TYPE_LABELS[slot] + ":")
+            lines.extend("  - " + name for name in by_slot[slot])
+            lines.append("")
+    if unslotted:
+        lines.append("Other:")
+        lines.extend("  - " + name for name in unslotted)
+        lines.append("")
+
+    body = "\n".join(lines).rstrip() + "\n"
+    return Response(
+        body,
+        mimetype="text/plain",
+        headers={"Content-Disposition": "attachment; filename=mindless-meals-meal-plan.txt"},
+    )
 
 
 @api.post("/meal-plans")
