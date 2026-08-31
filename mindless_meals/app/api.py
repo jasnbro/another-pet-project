@@ -28,6 +28,19 @@ def _slugify_tag(value):
     return slug
 
 
+# Splits on the same separators the Add/Edit form's Make field accepts
+# (newline, comma, semicolon, either arrow style) -- see static/js/
+# format.js's normalizeMake(), which this mirrors exactly so a direct API
+# call gets the same compact "Action → Action" formatting the UI produces.
+_MAKE_SPLIT_RE = re.compile(r"\r?\n|,|;|→|->")
+
+
+def normalize_make(raw):
+    actions = [a.strip() for a in _MAKE_SPLIT_RE.split(raw or "") if a.strip()]
+    actions = [a[0].upper() + a[1:] if a else a for a in actions]
+    return " → ".join(actions)
+
+
 class ValidationError(Exception):
     pass
 
@@ -41,7 +54,7 @@ def validate_recipe_payload(payload):
     name = (payload.get("name") or "").strip()
     cuisine = (payload.get("cuisine") or "").strip()
     ingredients = (payload.get("ingredients") or "").strip()
-    method = (payload.get("method") or "").strip()
+    method = normalize_make(payload.get("method"))
     effort = (payload.get("effort") or "").strip()
     sauce = (payload.get("sauce") or "").strip() or None
     source_url = (payload.get("source_url") or "").strip() or None
