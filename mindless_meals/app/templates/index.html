@@ -102,7 +102,15 @@
       </button>
       <span class="utility-nav__divider" aria-hidden="true"></span>
       <button type="button" id="btn-add-recipe" class="utility-nav__link">Add Recipe</button>
-      <a href="{{ url_for('api.export_recipes') }}" download="mindless-meals-export.yaml" class="utility-nav__link">Export Recipes</a>
+      <button type="button" id="btn-export" class="utility-nav__link">Export</button>
+    </div>
+
+    <div class="selection-toolbar" id="selection-toolbar" hidden>
+      <span class="selection-toolbar__count" id="selection-count">0 selected</span>
+      <button type="button" id="btn-select-all-shown">Select all shown</button>
+      <button type="button" id="btn-clear-selection">Clear selection</button>
+      <button type="button" id="btn-export-selected">Export selected</button>
+      <button type="button" id="btn-cancel-selection">Cancel</button>
     </div>
 
     <main id="atlas">
@@ -117,6 +125,10 @@
                  data-meal-types="{{ recipe.meal_types|join(' ') }}"
                  data-other="{{ recipe.other_tags|join(' ') }}">
           <div class="recipe__top">
+            <label class="select-toggle">
+              <input type="checkbox" class="select-checkbox" data-recipe-id="{{ recipe.id }}"
+                     aria-label="Select {{ recipe.name }} for export">
+            </label>
             <button type="button" class="favorite-toggle" data-recipe-id="{{ recipe.id }}"
                     aria-pressed="{{ 'true' if recipe.id in favorite_ids else 'false' }}"
                     aria-label="Favorite {{ recipe.name }}">
@@ -223,16 +235,27 @@
           </div>
         </fieldset>
         <div class="field">
-          <label for="field-ingredients">Ingredients</label>
-          <input type="text" id="field-ingredients" name="ingredients" placeholder="Ground turkey · broccoli · rice" required>
+          <label for="field-ingredients-entry">Ingredients</label>
+          <div class="chip-input" id="chip-input-ingredients">
+            <div class="chip-input__chips" id="chips-ingredients" role="list" aria-label="Ingredient chips"></div>
+            <input type="text" id="field-ingredients-entry" class="chip-input__entry"
+                   placeholder="Add an ingredient…" autocomplete="off">
+          </div>
+          <input type="hidden" id="field-ingredients" name="ingredients">
         </div>
         <div class="field">
-          <label for="field-sauce">Sauce (optional)</label>
-          <input type="text" id="field-sauce" name="sauce" placeholder="Gochujang · soy · garlic">
+          <label for="field-sauce-entry">Sauce (optional)</label>
+          <div class="chip-input" id="chip-input-sauce">
+            <div class="chip-input__chips" id="chips-sauce" role="list" aria-label="Sauce chips"></div>
+            <input type="text" id="field-sauce-entry" class="chip-input__entry"
+                   placeholder="Add a sauce component…" autocomplete="off">
+          </div>
+          <input type="hidden" id="field-sauce" name="sauce">
         </div>
         <div class="field">
           <label for="field-method">Make</label>
-          <input type="text" id="field-method" name="method" placeholder="Stir fry everything → serve over rice" required>
+          <textarea id="field-method" name="method" rows="2"
+                    placeholder="Roast sweet potatoes&#10;Brown turkey&#10;Assemble bowls" required></textarea>
         </div>
         <div class="field">
           <label for="field-source-url">Recipe Link (optional)</label>
@@ -252,12 +275,22 @@
           <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal, one-pot">
         </div>
         <div class="form-actions">
-          <button type="submit" class="btn" id="btn-submit-recipe">Add Recipe</button>
+          <button type="button" class="btn" id="btn-preview-recipe">Preview Recipe</button>
           <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
           <button type="button" class="btn btn--danger" id="btn-delete-recipe" hidden>Delete Recipe</button>
         </div>
         <p class="form-message" id="add-recipe-message" role="alert"></p>
       </form>
+
+      <div class="recipe-preview" id="recipe-preview" hidden>
+        <div class="recipe-preview__card" id="recipe-preview-card"></div>
+        <div class="form-actions">
+          <button type="button" class="btn" id="btn-save-recipe">Save Recipe</button>
+          <button type="button" class="btn btn--secondary" id="btn-back-to-edit">Back to Edit</button>
+          <button type="button" class="btn btn--secondary" id="btn-cancel-preview" data-close-dialog>Cancel</button>
+        </div>
+        <p class="form-message" id="preview-message" role="alert"></p>
+      </div>
     </div>
   </dialog>
 
@@ -280,6 +313,48 @@
     </div>
   </dialog>
 
+  <dialog class="panel" id="export-dialog" aria-labelledby="export-title">
+    <div class="panel__inner">
+      <div class="panel__header">
+        <h2 class="panel__title" id="export-title">Export</h2>
+        <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
+      </div>
+      <div class="export-options" role="radiogroup" aria-labelledby="export-title">
+        <label class="export-option">
+          <input type="radio" name="export-scope" value="all" checked>
+          <span class="export-option__label">All recipes</span>
+          <span class="export-option__count" id="export-count-all"></span>
+        </label>
+        <label class="export-option">
+          <input type="radio" name="export-scope" value="favorites">
+          <span class="export-option__label">Favorites</span>
+          <span class="export-option__count" id="export-count-favorites"></span>
+        </label>
+        <label class="export-option">
+          <input type="radio" name="export-scope" value="filtered">
+          <span class="export-option__label">Filtered results</span>
+          <span class="export-option__count" id="export-count-filtered"></span>
+        </label>
+        <label class="export-option">
+          <input type="radio" name="export-scope" value="current-plan">
+          <span class="export-option__label">Current meal plan</span>
+          <span class="export-option__count" id="export-count-current-plan"></span>
+        </label>
+        <label class="export-option">
+          <input type="radio" name="export-scope" value="selected">
+          <span class="export-option__label">Selected recipes</span>
+          <span class="export-option__count" id="export-count-selected"></span>
+          <button type="button" class="export-option__select-btn" id="btn-start-selection">Choose recipes…</button>
+        </label>
+      </div>
+      <p class="form-message" id="export-message" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" class="btn" id="btn-export-confirm">Export</button>
+        <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
   <script id="mindless-meals-data" type="application/json">
     {{ {
       "recipes": recipes_json,
@@ -288,6 +363,8 @@
     }|tojson }}
   </script>
   <script src="{{ asset_url('js/filtering.js') }}" defer></script>
+  <script src="{{ asset_url('js/format.js') }}" defer></script>
+  <script src="{{ asset_url('js/chip-input.js') }}" defer></script>
   <script src="{{ asset_url('js/mindless-meals.js') }}" defer></script>
 </body>
 </html>

@@ -585,6 +585,67 @@ button {
   display: none;
 }
 
+/* ─── SELECTION MODE (Export → Selected recipes) ─────── */
+
+.select-toggle {
+  display: none;
+  align-items: center;
+}
+
+body.selection-mode .select-toggle {
+  display: inline-flex;
+}
+
+.select-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--purple);
+}
+
+.selection-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  background: var(--orange-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin: -8px 0 24px;
+  font-size: 0.85rem;
+}
+
+.selection-toolbar[hidden] {
+  display: none;
+}
+
+.selection-toolbar__count {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: auto;
+}
+
+.selection-toolbar button {
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.selection-toolbar button:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.selection-toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ─── DIALOGS (Add Recipe / Meal Plan) ───────────────── */
 
 dialog.panel {
@@ -767,6 +828,146 @@ dialog.panel::backdrop {
   margin-bottom: 16px;
 }
 
+/* ─── CHIP INPUT (Ingredients / Sauce) ───────────────── */
+
+.chip-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 6px 8px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+}
+
+.chip-input:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.chip-input__entry {
+  flex: 1 1 140px;
+  min-width: 140px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 4px 2px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.chip-input__entry::placeholder {
+  color: var(--ink-faint);
+}
+
+.chip--input {
+  flex-shrink: 0;
+}
+
+/* A bigger tap target than the active-filter chip's ✕ (which only needs
+   to work for a mouse) -- this one has to be comfortable on a phone. */
+.chip--input button {
+  padding: 4px;
+  margin: -4px -3px -4px 0;
+}
+
+.chip--selected {
+  outline: 2px solid var(--purple);
+  outline-offset: 1px;
+  border-radius: 999px;
+}
+
+/* ─── RECIPE PREVIEW (Add/Edit) ──────────────────────── */
+
+.recipe-preview__card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 2px 16px 14px;
+  margin-bottom: 16px;
+  background: var(--cream-deep);
+}
+
+.recipe-preview__card .recipe {
+  padding: 14px 0 2px;
+  border-bottom: none;
+}
+
+.recipe-preview__cuisine {
+  /* Unlike .recipe__label (a section heading like "INGREDIENTS"), this is
+     actual recipe data (e.g. "East Asian") -- no text-transform, so it
+     displays exactly as entered rather than being forced into caps. */
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  margin: 12px 0 4px;
+}
+
+/* ─── EXPORT DIALOG ───────────────────────────────────── */
+
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.export-option {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+
+.export-option input[type="radio"] {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--purple);
+}
+
+.export-option__label {
+  flex: 1;
+  color: var(--ink-soft);
+}
+
+.export-option__count {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.export-option--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.export-option--disabled .export-option__count {
+  color: var(--effort-more);
+  white-space: normal;
+}
+
+.export-option__select-btn {
+  font-size: 0.78rem;
+  color: var(--purple);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  flex-basis: 100%;
+  text-align: left;
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 
 @media (max-width: 480px) {
@@ -790,6 +991,10 @@ dialog.panel::backdrop {
 
   .utility-nav {
     gap: 14px 18px;
+  }
+
+  .selection-toolbar {
+    gap: 8px 12px;
   }
 
   .recipe__top {
