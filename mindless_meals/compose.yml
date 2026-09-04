@@ -7,10 +7,21 @@ services:
     volumes:
       - ./app:/app
       - ./data:/data
+    environment:
+      # Point this at the shared postgres service for a real deployment;
+      # leave unset (or delete this line) to fall back to the SQLite file
+      # under ./data -- see mindless_meals/docs/database.md. The postgres
+      # service must already be up (`docker compose up -d` in ../postgres)
+      # before this one starts, since compose can't express a health-based
+      # dependency across separate compose projects.
+      DATABASE_URL: ${DATABASE_URL:-}
     restart: unless-stopped
     networks:
      - atlas-proxy
+     - atlas-data
 
 networks:
   atlas-proxy:
+    external: true
+  atlas-data:
     external: true

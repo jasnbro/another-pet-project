@@ -1,0 +1,13 @@
+# Local-development override -- NOT used on Atlas.
+#
+# Exposes Postgres on the host's localhost:5432 so you can `psql` or point
+# a local DATABASE_URL at it directly while developing. Postgres stays off
+# the network otherwise (see compose.yml); this is an intentional,
+# opt-in, development-only exception, not something to run in production.
+#
+# Usage:
+#   docker compose -f compose.yml -f compose.dev.yml up -d
+services:
+  postgres:
+    ports:
+      - "127.0.0.1:5432:5432"

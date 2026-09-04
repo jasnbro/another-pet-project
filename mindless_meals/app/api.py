@@ -18,6 +18,7 @@ from models import (
     MealPlan,
     MealPlanItem,
     Recipe,
+    RecipeIngredient,
 )
 
 api = Blueprint("api", __name__, url_prefix="/api")
@@ -108,6 +109,7 @@ def delete_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
 
     Favorite.query.filter_by(recipe_id=recipe_id).delete()
+    RecipeIngredient.query.filter_by(recipe_id=recipe_id).delete()
 
     affected_plan_ids = {
         item.meal_plan_id for item in MealPlanItem.query.filter_by(recipe_id=recipe_id).all()
