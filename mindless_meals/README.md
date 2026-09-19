@@ -68,11 +68,23 @@ UI (server-rendered page + a little vanilla JS) → JSON API → database.
 
 Data
 ----
-SQLite by default (Flask's instance folder locally, or `/data` when the
-container's bind mount is present — see `compose.yml`). Point
-`DATABASE_URL` at the shared Postgres service instead for a real
-deployment; no code changes needed either way, since persistence goes
-through SQLAlchemy.
+Runs on the shared Postgres service at `~/services/postgres` — see
+that service's README for how to manage it (start/stop, backups,
+adding databases for other apps, etc). This app's own `.env`
+(gitignored, not committed) sets `DATABASE_URL` to point at its
+dedicated `mindless_meals` database on that server; the app container
+joins the `postgres_default` Docker network (see `compose.yml`) to
+reach it. No code changes were needed to switch from SQLite, since
+persistence goes through SQLAlchemy either way — only `DATABASE_URL`
+changed.
+
+Without a `DATABASE_URL` set at all, the app falls back to SQLite
+(Flask's instance folder locally, or `/data` when the container's
+bind mount is present) — useful for local dev without a Postgres
+server running. The original SQLite file from before this app moved
+to Postgres is kept as a historical snapshot at
+`mindless_meals/data/mindless_meals.db` (its data was copied over,
+not deleted).
 
 Of the 48 seed recipes: 9 are `easiest`, 35 `easy`, 4 `moderate`, and
 none yet `more_effort` — that tier exists in the model and Add/Edit
@@ -90,14 +102,13 @@ Running locally
     pip install -r requirements.txt
     FLASK_APP=app flask run --port=8000
 
-Or via Docker:
+Or via Docker (needs the `postgres` service already running — see
+`cd ../postgres && docker compose up -d` — and this directory's
+`.env` in place with `DATABASE_URL` set):
 
     cd mindless_meals
-    docker compose up --build
-
-(The Docker build itself hasn't been verified from this codebase's
-development environment, which has no docker daemon — the local venv
-run above exercises the same install + run steps the container uses.)
+    docker compose up --build -d
+    docker compose logs -f    # to watch it start
 
 Tests
 -----

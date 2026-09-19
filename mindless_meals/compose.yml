@@ -2,6 +2,7 @@ services:
   mindless_meals:
     build: .
     container_name: mindless_meals
+    env_file: .env
     ports:
       - "8000:8000"
     volumes:
@@ -10,7 +11,10 @@ services:
     restart: unless-stopped
     networks:
      - atlas-proxy
+     - postgres_default
 
 networks:
   atlas-proxy:
+    external: true
+  postgres_default:
     external: true
