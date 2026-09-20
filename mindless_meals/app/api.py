@@ -133,8 +133,20 @@ def export_recipes():
     """Every recipe as YAML, in the same shape seed_data/recipes.yaml
     uses — this is both a backup and a re-import path: drop the
     downloaded file in as the seed file and `flask seed` will load
-    anything not already present."""
-    recipes = Recipe.query.order_by(Recipe.cuisine, Recipe.name).all()
+    anything not already present.
+
+    An optional ?ids=1,2,3 narrows this to a specific set of recipes
+    (favorites/filtered/selected exports) while leaving the no-args
+    call — the full backup/re-import path — unchanged."""
+    query = Recipe.query.order_by(Recipe.cuisine, Recipe.name)
+    ids_param = request.args.get("ids")
+    if ids_param:
+        try:
+            ids = [int(part) for part in ids_param.split(",") if part.strip()]
+        except ValueError:
+            raise ValidationError("ids must be a comma-separated list of recipe IDs.")
+        query = query.filter(Recipe.id.in_(ids))
+    recipes = query.all()
     payload = {
         "recipes": [
             {

@@ -102,7 +102,15 @@
       </button>
       <span class="utility-nav__divider" aria-hidden="true"></span>
       <button type="button" id="btn-add-recipe" class="utility-nav__link">Add Recipe</button>
-      <a href="{{ url_for('api.export_recipes') }}" download="mindless-meals-export.yaml" class="utility-nav__link">Export Recipes</a>
+      <button type="button" id="btn-export" class="utility-nav__link">Export</button>
+    </div>
+
+    <div class="selection-toolbar" id="selection-toolbar" hidden role="region" aria-label="Recipe selection for export">
+      <span class="selection-toolbar__count" id="selection-count">0 selected</span>
+      <button type="button" class="btn btn--secondary" id="btn-select-all-shown">Select All Shown</button>
+      <button type="button" class="btn btn--secondary" id="btn-clear-selection">Clear Selection</button>
+      <button type="button" class="btn" id="btn-export-selected">Export Selected</button>
+      <button type="button" class="btn btn--secondary" id="btn-cancel-selection">Cancel</button>
     </div>
 
     <main id="atlas">
@@ -195,67 +203,97 @@
       </div>
       <form id="add-recipe-form" novalidate>
         <input type="hidden" id="field-recipe-id" name="recipe_id" value="">
-        <div class="field">
-          <label for="field-name">Name</label>
-          <input type="text" id="field-name" name="name" required>
-        </div>
-        <div class="field">
-          <label for="field-cuisine">Cuisine</label>
-          <input type="text" id="field-cuisine" name="cuisine" list="cuisine-options" required>
-          <datalist id="cuisine-options">
-            {% for c in cuisines %}<option value="{{ c }}">{% endfor %}
-          </datalist>
-        </div>
-        <fieldset class="fieldset">
-          <legend>Effort</legend>
-          <div class="checkbox-row">
-            {% for level in effort_levels %}
-            <label><input type="radio" name="effort" value="{{ level.value }}" {{ 'checked' if loop.first else '' }}> {{ level.label }}</label>
-            {% endfor %}
+
+        <div id="recipe-edit-step">
+          <div class="field">
+            <label for="field-name">Name</label>
+            <input type="text" id="field-name" name="name" required>
           </div>
-        </fieldset>
-        <fieldset class="fieldset">
-          <legend>Meal Types</legend>
-          <div class="checkbox-row">
-            {% for mt in meal_types %}
-            <label><input type="checkbox" name="meal_types" value="{{ mt.value }}"> {{ mt.label }}</label>
-            {% endfor %}
+          <div class="field">
+            <label for="field-cuisine">Cuisine</label>
+            <input type="text" id="field-cuisine" name="cuisine" list="cuisine-options" required>
+            <datalist id="cuisine-options">
+              {% for c in cuisines %}<option value="{{ c }}">{% endfor %}
+            </datalist>
           </div>
-        </fieldset>
-        <div class="field">
-          <label for="field-ingredients">Ingredients</label>
-          <input type="text" id="field-ingredients" name="ingredients" placeholder="Ground turkey · broccoli · rice" required>
-        </div>
-        <div class="field">
-          <label for="field-sauce">Sauce (optional)</label>
-          <input type="text" id="field-sauce" name="sauce" placeholder="Gochujang · soy · garlic">
-        </div>
-        <div class="field">
-          <label for="field-method">Make</label>
-          <input type="text" id="field-method" name="method" placeholder="Stir fry everything → serve over rice" required>
-        </div>
-        <div class="field">
-          <label for="field-source-url">Recipe Link (optional)</label>
-          <input type="url" id="field-source-url" name="source_url"
-                 placeholder="https://tiktok.com/... or a recipe site">
-        </div>
-        <fieldset class="fieldset">
-          <legend>Other (optional)</legend>
-          <div class="checkbox-row">
-            {% for tag in other_tag_options %}
-            <label><input type="checkbox" name="other_tags" value="{{ tag.value }}"> {{ tag.label }}</label>
-            {% endfor %}
+          <fieldset class="fieldset">
+            <legend>Effort</legend>
+            <div class="checkbox-row">
+              {% for level in effort_levels %}
+              <label><input type="radio" name="effort" value="{{ level.value }}" {{ 'checked' if loop.first else '' }}> {{ level.label }}</label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          <fieldset class="fieldset">
+            <legend>Meal Types</legend>
+            <div class="checkbox-row">
+              {% for mt in meal_types %}
+              <label><input type="checkbox" name="meal_types" value="{{ mt.value }}"> {{ mt.label }}</label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="field-ingredients-input">Ingredients</label>
+            <div class="chip-input" id="ingredients-chip-input">
+              <input type="text" id="field-ingredients-input" class="chip-input__text"
+                     placeholder="Type an ingredient…" aria-describedby="ingredients-hint">
+            </div>
+            <input type="hidden" id="field-ingredients" name="ingredients">
+            <p class="field-hint" id="ingredients-hint">Enter, comma, or leaving the field adds a chip. Backspace on an empty field selects/removes the last one.</p>
           </div>
-        </fieldset>
-        <div class="field">
-          <label for="field-other-custom">Add other tags (optional)</label>
-          <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal, one-pot">
+
+          <div class="field">
+            <label for="field-sauce-input">Sauce (optional)</label>
+            <div class="chip-input" id="sauce-chip-input">
+              <input type="text" id="field-sauce-input" class="chip-input__text"
+                     placeholder="Type a sauce component…" aria-describedby="sauce-hint">
+            </div>
+            <input type="hidden" id="field-sauce" name="sauce">
+            <p class="field-hint" id="sauce-hint">Enter, comma, or leaving the field adds a chip.</p>
+          </div>
+
+          <div class="field">
+            <label for="field-method">Make</label>
+            <input type="text" id="field-method" name="method" placeholder="Stir fry everything → serve over rice" required
+                   aria-describedby="method-hint">
+            <p class="field-hint" id="method-hint">Short actions only — Enter, comma, semicolon, or → between them.</p>
+          </div>
+
+          <div class="field">
+            <label for="field-source-url">Recipe Link (optional)</label>
+            <input type="url" id="field-source-url" name="source_url"
+                   placeholder="https://tiktok.com/... or a recipe site">
+          </div>
+          <fieldset class="fieldset">
+            <legend>Other (optional)</legend>
+            <div class="checkbox-row">
+              {% for tag in other_tag_options %}
+              <label><input type="checkbox" name="other_tags" value="{{ tag.value }}"> {{ tag.label }}</label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="field-other-custom">Add other tags (optional)</label>
+            <input type="text" id="field-other-custom" name="other_tags_custom" placeholder="e.g. pantry meal, one-pot">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn" id="btn-preview-recipe">Preview Recipe</button>
+            <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+            <button type="button" class="btn btn--danger" id="btn-delete-recipe" hidden>Delete Recipe</button>
+          </div>
         </div>
-        <div class="form-actions">
-          <button type="submit" class="btn" id="btn-submit-recipe">Add Recipe</button>
-          <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
-          <button type="button" class="btn btn--danger" id="btn-delete-recipe" hidden>Delete Recipe</button>
+
+        <div id="recipe-preview-step" class="recipe-preview" hidden>
+          <div id="recipe-preview-card"></div>
+          <div class="form-actions">
+            <button type="submit" class="btn" id="btn-save-recipe" disabled>Save Recipe</button>
+            <button type="button" class="btn btn--secondary" id="btn-back-to-edit">Back to Edit</button>
+            <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+          </div>
         </div>
+
         <p class="form-message" id="add-recipe-message" role="alert"></p>
       </form>
     </div>
@@ -280,6 +318,57 @@
     </div>
   </dialog>
 
+  <dialog class="panel" id="export-dialog" aria-labelledby="export-title">
+    <div class="panel__inner">
+      <div class="panel__header">
+        <h2 class="panel__title" id="export-title">Export</h2>
+        <button type="button" class="panel__close" data-close-dialog aria-label="Close">✕</button>
+      </div>
+      <div class="export-options" role="radiogroup" aria-label="What to export">
+        <label class="export-option" id="export-row-current_plan">
+          <input type="radio" name="export_scope" id="export-option-current_plan" value="current_plan">
+          <span>
+            <span class="export-option__label">Current Meal Plan</span>
+            <span class="export-option__meta" id="export-meta-current_plan">Checking…</span>
+          </span>
+        </label>
+        <label class="export-option" id="export-row-favorites">
+          <input type="radio" name="export_scope" id="export-option-favorites" value="favorites">
+          <span>
+            <span class="export-option__label">Favorites</span>
+            <span class="export-option__meta" id="export-meta-favorites"></span>
+          </span>
+        </label>
+        <label class="export-option" id="export-row-filtered">
+          <input type="radio" name="export_scope" id="export-option-filtered" value="filtered">
+          <span>
+            <span class="export-option__label">Filtered Results</span>
+            <span class="export-option__meta" id="export-meta-filtered"></span>
+          </span>
+        </label>
+        <label class="export-option" id="export-row-selected">
+          <input type="radio" name="export_scope" id="export-option-selected" value="selected">
+          <span>
+            <span class="export-option__label">Selected Recipes</span>
+            <span class="export-option__meta" id="export-meta-selected"></span>
+          </span>
+        </label>
+        <label class="export-option" id="export-row-all">
+          <input type="radio" name="export_scope" id="export-option-all" value="all" checked>
+          <span>
+            <span class="export-option__label">All Recipes</span>
+            <span class="export-option__meta" id="export-meta-all"></span>
+          </span>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn" id="btn-export-confirm">Export</button>
+        <button type="button" class="btn btn--secondary" data-close-dialog>Cancel</button>
+      </div>
+      <p class="form-message" id="export-message" role="alert"></p>
+    </div>
+  </dialog>
+
   <script id="mindless-meals-data" type="application/json">
     {{ {
       "recipes": recipes_json,
@@ -288,6 +377,7 @@
     }|tojson }}
   </script>
   <script src="{{ asset_url('js/filtering.js') }}" defer></script>
+  <script src="{{ asset_url('js/recipe-form.js') }}" defer></script>
   <script src="{{ asset_url('js/mindless-meals.js') }}" defer></script>
 </body>
 </html>
