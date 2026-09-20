@@ -474,24 +474,54 @@ were set up directly (see `postgres/README.md`, the authoritative doc
 for that service). This section is only about the schema work in this
 branch specifically -- Alembic migrations and the ingredient
 catalog/import -- which the real deployment doesn't have yet since it
-predates this branch's schema additions:
+predates this branch's schema additions. Also outstanding: switching
+`mindless_meals` from the shared role to its own least-privilege role
+(see the previous section) -- do this *before* running migrations, so
+Alembic and the app both connect as the role that'll actually own the
+schema going forward.
 
-1. **Run migrations** against the real `DATABASE_URL` (see
+0. **Back up first** -- this changes real ownership on a live database:
+   ```
+   docker exec postgres pg_dump -U <POSTGRES_USER> mindless_meals > mindless_meals_pre_role_migration.sql
+   ```
+1. **Adopt `mindless_meals` into its own role**, from `~/services/postgres`:
+   ```
+   POSTGRES_ADMIN_USER=<POSTGRES_USER> ./scripts/create_app_database.sh mindless_meals
+   ```
+   This creates `mindless_meals_app`, reassigns the existing database
+   and everything in it to that role, and revokes every other role's
+   ability to even connect to it. It prints a generated password once
+   -- copy it now, it isn't shown again and isn't logged anywhere.
+2. **Update `mindless_meals/.env`**'s `DATABASE_URL` to the new role and
+   password:
+   ```
+   DATABASE_URL=postgresql+psycopg2://mindless_meals_app:<printed password>@postgres:5432/mindless_meals
+   ```
+3. **Restart Mindless Meals** so it picks up the new `.env`:
+   ```
+   cd ~/services/mindless_meals && docker compose up -d
+   ```
+   then confirm it still works (`curl http://localhost:8000/health`,
+   spot-check a recipe) before continuing -- if something's wrong,
+   the pre-migration dump from step 0 and the still-intact `mindless_meals`
+   role (this doesn't delete it, just stops using it for this app) are
+   your way back.
+4. **Run migrations** against the real `DATABASE_URL` (see
    [Migrations](#migrations)):
    ```
    cd ~/services/mindless_meals/app
    source .venv/bin/activate   # after pip install -r requirements.txt
-   export DATABASE_URL=<the real value from mindless_meals/.env>
+   export DATABASE_URL=<the same value now in mindless_meals/.env>
    alembic upgrade head
    ```
-2. **Run the recipe/ingredient import** (`flask seed` -- likely a no-op
+5. **Run the recipe/ingredient import** (`flask seed` -- likely a no-op
    if recipes already exist; `flask import-ingredients`).
-3. **Restart Mindless Meals** so `db.create_all()`/the app picks up any
-   schema it hasn't seen yet: `cd ~/services/mindless_meals && docker
-   compose restart`.
-4. **Verify**: `curl http://localhost:8000/health`, then spot-check a
+6. **Verify**: `curl http://localhost:8000/health`, then spot-check a
    few recipes in the UI.
-5. If you're moving existing *production* SQLite data (not just the
+7. **Apply the same role-per-app treatment to future apps** (The
+   Budget, ...) from the start, via the same script -- no migration
+   debt to pay down later.
+8. If you're moving existing *production* SQLite data (not just the
    seed recipes) onto Postgres, export it first with the app's own
    **Export Recipes** feature (`GET /api/recipes/export`) as a safety
    net, independent of this migration path.
@@ -529,14 +559,20 @@ Deliberately not done here -- flagged rather than silently skipped:
   this branch's own additions on top of that: Alembic migrations and
   `flask import-ingredients` have only been run against a local
   Postgres 16 in development, not against the real Atlas database.
-- **Shared superuser role vs. one role per app**: the real deployment
-  reuses one Postgres role for every app's database (simpler, see
-  `postgres/README.md`); this branch's earlier work (still present in
-  `postgres/scripts/create_app_database.sh` and the `<db>_app` role
-  convention in `backup.sh`/`restore.sh`) assumed a separate
-  least-privilege role per app instead. These now describe two
-  different, unreconciled models -- see the PR discussion for which one
-  to keep before finishing that script.
+- **Decided: one least-privilege role per app**, not the shared
+  superuser role the real deployment currently uses -- per the original
+  product requirement ("applications should not share one common
+  application database user") and because the migration only gets more
+  expensive the more apps join the shared role. `create_app_database.sh`
+  now also handles *adopting* a database that already exists under the
+  shared role (`ALTER DATABASE ... OWNER TO` + `REASSIGN OWNED BY`, run
+  inside that database, to also reassign its tables/sequences -- not
+  just the database object itself), verified end-to-end against a real
+  local Postgres 16: after adoption the new role owns and can read/write
+  the pre-existing table, two apps' roles can't connect to each other's
+  database, and the admin/superuser role retains full access for backups
+  and provisioning. **Not yet run against the real Atlas database** --
+  see the migration commands below.
 - **Backup tooling is duplicated, not reconciled**: `postgres/README.md`
   documents manual `pg_dump`/`pg_dumpall` commands; this branch adds
   automated `postgres/scripts/backup.sh`/`restore.sh` with retention

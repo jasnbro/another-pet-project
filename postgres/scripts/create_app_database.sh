@@ -6,8 +6,7 @@
 # shared superuser role for every app's database instead (simpler --
 # see postgres/README.md, which also names this per-app-role approach
 # as the alternative if tighter isolation is ever needed). This script
-# is that alternative, kept here as a ready-to-use option rather than
-# adopted -- reconcile the two before relying on either for a new app.
+# is that alternative.
 #
 # Run by hand against the running container (not via
 # docker-entrypoint-initdb.d, which only fires once, on a data
@@ -21,8 +20,17 @@
 #
 # What this does, in order (each step only if not already true --
 # idempotent, safe to re-run):
-#   1. CREATE ROLE <role> LOGIN PASSWORD '<random>'
-#   2. CREATE DATABASE <db> OWNER <role>
+#   1. CREATE ROLE <role> LOGIN PASSWORD '<random>'      (if it doesn't exist)
+#   2. If <db> doesn't exist yet: CREATE DATABASE <db> OWNER <role>
+#      If <db> already exists (e.g. it was created under the old shared
+#      superuser, before this app was switched to its own role):
+#        a. ALTER DATABASE <db> OWNER TO <role>
+#        b. REASSIGN OWNED BY <old_owner> TO <role>, run *inside* <db> --
+#           (a) only reassigns the database object itself; the tables,
+#           sequences, etc. already inside it are still owned by
+#           whoever created them (typically the old shared role) until
+#           this step reassigns those too. Skipped if <db> already
+#           belongs to <role>.
 #   3. REVOKE CONNECT ON DATABASE <db> FROM PUBLIC
 #   4. GRANT CONNECT ON DATABASE <db> TO <role>
 #
@@ -64,8 +72,19 @@ for identifier in "$DB_NAME" "$ROLE_NAME"; do
   fi
 done
 
+# Always connect to the "postgres" administrative database explicitly --
+# `psql -U $ADMIN_USER` with no -d defaults to a database *named after
+# the user* (e.g. "madamada"), which doesn't exist on this server and
+# would fail outright.
 run_sql() {
-  docker exec -i "$CONTAINER" psql -U "$ADMIN_USER" -v ON_ERROR_STOP=1 -tAc "$1"
+  docker exec -i "$CONTAINER" psql -U "$ADMIN_USER" -d postgres -v ON_ERROR_STOP=1 -tAc "$1"
+}
+
+# REASSIGN OWNED BY only affects objects in the database you're
+# currently connected to, so this one needs a real -d <app db>, not
+# the admin database.
+run_sql_in_db() {
+  docker exec -i "$CONTAINER" psql -U "$ADMIN_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 -tAc "$1"
 }
 
 role_exists="$(run_sql "SELECT 1 FROM pg_roles WHERE rolname = '${ROLE_NAME}'")"
@@ -81,7 +100,15 @@ else
 fi
 
 if [ "$db_exists" = "1" ]; then
-  echo "Database '${DB_NAME}' already exists -- leaving it as-is."
+  current_owner="$(run_sql "SELECT pg_catalog.pg_get_userbyid(datdba) FROM pg_database WHERE datname = '${DB_NAME}'")"
+  if [ "$current_owner" = "$ROLE_NAME" ]; then
+    echo "Database '${DB_NAME}' already owned by '${ROLE_NAME}' -- leaving it as-is."
+  else
+    echo "Database '${DB_NAME}' already exists, owned by '${current_owner}' -- adopting it into '${ROLE_NAME}'..."
+    run_sql "ALTER DATABASE ${DB_NAME} OWNER TO ${ROLE_NAME};" >/dev/null
+    echo "Reassigning objects inside '${DB_NAME}' (tables, sequences, ...) from '${current_owner}' to '${ROLE_NAME}'..."
+    run_sql_in_db "REASSIGN OWNED BY ${current_owner} TO ${ROLE_NAME};" >/dev/null
+  fi
 else
   echo "Creating database '${DB_NAME}' owned by '${ROLE_NAME}'..."
   run_sql "CREATE DATABASE ${DB_NAME} OWNER ${ROLE_NAME};" >/dev/null
@@ -99,9 +126,9 @@ if [ -n "$new_password" ]; then
   echo "  ${new_password}"
   echo
   echo "DATABASE_URL:"
-  echo "  postgresql://${ROLE_NAME}:${new_password}@postgres:5432/${DB_NAME}"
+  echo "  postgresql+psycopg2://${ROLE_NAME}:${new_password}@postgres:5432/${DB_NAME}"
 else
   echo
   echo "DATABASE_URL (using the existing password, not shown by this script):"
-  echo "  postgresql://${ROLE_NAME}:<password>@postgres:5432/${DB_NAME}"
+  echo "  postgresql+psycopg2://${ROLE_NAME}:<password>@postgres:5432/${DB_NAME}"
 fi
