@@ -93,7 +93,8 @@ button {
   position: absolute;
   top: 40px;
   right: 24px;
-  font-size: 1.4rem;
+  width: 1.4rem;
+  height: auto;
   opacity: 0.35;
 }
 

@@ -37,12 +37,12 @@ UI (server-rendered page + vanilla JS)
                 --set---->  PostgreSQL (shared "postgres" service on Atlas)
 ```
 
-Postgres is a **shared server** on Atlas (see the repo root `README.md`
-and `postgres/compose.yml`) -- "one database per application", not one
-Postgres instance per app. Mindless Meals gets its own role and database
-on that shared server (see [Database
-initialization](#database-initialization)); it does not use the
-`postgres` superuser role directly.
+Postgres is a **shared server** on Atlas (see `postgres/README.md`) --
+"one database per application", not one Postgres instance per app.
+Mindless Meals gets its own database on that shared server (see
+[Database initialization](#database-initialization)); the server's one
+superuser role is reused across every app's database rather than a
+role per app -- see `postgres/README.md` for that tradeoff.
 
 ## Schema
 
@@ -222,11 +222,19 @@ Mindless Meals reads exactly one database setting:
 
 | Variable | Required | Example |
 |---|---|---|
-| `DATABASE_URL` | No -- falls back to SQLite | `postgresql://mindless_meals:changeme@postgres:5432/mindless_meals` |
+| `DATABASE_URL` | No -- falls back to SQLite | `postgresql+psycopg2://changeme:changeme@postgres:5432/mindless_meals` |
 
 See `mindless_meals/.env.example` and `postgres/.env.example`. In
 production these are set via Doppler; locally, copy the `.env.example`
 files to `.env` (gitignored).
+
+**Note on the role/user:** the shared Postgres server (see
+`postgres/README.md`) uses one superuser role for every app's database
+rather than a separate role per app -- `<user>`/`<password>` above are
+that server's `POSTGRES_USER`/`POSTGRES_PASSWORD`, not a
+`mindless_meals`-specific credential. This is a deliberate simplicity
+tradeoff at this scale, documented (with the tighter-isolation
+alternative) in `postgres/README.md`.
 
 ## Local startup
 
@@ -245,25 +253,17 @@ starting Flask.
 ## Database initialization
 
 Postgres is a **shared server** ("one database per application"), so
-each application creates its own role and database rather than using the
-server's superuser account. One-time setup for Mindless Meals:
-
-```sql
-CREATE ROLE mindless_meals WITH LOGIN PASSWORD '<pick a real password>';
-CREATE DATABASE mindless_meals OWNER mindless_meals;
-```
-
-Run that as the Postgres superuser -- on Atlas, once the shared
-`postgres` container is up:
+each application gets its own database rather than sharing one. On this
+server, every app's database is owned by the same superuser role (see
+`postgres/README.md` for why, and the tighter-isolation alternative) --
+so there's no separate role-creation step, just the database itself:
 
 ```
-docker exec -it postgres psql -U <POSTGRES_USER> -c \
-  "CREATE ROLE mindless_meals WITH LOGIN PASSWORD '<password>';"
-docker exec -it postgres psql -U <POSTGRES_USER> -c \
-  "CREATE DATABASE mindless_meals OWNER mindless_meals;"
+docker exec -it postgres psql -U <POSTGRES_USER> -d postgres \
+  -c "CREATE DATABASE mindless_meals OWNER <POSTGRES_USER>;"
 ```
 
-Then set `DATABASE_URL=postgresql://mindless_meals:<password>@postgres:5432/mindless_meals`
+Then set `DATABASE_URL=postgresql+psycopg2://<POSTGRES_USER>:<password>@postgres:5432/mindless_meals`
 (via Doppler on Atlas, or `.env` locally) and run migrations (below) --
 there is no separate "create the tables" step; Alembic does that.
 
@@ -278,7 +278,7 @@ reviewable, and reversible.
 ```
 cd mindless_meals/app
 source .venv/bin/activate           # after `pip install -r requirements.txt`
-export DATABASE_URL=postgresql://mindless_meals:<password>@<host>:5432/mindless_meals
+export DATABASE_URL=postgresql+psycopg2://<POSTGRES_USER>:<password>@<host>:5432/mindless_meals
 
 alembic upgrade head                # apply all migrations
 alembic current                     # show the currently-applied revision
@@ -312,7 +312,7 @@ After changing `models.py`:
 
 ```
 cd mindless_meals/app
-export DATABASE_URL=postgresql://mindless_meals:<password>@<host>:5432/mindless_meals
+export DATABASE_URL=postgresql+psycopg2://<POSTGRES_USER>:<password>@<host>:5432/mindless_meals
 alembic revision --autogenerate -m "describe the change"
 ```
 
@@ -338,7 +338,7 @@ ingredient list from them:
 
 ```
 cd mindless_meals/app
-export DATABASE_URL=postgresql://mindless_meals:<password>@<host>:5432/mindless_meals
+export DATABASE_URL=postgresql+psycopg2://<POSTGRES_USER>:<password>@<host>:5432/mindless_meals
 flask seed                  # existing command: loads seed_data/recipes.yaml (idempotent)
 flask import-ingredients    # new command: builds ingredients/recipe_ingredients from Recipe rows
 ```
@@ -467,49 +467,40 @@ server (not just SQLite) while building this:
 
 ## Atlas deployment
 
-Not performed as part of this work -- this is what to do once you pull
-this branch onto Atlas:
+**Postgres itself, and Mindless Meals' connection to it, are already
+running on Atlas** -- the shared server, the `postgres_default`
+network, `mindless_meals`'s own database, and both apps' `.env` files
+were set up directly (see `postgres/README.md`, the authoritative doc
+for that service). This section is only about the schema work in this
+branch specifically -- Alembic migrations and the ingredient
+catalog/import -- which the real deployment doesn't have yet since it
+predates this branch's schema additions:
 
-1. **Create the shared `atlas-data` network** (once, if it doesn't
-   already exist alongside `atlas-proxy`):
+1. **Run migrations** against the real `DATABASE_URL` (see
+   [Migrations](#migrations)):
    ```
-   docker network create atlas-data
+   cd ~/services/mindless_meals/app
+   source .venv/bin/activate   # after pip install -r requirements.txt
+   export DATABASE_URL=<the real value from mindless_meals/.env>
+   alembic upgrade head
    ```
-2. **Set up `postgres/.env`** (or the equivalent Doppler config) with
-   real `POSTGRES_USER`/`POSTGRES_PASSWORD`, then bring the shared
-   Postgres service up:
-   ```
-   cd ~/services/postgres
-   docker compose up -d
-   ```
-3. **Create the Mindless Meals role/database** (see [Database
-   initialization](#database-initialization) above).
-4. **Run migrations** from a one-off container or a temporary local
-   connection (see [Migrations](#migrations)) -- `alembic upgrade head`
-   against the real `DATABASE_URL`.
-5. **Run the recipe/ingredient import** (`flask seed` -- likely a no-op
-   if recipes already exist from prior SQLite use; `flask
-   import-ingredients`).
-6. **Set `mindless_meals/.env`** (or Doppler) with the real
-   `DATABASE_URL` pointing at the `postgres` service.
-7. **Bring up Mindless Meals**:
-   ```
-   cd ~/services/mindless_meals
-   docker compose up -d
-   ```
-   Bring `postgres` up first -- Compose can't express a health-based
-   dependency across separate compose projects/directories, so
-   `mindless_meals` will fail to connect (and retry, via its `restart:
-   unless-stopped` policy) if it starts before Postgres is ready.
-8. **Verify**: `curl http://localhost:8000/health`, then spot-check a
-   few recipes in the UI, and confirm `docker exec postgres pg_dump ...`
-   works before relying on it.
-9. **Set up backup scheduling** (cron calling
-   `postgres/scripts/backup.sh`) and, separately/later, off-site copies.
-10. If you're moving existing *production* SQLite data (not just the
-    seed recipes) onto Postgres, export it first with the app's own
-    **Export Recipes** feature (`GET /api/recipes/export`) as a safety
-    net, independent of this migration path.
+2. **Run the recipe/ingredient import** (`flask seed` -- likely a no-op
+   if recipes already exist; `flask import-ingredients`).
+3. **Restart Mindless Meals** so `db.create_all()`/the app picks up any
+   schema it hasn't seen yet: `cd ~/services/mindless_meals && docker
+   compose restart`.
+4. **Verify**: `curl http://localhost:8000/health`, then spot-check a
+   few recipes in the UI.
+5. If you're moving existing *production* SQLite data (not just the
+   seed recipes) onto Postgres, export it first with the app's own
+   **Export Recipes** feature (`GET /api/recipes/export`) as a safety
+   net, independent of this migration path.
+
+Backup scheduling and off-site copies: `postgres/README.md` currently
+documents manual `pg_dump`/`pg_dumpall` commands, not the automated
+`postgres/scripts/backup.sh`/`restore.sh` in this branch (see [Known
+gaps](#known-gaps--deferred-work)) -- reconcile the two rather than
+running both before setting up a cron schedule.
 
 ## Known gaps / deferred work
 
@@ -532,11 +523,25 @@ Deliberately not done here -- flagged rather than silently skipped:
   schema prep.
 - **`grocery_lists`/`grocery_list_items` have no API or UI** yet --
   intentionally just the schema, ready for that feature.
-- **Container startup was not tested** -- no Docker daemon in this
-  development environment. `docker compose config` was used to validate
-  syntax; the Postgres image/healthcheck/network/volume behavior itself
-  should be smoke-tested once this reaches a Docker-capable machine
-  (before or as part of the Atlas deploy above).
+- **Container startup itself is confirmed working** -- Postgres and
+  Mindless Meals are both actually running on Atlas on this compose
+  setup (see `postgres/README.md`). What's *not* yet verified live is
+  this branch's own additions on top of that: Alembic migrations and
+  `flask import-ingredients` have only been run against a local
+  Postgres 16 in development, not against the real Atlas database.
+- **Shared superuser role vs. one role per app**: the real deployment
+  reuses one Postgres role for every app's database (simpler, see
+  `postgres/README.md`); this branch's earlier work (still present in
+  `postgres/scripts/create_app_database.sh` and the `<db>_app` role
+  convention in `backup.sh`/`restore.sh`) assumed a separate
+  least-privilege role per app instead. These now describe two
+  different, unreconciled models -- see the PR discussion for which one
+  to keep before finishing that script.
+- **Backup tooling is duplicated, not reconciled**: `postgres/README.md`
+  documents manual `pg_dump`/`pg_dumpall` commands; this branch adds
+  automated `postgres/scripts/backup.sh`/`restore.sh` with retention
+  cleanup. Pick one path (likely the automated scripts, updated to
+  match the real shared-role setup) rather than running both.
 - **Off-site backup copies** are explicitly out of scope per the product
   requirements (local-on-Atlas first, off-site later, no paid cloud
   services).

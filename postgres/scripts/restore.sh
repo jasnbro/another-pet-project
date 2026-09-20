@@ -10,20 +10,26 @@
 # conflicting object rather than silently overwrite data -- create a
 # fresh, empty database first (see postgres/README.md, which also covers
 # testing a restore into a throwaway database before you ever need this
-# for real -- or use test_restore.sh, which automates exactly that).
+# for real). There is no automated restore-test script yet -- run the
+# same steps by hand periodically.
 #
 # Configuration (environment variables):
 #   POSTGRES_CONTAINER   Container name/ID to exec into (default: postgres)
 #   DB_ROLE                Role to connect as -- must own (or otherwise have
-#                           full write access to) the target database; the
-#                           app role that owns it (see create_app_database.sh)
-#                           always qualifies (default: "<database_name>_app")
+#                           full write access to) the target database.
+#                           Defaults to POSTGRES_USER (the shared superuser
+#                           every app's database is currently owned by --
+#                           see postgres/README.md), falling back to
+#                           "<database_name>_app" if POSTGRES_USER isn't set
+#                           either (the per-app-role convention
+#                           create_app_database.sh sets up, not yet adopted
+#                           for the real deployment)
 set -euo pipefail
 
 BACKUP_FILE="${1:?Usage: restore.sh <backup_file.sql.gz> [database_name]}"
 DB_NAME="${2:-mindless_meals}"
 CONTAINER="${POSTGRES_CONTAINER:-postgres}"
-DB_ROLE="${DB_ROLE:-${DB_NAME}_app}"
+DB_ROLE="${DB_ROLE:-${POSTGRES_USER:-${DB_NAME}_app}}"
 
 if [ ! -f "$BACKUP_FILE" ]; then
   echo "Backup file not found: $BACKUP_FILE" >&2

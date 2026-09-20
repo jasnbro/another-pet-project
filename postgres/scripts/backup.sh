@@ -11,22 +11,26 @@
 # Configuration (environment variables, all optional):
 #   POSTGRES_CONTAINER   Container name/ID to exec into (default: postgres)
 #   DB_ROLE                Role to connect as -- must have read access to every
-#                           table in the database; that database's owning
-#                           app role (see create_app_database.sh) always
-#                           qualifies (default: "<database_name>_app", this
-#                           server's naming convention)
+#                           table in the database. Defaults to POSTGRES_USER
+#                           (the shared superuser every app's database is
+#                           currently owned by -- see postgres/README.md),
+#                           falling back to "<database_name>_app" if
+#                           POSTGRES_USER isn't set either (the per-app-role
+#                           convention create_app_database.sh sets up, not
+#                           yet adopted for the real deployment)
 #   BACKUP_DIR             Where dumps are written (default: ./backups next to this script)
 #   RETENTION_DAYS         Delete this database's dumps older than N days after
 #                           a successful backup (default: 14; set to 0 to disable)
 #
 # Example cron entry (daily at 2am, off-Atlas copies handled separately --
-# see postgres/README.md#backups) -- see install_cron.sh to set this up:
+# see postgres/README.md#backups). No installer script for this yet --
+# add it with `crontab -e`:
 #   0 2 * * * BACKUP_DIR=/home/jasmine/backups/postgres /home/jasmine/services/postgres/scripts/backup.sh mindless_meals >> /home/jasmine/backups/postgres/backup.log 2>&1
 set -euo pipefail
 
 DB_NAME="${1:-mindless_meals}"
 CONTAINER="${POSTGRES_CONTAINER:-postgres}"
-DB_ROLE="${DB_ROLE:-${DB_NAME}_app}"
+DB_ROLE="${DB_ROLE:-${POSTGRES_USER:-${DB_NAME}_app}}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="${BACKUP_DIR:-$SCRIPT_DIR/../backups}"
 RETENTION_DAYS="${RETENTION_DAYS:-14}"

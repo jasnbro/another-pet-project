@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 # Provisions one application's database + least-privilege role on the
 # shared postgres server, via `docker exec` into the running container.
-# This is the one mechanism used to onboard every app database on this
-# server -- the first one (mindless_meals) and every one after it
-# (the_budget, ...) -- run by hand, once per app. See
-# postgres/init/README.md for why this isn't done via
-# docker-entrypoint-initdb.d instead.
+#
+# NOT what the real Atlas deployment currently does: it reuses one
+# shared superuser role for every app's database instead (simpler --
+# see postgres/README.md, which also names this per-app-role approach
+# as the alternative if tighter isolation is ever needed). This script
+# is that alternative, kept here as a ready-to-use option rather than
+# adopted -- reconcile the two before relying on either for a new app.
+#
+# Run by hand against the running container (not via
+# docker-entrypoint-initdb.d, which only fires once, on a data
+# directory's first init -- useless for onboarding an app added later).
 #
 # Usage:
 #   ./create_app_database.sh <db_name> [role_name]
@@ -34,9 +40,11 @@
 #
 # Configuration (environment variables):
 #   POSTGRES_CONTAINER   Container name/ID to exec into (default: postgres)
-#   POSTGRES_ADMIN_USER    Superuser role to connect as (default: postgres --
-#                           i.e. whatever POSTGRES_USER was set to when the
-#                           server was first initialized)
+#   POSTGRES_ADMIN_USER    Superuser role to connect as -- defaults to
+#                           POSTGRES_USER (whatever the server's superuser
+#                           was set to at first init -- see
+#                           postgres/README.md), falling back to "postgres"
+#                           if that isn't set either
 #   APP_DB_PASSWORD         Use this exact password instead of generating one
 #                           (only takes effect when the role doesn't exist yet)
 #
@@ -47,7 +55,7 @@ set -euo pipefail
 DB_NAME="${1:?Usage: create_app_database.sh <db_name> [role_name]}"
 ROLE_NAME="${2:-${DB_NAME}_app}"
 CONTAINER="${POSTGRES_CONTAINER:-postgres}"
-ADMIN_USER="${POSTGRES_ADMIN_USER:-postgres}"
+ADMIN_USER="${POSTGRES_ADMIN_USER:-${POSTGRES_USER:-postgres}}"
 
 for identifier in "$DB_NAME" "$ROLE_NAME"; do
   if ! [[ "$identifier" =~ ^[a-z][a-z0-9_]*$ ]]; then
