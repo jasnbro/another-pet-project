@@ -14,6 +14,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    # No `ports:` -- Postgres is internal-only, reachable from other
+    # containers on the postgres_default network by service name
+    # ("postgres"), never from the host or LAN. See compose.dev.yml for a
+    # local-only way to reach it directly (e.g. with psql) during
+    # development.
 
 networks:
   default:

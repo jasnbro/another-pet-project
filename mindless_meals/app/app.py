@@ -4,6 +4,7 @@ from flask import Flask, render_template, url_for
 
 from api import api
 from db import db
+from import_ingredients import import_ingredients
 from models import EFFORT_LEVELS, MEAL_TYPES, Favorite, Recipe, other_tag_label
 from seed import seed_recipes
 
@@ -64,6 +65,25 @@ def create_app(config_overrides=None):
         """Re-run the recipe seed (adds any recipes missing from the DB)."""
         added = seed_recipes()
         print(f"Added {added} recipe(s) from seed data.")
+
+    @app.cli.command("import-ingredients")
+    def import_ingredients_command():
+        """Populate ingredients/recipe_ingredients from recipes already in
+        the DB. Safe to re-run any time (see import_ingredients.py)."""
+        report = import_ingredients()
+        print(f"Recipes processed: {report['recipes_processed']}")
+        print(f"Ingredients created: {report['ingredients_created']}")
+        print(f"Recipe-ingredient links created: {report['links_created']}")
+        if report["skipped_placeholders"]:
+            print(f"Skipped non-ingredient placeholders: {sorted(report['skipped_placeholders'])}")
+        if report["unmapped_tokens"]:
+            print(
+                "Ingredients not in seed_data/ingredients.yaml (added "
+                "unclassified -- add a group/nutrition_type there and "
+                "re-run to fix):"
+            )
+            for token in sorted(report["unmapped_tokens"]):
+                print(f"  - {token}")
 
     @app.route("/")
     def home():

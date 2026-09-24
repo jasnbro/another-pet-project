@@ -4,6 +4,7 @@
 **/cache/
 **/logs/
 **/instance/
+**/backups/
 
 # Media
 **/media/

@@ -2,3 +2,4 @@ flask
 flask-sqlalchemy
 pyyaml
 psycopg2-binary
+alembic

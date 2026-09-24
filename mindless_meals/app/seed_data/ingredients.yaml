@@ -1,0 +1,465 @@
+# Curated ingredient catalog for Mindless Meals.
+#
+# Hand-classified from the 48 recipes in recipes.yaml (see
+# mindless_meals/docs/database.md for the full methodology).
+# `group` and `nutrition_type` are small fixed vocabularies (see
+# INGREDIENT_GROUPS / NUTRITION_TYPES in models.py) -- both may be
+# null for an ingredient this file doesn't yet cover (the importer
+# adds those automatically, unclassified, when it meets a new
+# ingredient name that isn't in this file yet).
+#
+# `aliases` covers ingredients that stand in for a choice between a
+# few specific items in the original recipe text (e.g. recipes
+# written as "ground turkey/beef" map to one canonical
+# "Ground Meat (Any)" ingredient) so a search for "beef" still
+# finds those recipes. This is an editorial merge, not a parsing
+# rule -- see mindless_meals/docs/database.md for the full
+# list of source phrases each merge covers.
+#
+# Edit this file to reclassify an ingredient or add aliases; re-run
+# `flask import-ingredients` to apply changes (adds/updates only,
+# never deletes -- see mindless_meals/docs/database.md).
+
+ingredients:
+- name: Beans
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Berries
+  group: fruit
+  nutrition_type: fiber
+  aliases: []
+- name: Black Beans
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Black Eyed Peas
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Blended Cottage Cheese
+  group: dairy
+  nutrition_type: protein
+  aliases: []
+- name: Breaded Chicken Bites
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Broccoli
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Broccoli or Cabbage
+  group: vegetable
+  nutrition_type: fiber
+  aliases:
+  - broccoli
+  - cabbage
+- name: Brown Rice
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Buffalo
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Cabbage
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Cabbage Mix
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Carrots
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Chia
+  group: pantry
+  nutrition_type: fiber
+  aliases: []
+- name: Chicken (Legs or Thighs)
+  group: meat
+  nutrition_type: protein
+  aliases:
+  - chicken legs
+  - chicken thighs
+- name: Chicken Sausage
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Chicken Thighs
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Chickpeas
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Chili
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Chili Crisp
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Chili Powder
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Chipotle
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Coconut Milk
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Collard Greens or Spinach
+  group: vegetable
+  nutrition_type: fiber
+  aliases:
+  - collards
+  - spinach
+- name: Cucumber
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Cucumber Salad
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Cucumbers
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Cumin
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Curry
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Curry Powder
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Edamame
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Eggs
+  group: egg
+  nutrition_type: protein
+  aliases: []
+- name: Fish Sauce
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Frozen Dumplings
+  group: other
+  nutrition_type: carb
+  aliases: []
+- name: Frozen Veg
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Fruit
+  group: fruit
+  nutrition_type: fiber
+  aliases: []
+- name: Garam Masala
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Garlic
+  group: vegetable
+  nutrition_type: other
+  aliases: []
+- name: Ginger
+  group: vegetable
+  nutrition_type: other
+  aliases: []
+- name: Gochujang
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Gochujang Yogurt
+  group: dairy
+  nutrition_type: protein
+  aliases: []
+- name: Greek Yogurt
+  group: dairy
+  nutrition_type: protein
+  aliases: []
+- name: Green Beans
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Greens
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Ground Chicken
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Ground Meat (Any)
+  group: meat
+  nutrition_type: protein
+  aliases:
+  - ground beef
+  - ground chicken
+  - ground turkey
+- name: Ground Turkey
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Herbs
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Honey
+  group: pantry
+  nutrition_type: carb
+  aliases: []
+- name: Jamaican Curry Powder
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Jerk Seasoning
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Kale or Spinach
+  group: vegetable
+  nutrition_type: fiber
+  aliases:
+  - kale
+  - spinach
+- name: Lemon
+  group: fruit
+  nutrition_type: other
+  aliases: []
+- name: Lentils
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Lettuce
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Lighter BBQ + Vinegar Hot Sauce
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Lime
+  group: fruit
+  nutrition_type: other
+  aliases: []
+- name: Lime Yogurt Sauce + Chili Seasoning
+  group: dairy
+  nutrition_type: protein
+  aliases: []
+- name: Microwave Rice
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Miso
+  group: pantry
+  nutrition_type: protein
+  aliases: []
+- name: Mixed Vegetables
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Noodles
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Nutritional Yeast
+  group: pantry
+  nutrition_type: protein
+  aliases: []
+- name: Nuts
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Oats
+  group: grain
+  nutrition_type: fiber
+  aliases: []
+- name: Olive Oil
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Onion Gravy With Garlic + Herbs
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Onions
+  group: vegetable
+  nutrition_type: other
+  aliases: []
+- name: Paprika
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Peanut Butter
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Peppers
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Potatoes
+  group: vegetable
+  nutrition_type: carb
+  aliases: []
+- name: Protein Pasta
+  group: grain
+  nutrition_type: protein
+  aliases: []
+- name: Quinoa
+  group: grain
+  nutrition_type: protein
+  aliases: []
+- name: Ramen
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Red Curry Paste
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Rice
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Rice Noodles
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Rice Vinegar
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Rotisserie Chicken
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Salmon
+  group: seafood
+  nutrition_type: protein
+  aliases: []
+- name: Salsa + Greek Yogurt
+  group: other
+  nutrition_type: protein
+  aliases: []
+- name: Salsa Verde + Greek Yogurt
+  group: other
+  nutrition_type: protein
+  aliases: []
+- name: Sesame Oil
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Smoked Paprika
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Soy
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Soy Sauce
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Spinach
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Sriracha
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Sweet Potatoes
+  group: vegetable
+  nutrition_type: carb
+  aliases: []
+- name: Tahini
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: Teriyaki
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Thyme
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Toast
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Tofu
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Tofu or Chicken
+  group: other
+  nutrition_type: protein
+  aliases:
+  - chicken
+  - chicken thighs
+  - tofu
+- name: Tomato
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Tomato Paste
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Tomatoes
+  group: vegetable
+  nutrition_type: fiber
+  aliases: []
+- name: Tortillas
+  group: grain
+  nutrition_type: carb
+  aliases: []
+- name: Turkey Meatballs
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Turkey Sausage
+  group: meat
+  nutrition_type: protein
+  aliases: []
+- name: Vinegar
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Vinegar Pepper Sauce + Garlic
+  group: pantry
+  nutrition_type: other
+  aliases: []
+- name: Walnuts
+  group: pantry
+  nutrition_type: fat
+  aliases: []
+- name: White Beans
+  group: legume
+  nutrition_type: protein
+  aliases: []
+- name: Yogurt
+  group: dairy
+  nutrition_type: protein
+  aliases: []

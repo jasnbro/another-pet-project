@@ -39,6 +39,12 @@ Infrastructure Services
 postgres
 - Shared database server
 - One database per application
+- Internal only (atlas-data network) — never exposed on a host port in
+  production; see postgres/compose.dev.yml for local-dev-only access
+- Setup, schema, migrations, backups: see mindless_meals/docs/database.md
+  (written from the mindless_meals app's perspective, but the postgres
+  service setup / backup scripts there apply to any app sharing this
+  server)
 
 Application Services
 --------------------
