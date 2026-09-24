@@ -1,4 +1,6 @@
 """Delete Recipe, including cleanup of anything that referenced it."""
+from db import db
+from models import Ingredient, RecipeIngredient
 
 RECIPE_PAYLOAD = {
     "name": "Air Fryer Salmon Bites",
@@ -70,3 +72,23 @@ def test_delete_leaves_other_items_in_a_shared_plan(client):
     assert current is not None
     assert len(current["items"]) == 1
     assert current["items"][0]["recipe_id"] == bowls_id
+
+
+def test_delete_removes_its_recipe_ingredient_links(app_instance, client):
+    recipe_id = create_recipe(client)
+
+    # No API writes recipe_ingredients yet (see import_ingredients.py),
+    # so set up the link directly at the model layer.
+    with app_instance.app_context():
+        ingredient = Ingredient(name="Salmon")
+        db.session.add(ingredient)
+        db.session.flush()
+        db.session.add(RecipeIngredient(recipe_id=recipe_id, ingredient_id=ingredient.id))
+        db.session.commit()
+
+    client.delete(f"/api/recipes/{recipe_id}")
+
+    with app_instance.app_context():
+        assert RecipeIngredient.query.filter_by(recipe_id=recipe_id).count() == 0
+        # the catalog entry itself is untouched -- only the link to this recipe is gone
+        assert Ingredient.query.filter_by(name="Salmon").count() == 1
