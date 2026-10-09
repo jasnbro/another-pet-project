@@ -273,7 +273,13 @@ Alembic is the authoritative schema history, living in
 `mindless_meals/app/migrations/`. `db.create_all()` (used at app startup,
 see `app.py`) still works for a quick local SQLite run, but Postgres
 should always go through Alembic so schema changes are tracked,
-reviewable, and reversible.
+reviewable, and reversible -- `app.py` enforces this: `create_all()`
+only runs when the SQLAlchemy dialect is `sqlite`, never against
+Postgres. (It didn't always: an earlier version ran it unconditionally,
+which is exactly how Atlas ended up needing the one-time adoption
+steps in [Atlas deployment](#atlas-deployment) below -- `create_all()`
+had already silently created tables outside Alembic's tracking before
+anyone ran a migration.)
 
 ```
 cd mindless_meals/app
@@ -467,22 +473,48 @@ server (not just SQLite) while building this:
 
 ## Atlas deployment
 
-**Postgres itself, and Mindless Meals' connection to it, are already
-running on Atlas** -- the shared server, the `postgres_default`
-network, `mindless_meals`'s own database, and both apps' `.env` files
-were set up directly (see `postgres/README.md`, the authoritative doc
-for that service). This section is only about the schema work in this
-branch specifically -- Alembic migrations and the ingredient
-catalog/import -- which the real deployment doesn't have yet since it
-predates this branch's schema additions. Also outstanding: switching
-`mindless_meals` from the shared role to its own least-privilege role
-(see the previous section) -- do this *before* running migrations, so
-Alembic and the app both connect as the role that'll actually own the
-schema going forward.
+**Postgres itself, Mindless Meals' connection to it, and -- as of two
+prior deploys -- this branch's own code are all already running on
+Atlas.** That matters: those deploys ran a since-fixed version of
+`app.py` that called `db.create_all()` unconditionally, every startup,
+regardless of dialect. Against Atlas's real Postgres database, that
+silently created `ingredients`, `recipe_ingredients`, `users`,
+`user_preferences`, `grocery_lists`, and `grocery_list_items` --
+*outside* Alembic's tracking (no `alembic_version` table exists yet).
+`create_all()` only creates tables that don't already exist, though --
+it never alters one that does -- so it could *not* add the new
+`UNIQUE(name, cuisine)` constraint, or three new indexes
+(`ix_recipes_cuisine`, `ix_meal_plans_created_at`,
+`ix_meal_plan_items_meal_plan_id`), to the `recipes`/`meal_plans`/
+`meal_plan_items` tables that predate this branch.
 
-0. **Back up first** -- this changes real ownership on a live database:
+**This means Atlas cannot just run `alembic stamp <baseline>` then
+`alembic upgrade head`, even though that's the normal way to adopt an
+existing database into Alembic.** The later migrations' `CREATE TABLE
+ingredients`/`users`/`grocery_lists` would collide with tables
+`create_all()` already made. The one-time adoption sequence below was
+verified against an isolated Postgres seeded to match Atlas's actual
+history (old pre-branch code, then this branch's code, both via the
+old unconditional `create_all()`) before being written down here --
+don't skip the drift-check step even so, since it's the only part of
+this that verifies *this specific* Atlas database rather than the
+simulation.
+
+A genuinely fresh deployment -- a new Postgres database that has never
+run this app's `create_all()` -- skips all of this: `alembic upgrade
+head` from empty creates everything correctly in one pass, no stamping
+or manual DDL needed.
+
+Also outstanding: switching `mindless_meals` from the shared role to
+its own least-privilege role (see the previous section) -- do this
+*before* adopting the schema into Alembic below, so Alembic and the
+app both connect as the role that'll actually own the schema going
+forward.
+
+0. **Back up first** -- this changes real ownership and schema on a
+   live database:
    ```
-   docker exec postgres pg_dump -U <POSTGRES_USER> mindless_meals > mindless_meals_pre_role_migration.sql
+   docker exec postgres pg_dump -U <POSTGRES_USER> mindless_meals > mindless_meals_pre_migration.sql
    ```
 1. **Adopt `mindless_meals` into its own role**, from `~/services/postgres`:
    ```
@@ -497,34 +529,50 @@ schema going forward.
    ```
    DATABASE_URL=postgresql+psycopg2://mindless_meals_app:<printed password>@postgres:5432/mindless_meals
    ```
-3. **Restart Mindless Meals** so it picks up the new `.env`:
-   ```
-   cd ~/services/mindless_meals && docker compose up -d
-   ```
-   then confirm it still works (`curl http://localhost:8000/health`,
-   spot-check a recipe) before continuing -- if something's wrong,
-   the pre-migration dump from step 0 and the still-intact `mindless_meals`
-   role (this doesn't delete it, just stops using it for this app) are
-   your way back.
-4. **Run migrations** against the real `DATABASE_URL` (see
-   [Migrations](#migrations)):
+3. **Adopt the existing schema into Alembic** -- a one-time step
+   specific to Atlas's actual history, done *before* restarting (the
+   fixed app no longer runs `create_all()` against Postgres at all, so
+   it can't paper over anything left undone here):
    ```
    cd ~/services/mindless_meals/app
    source .venv/bin/activate   # after pip install -r requirements.txt
    export DATABASE_URL=<the same value now in mindless_meals/.env>
-   alembic upgrade head
+
+   alembic stamp head   # tables already match head; just start tracking them
+
+   psql "$DATABASE_URL" -c "ALTER TABLE recipes ADD CONSTRAINT uq_recipes_name_cuisine UNIQUE (name, cuisine);"
+   psql "$DATABASE_URL" -c "CREATE INDEX ix_recipes_cuisine ON recipes (cuisine);"
+   psql "$DATABASE_URL" -c "CREATE INDEX ix_meal_plans_created_at ON meal_plans (created_at);"
+   psql "$DATABASE_URL" -c "CREATE INDEX ix_meal_plan_items_meal_plan_id ON meal_plan_items (meal_plan_id);"
    ```
-5. **Run the recipe/ingredient import** (`flask seed` -- likely a no-op
-   if recipes already exist; `flask import-ingredients`).
-6. **Verify**: `curl http://localhost:8000/health`, then spot-check a
-   few recipes in the UI.
-7. **Apply the same role-per-app treatment to future apps** (The
+   Then confirm there's no *other* drift beyond what's listed above
+   (same check as [Generating a new migration](#generating-a-new-migration)):
+   ```
+   alembic revision --autogenerate -m "drift_check"
+   ```
+   Open the generated file in `migrations/versions/` -- `upgrade()`
+   and `downgrade()` should both be just `pass`. Delete the file
+   either way; it's a one-off check, not a migration to keep. If it's
+   **not** empty, stop and read what it actually wants to change
+   before applying anything -- don't apply an autogenerated diff
+   blindly against a database with real data in it.
+4. **Restart Mindless Meals**:
+   ```
+   cd ~/services/mindless_meals && docker compose up -d --build
+   ```
+   then confirm it works (`curl http://localhost:8000/health`,
+   spot-check a recipe, confirm the recipe count matches step 0's
+   backup) before considering this done -- the dump from step 0 and
+   the still-intact `mindless_meals` role (not deleted, just unused)
+   are your way back if something's wrong.
+5. **Run the recipe/ingredient import** (`flask import-ingredients`).
+6. **Apply the same role-per-app treatment to future apps** (The
    Budget, ...) from the start, via the same script -- no migration
    debt to pay down later.
-8. If you're moving existing *production* SQLite data (not just the
+7. If you're moving existing *production* SQLite data (not just the
    seed recipes) onto Postgres, export it first with the app's own
-   **Export Recipes** feature (`GET /api/recipes/export`) as a safety
-   net, independent of this migration path.
+   **Export** feature as a safety net, independent of this migration
+   path.
 
 Backup scheduling and off-site copies: `postgres/README.md` currently
 documents manual `pg_dump`/`pg_dumpall` commands, not the automated
