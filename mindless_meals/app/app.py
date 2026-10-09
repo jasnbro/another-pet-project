@@ -56,7 +56,21 @@ def create_app(config_overrides=None):
         return url_for("static", filename=filename) + f"?v={version}"
 
     with app.app_context():
-        db.create_all()
+        # db.create_all() only creates tables that don't exist yet -- it
+        # never alters an existing one, so it's a safe, convenient full
+        # schema initializer for SQLite (local dev, tests: no migration
+        # history to maintain). Postgres is a different story: this app
+        # also ships Alembic migrations (see migrations/), and the
+        # baseline migration assumes an empty database. Running
+        # create_all() first would silently create any newly-added
+        # tables outside Alembic's tracking, then `alembic upgrade head`
+        # fails the instant its baseline migration tries to CREATE TABLE
+        # something create_all() (or an earlier, pre-migration deploy)
+        # already made. So on Postgres, schema is Alembic's job only --
+        # see docs/database.md for the one-time adoption step an
+        # already-running deployment needs (alembic stamp, then upgrade).
+        if db.engine.url.get_backend_name() == "sqlite":
+            db.create_all()
         if app.config["SEED_ON_START"] and Recipe.query.count() == 0:
             seed_recipes()
 
