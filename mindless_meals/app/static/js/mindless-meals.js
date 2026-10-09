@@ -24,6 +24,13 @@
   const PAGE_SIZE = 25;
   let revealCount = PAGE_SIZE;
 
+  // Scope every "all recipe cards" query to the atlas, not the whole
+  // document — the Add/Edit Recipe dialog's Preview step builds its own
+  // throwaway <article class="recipe"> (reusing the card CSS) that stays
+  // in the DOM, inside the closed dialog, until the dialog reopens. A
+  // bare document.querySelectorAll(".recipe") would pick that phantom
+  // card up too.
+  const atlasEl = document.getElementById("atlas");
   const cuisineSections = Array.from(document.querySelectorAll(".cuisine-section"));
   const emptyState = document.getElementById("empty-state");
   const activeFiltersEl = document.getElementById("active-filters");
@@ -169,7 +176,7 @@
   function applyFilters(resetReveal = true) {
     if (resetReveal) revealCount = PAGE_SIZE;
 
-    const allArticles = Array.from(document.querySelectorAll(".recipe"));
+    const allArticles = Array.from(atlasEl.querySelectorAll(".recipe"));
     const matching = allArticles.filter(recipeMatches);
     const revealed = new Set(matching.slice(0, revealCount));
 
@@ -556,7 +563,6 @@
 
     return {
       name: (formData.get("name") || "").trim(),
-      cuisine: (formData.get("cuisine") || "").trim(),
       effort: formData.get("effort"),
       effort_label: effortLabel,
       ingredients: ingredientsChip.getValue(),
@@ -603,7 +609,6 @@
     top.appendChild(effortTag);
     article.appendChild(top);
 
-    article.appendChild(makeSection("Cuisine", draft.cuisine));
     article.appendChild(makeSection("Ingredients", draft.ingredients));
     if (draft.sauce) {
       article.appendChild(makeSection("Sauce", draft.sauce));
@@ -767,13 +772,25 @@
   const selectionCountEl = document.getElementById("selection-count");
 
   function getFilteredRecipeIds() {
-    return Array.from(document.querySelectorAll(".recipe"))
+    return Array.from(atlasEl.querySelectorAll(".recipe"))
       .filter(recipeMatches)
       .map((article) => Number(article.dataset.id));
   }
 
+  // Deliberately distinct from getFilteredRecipeIds(): this is only the
+  // recipes actually on screen right now (not hidden by filters, search,
+  // or the Show More reveal cap) -- matches what "Select All Shown"
+  // means literally. Export's "Filtered" scope uses getFilteredRecipeIds()
+  // instead, since exporting everything matching a filter -- even recipes
+  // not yet revealed -- is the more useful default for that action.
+  function getVisibleRecipeIds() {
+    return Array.from(atlasEl.querySelectorAll(".recipe"))
+      .filter((article) => !article.hidden)
+      .map((article) => Number(article.dataset.id));
+  }
+
   function injectSelectionCheckboxes() {
-    document.querySelectorAll(".recipe").forEach((article) => {
+    atlasEl.querySelectorAll(".recipe").forEach((article) => {
       if (article.querySelector(".recipe-select")) return;
       const id = Number(article.dataset.id);
       const label = document.createElement("label");
@@ -810,7 +827,7 @@
   }
 
   document.getElementById("btn-select-all-shown").addEventListener("click", () => {
-    getFilteredRecipeIds().forEach((id) => selectedRecipeIds.add(id));
+    getVisibleRecipeIds().forEach((id) => selectedRecipeIds.add(id));
     document.querySelectorAll(".recipe-select__checkbox").forEach((cb) => {
       const id = Number(cb.closest(".recipe").dataset.id);
       cb.checked = selectedRecipeIds.has(id);
