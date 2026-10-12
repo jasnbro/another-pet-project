@@ -1,0 +1,36 @@
+# undercurrent: notes config
+#
+# notes.yaml is the index: it decides what exists, when, and where.
+# source points to the markdown file holding the body, rendered at url.
+#
+# published: false hides a note everywhere (homepage, archive, feeds).
+# date:      required once published. A future date schedules the note:
+#            it stays hidden until that date.
+# series:    null for main notes, or a series slug (e.g. basics).
+#            Series notes appear in the archive, never in the homepage's top slots.
+
+notes:
+
+  - slug: what-data-organizations-get-wrong
+    title: What data organizations get wrong
+    date: null
+    series: null
+    published: false
+    url: /notes/what-data-organizations-get-wrong
+    source: content/notes/what-data-organizations-get-wrong.md
+
+  - slug: ten-years-in-data
+    title: Ten years in data
+    date: null
+    series: null
+    published: false
+    url: /notes/ten-years-in-data
+    source: content/notes/ten-years-in-data.md
+
+  - slug: digital-basics
+    title: The digital basics everyone should know
+    date: null
+    series: basics
+    published: false
+    url: /notes/digital-basics
+    source: content/notes/digital-basics.md

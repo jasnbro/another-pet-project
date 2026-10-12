@@ -1,0 +1,15 @@
+---
+import type { Content } from '../lib/content.mjs';
+import { notesState } from '../lib/content.mjs';
+import Icon from './Icon.astro';
+interface Props { content: Content }
+const { content } = Astro.props;
+const { main, enabled } = notesState(content);
+const settings = content.site.sections.notes;
+const formatDate = (d: string) => new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'UTC' }).format(new Date(d));
+---
+{enabled && <section class="notes-section" aria-labelledby="notes-label">
+  <h2 class="section-label ruled-label" id="notes-label">{settings.label}</h2>
+  <ol class="note-list">{main.map(note => <li><a href={note.url}><time datetime={note.date!}>{formatDate(note.date!)}</time><span class="note-title">{note.title}</span><Icon name="arrow-right" /></a></li>)}</ol>
+  <a href={settings.archive.url} class="utility-link">{settings.archive.label}<Icon name="arrow-right" /></a>
+</section>}

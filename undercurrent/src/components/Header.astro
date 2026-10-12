@@ -1,0 +1,34 @@
+---
+import type { Site } from '../lib/content.mjs';
+import { telemetry } from '../lib/telemetry.mjs';
+import Icon from './Icon.astro';
+import ContentImage from './ContentImage.astro';
+interface Props { header: Site['header'] }
+const { header } = Astro.props;
+const t = telemetry(header.telemetry.facts);
+---
+<header class="site-header">
+  <a href="/" class="brand" aria-label={`${header.brand} home`}>
+    <ContentImage image={header.logo} eager class="brand-mark" />
+    <span><span class="brand-name">{header.brand}</span><span class="brand-tagline">{header.tagline}</span></span>
+  </a>
+  <div class="telemetry" aria-label="Daily observations" data-telemetry data-facts={JSON.stringify(header.telemetry.facts)}>
+    {header.telemetry.day_of_year && <span><Icon name="calendar" /><span data-day>{t.dayNumber} / {t.daysInYear}</span><span class="sr-only">day of year</span></span>}
+    {header.telemetry.moon_phase && <span><Icon name="moon-star" /><span data-moon>{t.moon}</span><span class="sr-only">approximate moon phase</span></span>}
+    <span class="octopus-fact"><Icon name="brain" /><span data-fact>{t.fact}</span></span>
+  </div>
+</header>
+<script>
+  import { telemetry } from '../lib/telemetry.mjs';
+  function refreshTelemetry() {
+    document.querySelectorAll<HTMLElement>('[data-telemetry]').forEach(el => {
+      const t = telemetry(JSON.parse(el.dataset.facts || '[]'));
+      const values = { day: `${t.dayNumber} / ${t.daysInYear}`, moon: t.moon, fact: t.fact };
+      Object.entries(values).forEach(([key, value]) => { const target = el.querySelector(`[data-${key}]`); if (target) target.textContent = value; });
+      document.querySelectorAll('[data-year]').forEach(el => { el.textContent = String(t.year); });
+    });
+  }
+  refreshTelemetry();
+  // Also refresh an open page across midnight; no live announcement is necessary.
+  setInterval(refreshTelemetry, 60_000);
+</script>

@@ -51,3 +51,6 @@ paragraph, concrete and specific, not general advice.
 - **Redact credentials even in your own output.** When inspecting a
   live container's env/config (e.g. `DATABASE_URL`), strip embedded
   passwords before printing them, even to yourself.
+
+- **Normalize both sides of filesystem containment checks with realpath.** macOS aliases `/tmp` to `/private/tmp`; comparing a resolved file to an unresolved boundary rejects legitimate files. Test both alias paths and escaping symlinks before relying on path validation. (undercurrent: content validator.)
+
