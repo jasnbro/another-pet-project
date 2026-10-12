@@ -1,0 +1,26 @@
+name: Undercurrent checks
+on:
+  push:
+    branches: ['feature/undercurrent-astro']
+    paths: ['undercurrent/**', '.github/workflows/undercurrent-checks.yml']
+  pull_request:
+    paths: ['undercurrent/**', '.github/workflows/undercurrent-checks.yml']
+permissions:
+  contents: read
+jobs:
+  implementation:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: undercurrent
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npm run test:build
+      - name: Check actual supplied content
+        if: always()
+        run: npm run validate

@@ -1,0 +1,14 @@
+---
+import { loadContent, visibleNotes } from '../lib/content.mjs';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+const { site, notes } = loadContent();
+const visible = visibleNotes(notes);
+---
+<SiteLayout site={site} title={site.sections.notes.archive.label}>
+  <section class="archive reading-shell" aria-labelledby="archive-title">
+    <a class="utility-link" href="/">{site.header.brand}<Icon name="arrow-right" /></a>
+    <h1 id="archive-title">{site.sections.notes.label.replace(/^\d+\s*\/\s*/, '')}</h1>
+    <ol class="note-list">{visible.map(note => <li><a href={note.url}><time datetime={note.date!}>{note.date}</time><span class="note-title">{note.title}{note.series && <span class="series-label">{note.series}</span>}</span><Icon name="arrow-right" /></a></li>)}</ol>
+  </section>
+</SiteLayout>

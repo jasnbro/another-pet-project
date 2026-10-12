@@ -1,0 +1,123 @@
+# undercurrent: homepage work config
+#
+# Edit this file to change what appears in 01 / WORK. No code changes needed.
+#
+# tier:       featured | more | side
+#               featured: expanded card with a large image (exactly one should be featured)
+#               more:     compact row, professional work
+#               side:     compact row, personal projects
+# order:      sort order within a tier (lower first)
+# published:  false hides the entry entirely, for drafts in progress
+# image:      required for featured (rendered large); optional for compact rows
+#             (rendered as a small thumbnail). alt is required unless decorative: true.
+# disclosure: optional line shown under the summary (e.g. AI-built work)
+# source:     optional markdown file for a case study page, rendered at link.url.
+#             Omit it when the link points to an external project (e.g. Mindless Meals).
+
+works:
+
+  - slug: pipelinetools
+    title: pipelinetools
+    tagline: the plumbing every pipeline kept rewriting
+    tier: featured
+    order: 1
+    published: true
+    summary:
+      - >-
+        A shared Python library for connectors, credentials, and environment
+        config, so ETL pipelines stop carrying their own copies.
+      - >-
+        A Python migration that meant hand-fixing 182 scripts showed why it
+        matters: shared code should change once, not 182 times.
+    link:
+      label: view case study
+      url: /work/pipelinetools
+    source: content/work/pipelinetools.md
+    image:
+      src: /images/pipelinetools-architecture.svg
+      alt: >-
+        PipelineTools architecture: pipelines import one shared library with
+        four modules, running on a managed Python environment
+
+  - slug: disputes-refactor
+    title: disputes data refactor
+    tagline: untangling the big nasty
+    tier: more
+    order: 1
+    published: false   # flip to true once the diagram exists
+    summary:
+      - >-
+        Led a five-person refactor of Cash App's disputes reporting: a
+        50+ column table with competing identifiers, rebuilt into clean
+        entity tables and an analyst-ready data mart.
+      - >-
+        The old table couldn't be trusted to check the new one, so we
+        validated against source system counts and added ongoing data
+        quality monitoring.
+    link:
+      label: view case study
+      url: /work/disputes-refactor
+    source: content/work/disputes-refactor.md
+    image:
+      src: /images/disputes-architecture.svg
+      alt: >-
+        Proceses for managing disputes data needed for
+        regulatory and operational reporting
+ 
+  - slug: hot-parts
+    title: hot parts
+    tagline: from one person's PC to the production floor
+    tier: more
+    order: 2
+    published: false   # flip to true once the diagram exists
+    summary:
+      - >-
+        A Mercedes-Benz plant's parts coordination lived in one Access
+        database on one person's PC. I reverse-engineered it into a data
+        model for a web application that shows parts on the production
+        floor in near real time.
+    link:
+      label: view case study
+      url: /work/hot-parts
+    source: content/work/hot-parts.md
+    image:
+      src: /images/hot-parts-architecture.svg
+      alt: >- 
+        Hot Parts are in demand parts that are required to 
+        complete assembly of items being built on the shop floor
+  
+  - slug: cash-bonus
+    title: cash bonus
+    tagline: a promotions engine where every decision has a reason
+    tier: featured
+    order: 1
+    published: false   # when the diagram exists: flip to true, and set pipelinetools to tier: more
+    summary:
+      - >-
+        Designed and built a bank's cash bonus system end to end, replacing
+        a single unaudited table with a staged pipeline where every
+        eligibility and reward decision is stored, versioned, and carries
+        a reason code.
+      - >-
+        Double payment is prevented structurally: an append-only payout log
+        and a unique constraint mean a rerun can't pay the same reward twice.
+    link:
+      label: view case study
+      url: /work/cash-bonus
+    source: content/work/cash-bonus.md
+    image:
+      src: /images/cash-bonus-architecture.svg
+      alt: Automated campaing management, tracking and rewarding processes.
+
+  - slug: mindless-meals
+    title: mindless meals
+    tagline: cooking minus the extra thought
+    tier: side
+    order: 1
+    published: true
+    summary:
+      - A small system for remembering and discovering simple meals.
+    disclosure: Designed and directed by me, built with AI coding agents.
+    link:
+      label: view project
+      url: https://meals.undercurrentlabs.dev/

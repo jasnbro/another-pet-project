@@ -1,0 +1,13 @@
+---
+import { loadContent } from '../lib/content.mjs';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Human from '../components/Human.astro';
+import WorkSection from '../components/WorkSection.astro';
+import NotesSection from '../components/NotesSection.astro';
+const content = loadContent();
+---
+<SiteLayout site={content.site}>
+  <Human hero={content.site.hero} />
+  <WorkSection settings={content.site.sections.work} works={content.works} />
+  <NotesSection content={content} />
+</SiteLayout>

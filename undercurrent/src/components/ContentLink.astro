@@ -1,0 +1,7 @@
+---
+import type { LinkSpec } from '../lib/content.mjs';
+import Icon from './Icon.astro';
+interface Props { link: LinkSpec; class?: string }
+const { link, class: className = '' } = Astro.props;
+---
+<a href={link.url} class:list={['utility-link', className]}>{link.label}<Icon name="arrow-up-right" /></a>

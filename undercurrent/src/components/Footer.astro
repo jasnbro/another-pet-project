@@ -1,0 +1,13 @@
+---
+import type { Site } from '../lib/content.mjs';
+import { telemetry } from '../lib/telemetry.mjs';
+import ContentImage from './ContentImage.astro';
+import ContentLink from './ContentLink.astro';
+interface Props { footer: Site['footer'] }
+const { footer } = Astro.props;
+---
+<footer class="site-footer">
+  <div class="footer-brand"><ContentImage image={footer.logo} class="footer-mark" /><div><span class="brand-name">{footer.brand}</span><span class="brand-tagline">{footer.tagline}</span></div></div>
+  <nav aria-label="Footer links">{footer.links.map(link => <ContentLink link={link} />)}</nav>
+  <div class="provenance"><p>© <span data-year>{telemetry(['octopus']).year}</span> {footer.copyright_name}</p><p class="makers-mark">{footer.credits}</p></div>
+</footer>
