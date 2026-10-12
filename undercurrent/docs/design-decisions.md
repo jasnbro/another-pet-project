@@ -383,7 +383,7 @@ Invalid config should fail loudly at build time.
 The implementation should enforce the supplied `config-spec.md`, including:
 - schema validation
 - unknown keys fail
-- required images / sources exist
+- required published images / sources exist; missing draft files warn
 - alt text requirements
 - no TODOs in published content
 - valid internal / external URLs

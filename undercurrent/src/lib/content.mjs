@@ -50,7 +50,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
     if (!object(v, p, ['label', 'url'])) return;
     text(v.label, `${p}.label`); text(v.url, `${p}.url`); urls.push({ value: v.url, path: `${p}.url`, active: true });
   };
-  const image = (v, p) => {
+  const image = (v, p, published = true) => {
     if (!object(v, p, ['src', 'alt', 'decorative', 'position'], ['src', 'alt'])) return;
     text(v.src, `${p}.src`); text(v.alt, `${p}.alt`, v.decorative === true);
     if ('decorative' in v) bool(v.decorative, `${p}.decorative`);
@@ -59,7 +59,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
       text(v.position, `${p}.position`);
       if (typeof v.position === 'string' && !/^(?:left|right|top|bottom|center|\d+(?:\.\d+)?%)(?:\s+(?:left|right|top|bottom|center|\d+(?:\.\d+)?%)){0,3}$/.test(v.position)) err(`${p}.position`, 'invalid object-position');
     }
-    images.push({ value: v.src, path: `${p}.src`, base: 'public' });
+    images.push({ value: v.src, path: `${p}.src`, base: 'public', published });
   };
   const noTODO = (v, p) => { if (/TODO/i.test(JSON.stringify(v))) err(p, 'TODO is not allowed in public content'); };
   const slug = (v, p) => { text(v, p); if (typeof v === 'string' && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v)) err(p, 'must be a lowercase hyphenated slug'); };
@@ -113,7 +113,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
     integer(w.order, `${p}.order`); bool(w.published, `${p}.published`); array(w.summary, `${p}.summary`, text, 1);
     if (object(w.link, `${p}.link`, ['label', 'url'])) { text(w.link.label, `${p}.link.label`); text(w.link.url, `${p}.link.url`); urls.push({ value: w.link.url, path: `${p}.link.url`, active: w.published }); }
     if (w.source !== undefined) source(w.source, `${p}.source`, w.title, w.published);
-    if (w.image !== undefined) image(w.image, `${p}.image`);
+    if (w.image !== undefined) image(w.image, `${p}.image`, w.published);
     if (w.disclosure !== undefined) text(w.disclosure, `${p}.disclosure`);
     if (w.tier === 'featured' && !w.image) err(`${p}.image`, 'featured work requires an image');
     if (w.published) noTODO(w, p);
@@ -138,7 +138,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
   });
   unique(notes, 'notes');
 
-  const safeFile = (value, base, p) => {
+  const safeFile = (value, base, p, allowMissing = false) => {
     if (typeof value !== 'string') return null;
     if (base === 'public' && (!value.startsWith('/') || value.startsWith('//'))) { err(p, 'must be an absolute site asset path'); return null; }
     const clean = base === 'public' ? value.slice(1) : value;
@@ -146,6 +146,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
     const boundary = resolve(root, base), file = resolve(boundary, clean);
     const inside = (f) => { const r = relative(boundary, f); return r !== '..' && !r.startsWith('..' + sep) && !r.startsWith(sep); };
     if (!inside(file)) { err(p, 'path escapes its content directory'); return null; }
+    if (!existsSync(file) && allowMissing) { warnings.push(`${p}: draft file not supplied: ${base === 'public' ? 'public/' + clean : clean}`); return null; }
     if (!existsSync(file) || !statSync(file).isFile()) { err(p, `missing file ${base === 'public' ? 'public/' + clean : clean}`); return null; }
     const realBoundary = realpathSync(boundary);
     const realRelative = relative(realBoundary, realpathSync(file));
@@ -182,12 +183,12 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
   };
   urls.forEach(checkURL);
   for (const im of images) {
-    const f = safeFile(im.value, im.base, im.path);
+    const f = safeFile(im.value, im.base, im.path, im.published === false);
     if (f && statSync(f).size > 500 * 1024) warnings.push(`${im.path}: image exceeds 500 KB`);
   }
   for (const s of sources) {
     if (typeof s.value === 'string' && (!s.value.startsWith('content/') || !s.value.endsWith('.md'))) err(s.path, 'source must be content/**/*.md');
-    const f = safeFile(s.value, '.', s.path); if (!f) continue;
+    const f = safeFile(s.value, '.', s.path, s.published === false); if (!f) continue;
     const md = readFileSync(f, 'utf8').replace(/^\uFEFF/, '');
     if (/^\s*(?:---|\+\+\+)\s*\n/.test(md)) err(s.path, 'Markdown must not have frontmatter');
     if (!/^# [^\n]+/.test(md)) err(s.path, 'Markdown must start with an H1');
@@ -212,7 +213,7 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
       if (ref.image) {
         if (!ref.alt?.trim()) err(s.path, `Markdown image requires alt: ${ref.url}`);
         const base = ref.url.startsWith('/') ? 'public' : relative(root, resolve(f, '..'));
-        const asset = safeFile(ref.url, base, s.path);
+        const asset = safeFile(ref.url, base, s.path, s.published === false);
         if (asset && statSync(asset).size > 500 * 1024) warnings.push(`${s.path}: image exceeds 500 KB: ${ref.url}`);
       } else if (!ref.url.startsWith('#')) checkURL({ value: ref.url, path: s.path, active: s.published });
     }

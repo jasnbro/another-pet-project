@@ -31,7 +31,7 @@ hero:
   image:
     src: /images/hero-hillside.jpg
     alt: Jasmine sitting on a hillside overlooking a mountain valley at dusk
-    position: right center   # CSS object-position, for cropping on narrow screens
+    position: right 75%   # CSS object-position, for cropping on narrow screens
   intro:
     - >-
       I build systems that quiet the problems you don't want to think about,

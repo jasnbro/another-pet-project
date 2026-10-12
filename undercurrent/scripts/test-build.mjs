@@ -22,7 +22,7 @@ try {
     else { const path = im.src.replace(/\.jpe?g$/, '.png'); if (path !== im.src) im.src = path; put('public' + im.src, png); }
   }
   const allPages = [...site.pages, ...works.filter(w => w.source), ...notes];
-  for (const p of allPages) put(p.source, `# ${p.title}\n\nFixture body.\n\n## <i data-lucide="workflow"></i> Fixture heading\n\n| Field | Value |\n|---|---|\n| one | two |\n\n> Fixture quote\n\n\`\`\`python\nprint('fixture')\n\`\`\`\n\n![Fixture diagram](fixture.svg)\n`);
+  for (const p of allPages) put(p.source, `# ${p.title}\n\nFixture body.\n\n## <i data-lucide="workflow"></i> Fixture heading\n\n| Field | Value |\n|---|---|\n| one | two |\n\n> Fixture quote\n\n\`\`\`python\nprint('fixture')\n\`\`\`\n\n![Fixture diagram](fixture.svg)\n\n![First reference][diagram]\n\n![Second reference][diagram]\n\n[diagram]: fixture.svg\n`);
   for (const p of allPages) put(join(dirname(p.source), 'fixture.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1 1L19 19"/></svg>');
   const save = () => { put('config/site.yaml', stringify(site)); put('config/works.yaml', stringify({ works })); put('config/notes.yaml', stringify({ notes })); };
   save();

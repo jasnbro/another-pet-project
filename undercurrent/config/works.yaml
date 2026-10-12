@@ -121,6 +121,3 @@ works:
     link:
       label: view project
       url: https://meals.undercurrentlabs.dev/
-    image:
-      src: /images/mindless-meals-home.png
-      alt: Mindless Meals home screen showing search and recent meal cards

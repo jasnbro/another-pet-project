@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="PipelineTools architecture: pipelines import one shared library with four modules, which runs on a managed Python environment">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9a94a8"/>
+    </marker>
+    <style>
+      .mono { font-family: "IBM Plex Mono", "JetBrains Mono", ui-monospace, monospace; }
+      .serif { font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif; }
+      .box { fill: none; stroke: #cfc6b4; stroke-width: 1; }
+      .dashed { stroke-dasharray: 5 5; stroke: #7d778b; }
+      .mod { fill: #2e2b38; stroke: #d9e36b; stroke-width: 1; }
+      .label { fill: #e8e0d0; font-size: 14px; }
+      .sub { fill: #9a94a8; font-size: 11.5px; }
+      .muted { fill: #7d778b; }
+      .accent { fill: #d9e36b; }
+      .line { stroke: #9a94a8; stroke-width: 1; fill: none; }
+    </style>
+  </defs>
+
+  <rect width="900" height="620" fill="#24212c"/>
+
+  <text x="60" y="44" class="mono sub" letter-spacing="1">PIPELINETOOLS / ARCHITECTURE</text>
+
+  <!-- consumers -->
+  <text x="60" y="84" class="mono sub muted" letter-spacing="1">PIPELINES</text>
+  <rect x="60" y="96" width="240" height="56" class="box"/>
+  <text x="180" y="129" text-anchor="middle" class="mono label">yaml-configured batch</text>
+  <rect x="330" y="96" width="240" height="56" class="box"/>
+  <text x="450" y="129" text-anchor="middle" class="mono label">qualys api integration</text>
+  <rect x="600" y="96" width="240" height="56" class="box dashed"/>
+  <text x="720" y="129" text-anchor="middle" class="mono label muted">future etl pipelines</text>
+
+  <path d="M180,152 L180,206" class="line" marker-end="url(#arrow)"/>
+  <path d="M450,152 L450,206" class="line" marker-end="url(#arrow)"/>
+  <path d="M720,152 L720,206" class="line dashed" marker-end="url(#arrow)"/>
+  <text x="462" y="184" class="mono sub">import from shared path</text>
+
+  <!-- library -->
+  <rect x="60" y="210" width="780" height="196" class="box"/>
+  <text x="84" y="250" class="serif" font-size="30" fill="#e8e0d0">pipelinetools</text>
+  <text x="84" y="274" class="mono sub">one library · one copy of the plumbing</text>
+
+  <rect x="84" y="298" width="170" height="84" class="mod"/>
+  <text x="169" y="334" text-anchor="middle" class="mono label">database</text>
+  <text x="169" y="356" text-anchor="middle" class="mono sub">connectors</text>
+
+  <rect x="272" y="298" width="170" height="84" class="mod"/>
+  <text x="357" y="334" text-anchor="middle" class="mono label">credentials</text>
+  <text x="357" y="356" text-anchor="middle" class="mono sub">generate · rotate</text>
+
+  <rect x="460" y="298" width="170" height="84" class="mod"/>
+  <text x="545" y="334" text-anchor="middle" class="mono label">environment</text>
+  <text x="545" y="356" text-anchor="middle" class="mono sub">variables</text>
+
+  <rect x="648" y="298" width="170" height="84" class="mod"/>
+  <text x="733" y="334" text-anchor="middle" class="mono label">project</text>
+  <text x="733" y="356" text-anchor="middle" class="mono sub">scaffolding</text>
+
+  <path d="M450,406 L450,448" class="line" marker-end="url(#arrow)"/>
+
+  <!-- targets -->
+  <rect x="60" y="452" width="780" height="48" class="box"/>
+  <text x="450" y="482" text-anchor="middle" class="mono label">team database · api endpoints · project files</text>
+
+  <!-- foundation -->
+  <rect x="60" y="526" width="780" height="64" fill="#2e2b38"/>
+  <rect x="60" y="526" width="3" height="64" class="accent"/>
+  <text x="84" y="553" class="mono label">managed python environment</text>
+  <text x="84" y="575" class="mono sub">pinned package versions · standardized python version · all users &amp; servers</text>
+  <text x="816" y="563" text-anchor="end" class="mono sub accent">contains the blast radius</text>
+</svg>

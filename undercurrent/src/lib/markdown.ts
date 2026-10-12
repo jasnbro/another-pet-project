@@ -37,10 +37,14 @@ export async function renderBody(source: string) {
       };
       const imageDefinitions = new Map<string, Node>();
       walk(tree);
+      const resolvedDefinitions = new Set<Node>();
       const references = (node: Node) => {
         if (node.type === 'imageReference') {
           const definition = imageDefinitions.get((node as Node & { identifier: string }).identifier);
-          if (definition?.url) definition.url = assetURL(definition.url);
+          if (definition?.url && !resolvedDefinitions.has(definition)) {
+            definition.url = assetURL(definition.url);
+            resolvedDefinitions.add(definition);
+          }
         }
         node.children?.forEach(references);
       };

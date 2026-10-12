@@ -30,36 +30,29 @@ All metadata is read from YAML. Components contain presentation logic only. New 
 
 Notes are published only when `published: true` and their date has arrived in America/New_York. Series notes appear in `/notes`, but do not take homepage slots. This is a static site: scheduled notes require a rebuild on or after their date. Telemetry and footer year refresh in the browser so those stay current between builds; moon phase is approximate.
 
-Validation runs on build and development startup, and the development server restarts on content changes. It rejects unknown keys, invalid fields, broken source/image paths, invalid dates/series, publication errors, broken internal links, insecure external URLs, duplicate routes/slugs, missing alt text, frontmatter, and public TODOs. It prints the specified warnings. Draft entries remain subject to file-existence checks, as required by the config spec.
+Validation runs on build and development startup, and the development server restarts on content changes. It rejects unknown keys, invalid fields, broken source/image paths, invalid dates/series, publication errors, broken internal links, insecure external URLs, duplicate routes/slugs, missing alt text, frontmatter, and public TODOs. It prints the specified warnings. Missing files for unpublished entries print warnings. Existing draft files still undergo validation; publishing an entry requires all its referenced files. See `docs/config-spec.md`.
 
-## Current asset/content blockers
+## Supplied assets and draft inputs
 
-The implementation keeps the supplied content and approved logo PNGs. The build intentionally fails until every file referenced by that content exists. No replacement photos, diagrams, case studies, or note bodies have been invented.
+The approved logo, supplied hillside photograph (converted from HEIC to a compressed JPEG), and original PipelineTools architecture SVG are integrated. The latest How to Work With Me copy and the Disputes and Hot Parts draft case studies are included. The optional Mindless Meals thumbnail is omitted until a real screenshot is supplied.
 
-Supply these exact files:
+These unpublished inputs remain missing and produce warnings:
 
 ```text
-public/images/hero-hillside.jpg
-public/images/pipelinetools-architecture.svg
-public/images/mindless-meals-home.png
 public/images/disputes-architecture.svg
 public/images/hot-parts-architecture.svg
 public/images/cash-bonus-architecture.svg
-content/work/disputes-refactor.md
-content/work/hot-parts.md
 content/work/cash-bonus.md
 content/notes/what-data-organizations-get-wrong.md
 content/notes/ten-years-in-data.md
 content/notes/digital-basics.md
 ```
 
-The Library contains `pipelinetools-architecture.jpeg`, but the contract requests the supplied SVG. It has not been substituted or traced. The mockup is visual guidance, not a substitute for its original photo or diagram files. The mockup's example notes have not been published.
-
-If the intended rule is to allow missing files for unpublished entries, change the config contract first; this implementation does not silently relax it.
+Drafts remain hidden. No replacement diagrams or note bodies have been invented.
 
 ## Visual review
 
-Once required files are supplied and the build passes, verify the homepage and both supplied long-form pages at 320, 390, 768, and 1440 px. Check Human contrast/crop, diagram legibility, image loading, keyboard focus/skip link, mobile overflow, and reduced motion. The source has responsive rules and accessibility treatments, but browser verification with the real assets is still pending.
+For visual review, verify the homepage and both supplied long-form pages at 320, 390, 768, and 1440 px. Check Human contrast/crop, diagram legibility, image loading, keyboard focus/skip link, mobile overflow, and reduced motion. The real homepage was checked at 320, 390, 768, and 1440 px: no page overflow, all images loaded, and Notes stayed hidden. The two published long-form pages render one H1 each; the PipelineTools SVG and inline Lucide icons load. Keyboard navigation reaches the skip link with a visible focus outline. Human crop and contrast were visually reviewed on desktop and mobile.
 
 ## Validation tests
 

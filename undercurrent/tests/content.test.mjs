@@ -69,7 +69,6 @@ for (const [label, mutate, pattern] of [
   ['published Markdown TODO', f => f.put('content/pages/about.md', '# About\n\nTODO'), /TODO/],
   ['frontmatter', f => f.put('content/pages/about.md', '---\ntitle: About\n---\n# About'), /frontmatter/],
   ['missing H1', f => f.put('content/pages/about.md', '## About'), /start with an H1/],
-  ['missing draft source', f => { rmSync(join(f.root, f.data.notes[0].source)); }, /missing file/],
   ['missing image', f => { f.data.site.hero.image = { src: '/images/missing.jpg', alt: 'Missing' }; }, /missing file/],
   ['missing alt', f => { f.data.site.hero.image = { src: '/images/test.svg', alt: '' }; }, /non-empty/],
   ['decorative image alt', f => { f.data.site.header.logo = { src: '/images/test.svg', alt: 'Logo', decorative: true }; }, /empty alt/],
@@ -110,4 +109,19 @@ test('telemetry computes leap years and rotates deterministically across local m
   const b = telemetry(facts, now); assert.equal(b.dayNumber, 285); assert.equal(b.daysInYear, 365);
   assert.equal(telemetry(facts, new Date('2026-10-13T03:59:00Z')).fact, b.fact);
   assert.notEqual(telemetry(facts, new Date('2026-10-13T04:00:00Z')).fact, b.fact);
+});
+
+test('missing draft files warn; publishing the same entry requires its files', t => {
+  const f = fixture(t);
+  rmSync(join(f.root, f.data.notes[0].source));
+  const draft = structuredClone(f.data.works[0]);
+  draft.slug = 'draft-work'; draft.published = false; draft.tier = 'more';
+  draft.source = 'content/work/draft-work.md'; draft.link.url = '/work/draft-work';
+  draft.image = { src: '/images/draft.svg', alt: 'Draft diagram' };
+  f.data.works.push(draft);
+  assert.equal(f.validate().warnings.filter(w => w.includes('draft file not supplied')).length, 3);
+  draft.published = true;
+  assert.throws(f.validate, /missing file public\/images\/draft.svg/);
+  draft.published = false; draft.image.src = '/../outside.svg';
+  assert.throws(f.validate, /escapes/);
 });
