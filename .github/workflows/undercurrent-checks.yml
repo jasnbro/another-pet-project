@@ -22,4 +22,5 @@ jobs:
       - run: npm test
       - run: npm run test:build
       - name: Check actual supplied content
+        if: always()
         run: npm run validate

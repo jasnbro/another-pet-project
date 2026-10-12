@@ -12,6 +12,6 @@ export function escapeHTML(value: string) {
 export function iconSVG(name: string) {
   const node = nodes[name];
   if (!node) throw new Error(`Unsupported Lucide icon: ${name}`);
-  const children = node.map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${escapeHTML(String(v))}"`).join(' ')} />`).join('');
+  const children = (node[2] || []).map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${escapeHTML(String(v))}"`).join(' ')} />`).join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon">${children}</svg>`;
 }

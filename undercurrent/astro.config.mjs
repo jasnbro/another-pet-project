@@ -13,7 +13,7 @@ export default defineConfig({
       'astro:server:setup': ({ server }) => {
         // Restart after content edits so validation also gates the development server.
         server.watcher.add(['config', 'content', 'public/images']);
-        server.watcher.on('all', (event, path) => {
+        server.watcher.on('all', (_event, path) => {
           if (/(?:^|[/\\])(config|content|public[/\\]images)[/\\]/.test(path)) {
             void server.restart();
           }
