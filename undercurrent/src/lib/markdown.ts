@@ -18,6 +18,14 @@ export async function renderBody(source: string) {
   function contentAssets() {
     return (tree: Node) => {
       const walk = (node: Node) => {
+        node.children?.forEach((child, index) => {
+          const match = child.type === 'html' && child.value?.match(/^<i\s+data-lucide=["']([^"']+)["']\s*>$/);
+          const closing = node.children?.[index + 1];
+          if (match && closing?.type === 'html' && closing.value === '</i>') {
+            child.value = iconSVG(match[1]);
+            closing.value = '';
+          }
+        });
         if (node.type === 'image' && node.url) node.url = assetURL(node.url);
         if (node.type === 'definition' && node.url) {
           // Reference image definitions are resolved below without changing link definitions.

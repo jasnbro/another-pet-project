@@ -34,7 +34,7 @@ try {
   const home = readFileSync(join(fixture, 'dist/index.html'), 'utf8');
   if (home.includes('id="notes-label"')) throw new Error('Draft notes leaked into homepage');
   const article = readFileSync(join(fixture, 'dist/work/pipelinetools/index.html'), 'utf8');
-  if ((article.match(/<h1\b/g) || []).length !== 1 || !article.includes('<table>') || !article.includes('<svg') || !article.includes('loading="lazy"')) throw new Error('Long-form rendering features missing');
+  if ((article.match(/<h1\b/g) || []).length !== 1 || !article.includes('<table>') || !/<h2[^>]*><svg/.test(article) || !article.includes('loading="lazy"')) throw new Error('Long-form rendering features missing');
   // A second build proves generic routing/publication changes require only YAML.
   notes[0].published = true; notes[0].date = '2020-01-01'; save(); run(['build']);
   if (!existsSync(join(fixture, 'dist/notes', notes[0].slug, 'index.html'))) throw new Error('Published note did not generate a route');
