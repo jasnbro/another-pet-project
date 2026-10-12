@@ -54,3 +54,5 @@ paragraph, concrete and specific, not general advice.
 
 - **Normalize both sides of filesystem containment checks with realpath.** macOS aliases `/tmp` to `/private/tmp`; comparing a resolved file to an unresolved boundary rejects legitimate files. Test both alias paths and escaping symlinks before relying on path validation. (undercurrent: content validator.)
 
+- **Validate source-file lookup after the framework bundles it.** `import.meta.url` moves into build output during Astro prerendering; a relative source-root calculation that passes unit tests then reads `dist/config` instead of the original YAML. Run a real static build, and resolve source content from the documented project working directory. (undercurrent.)
+

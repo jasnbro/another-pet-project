@@ -1,10 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { resolve, posix } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import { iconSVG } from './icons';
 
-const root = fileURLToPath(new URL('../../', import.meta.url));
+const root = process.cwd();
 const assets = import.meta.glob<string>('../../content/**/*.{png,jpg,jpeg,svg,webp,gif,avif}', { eager: true, query: '?url', import: 'default' });
 interface Node { type: string; url?: string; value?: string; children?: Node[] }
 

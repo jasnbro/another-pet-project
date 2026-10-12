@@ -1,11 +1,12 @@
 import { readFileSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { resolve, relative, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { parseDocument } from 'yaml';
 import { todayISO } from './dates.mjs';
 export { todayISO } from './dates.mjs';
 
-const projectRoot = fileURLToPath(new URL('../../', import.meta.url));
+// npm/Astro commands run from the project root. import.meta.url would point
+// inside dist after bundling, so it cannot locate source YAML during prerender.
+const projectRoot = process.cwd();
 export const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
   && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
 export const visibleNotes = (notes, now = new Date()) => notes
