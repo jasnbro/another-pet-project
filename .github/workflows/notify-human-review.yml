@@ -1,0 +1,38 @@
+# Notifies the repository owner when an issue needs a human decision.
+#
+# Claude and ChatGPT post through the owner's own GitHub account, and
+# GitHub does not notify you about your own activity, so an @mention
+# written by an agent never reaches the owner. When an agent applies the
+# `status:needs-human-review` label, this workflow comments as
+# github-actions[bot] — a different actor — so the mention arrives as a
+# normal notification (web, email and mobile push, per the owner's
+# notification settings).
+name: Notify human review
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  notify:
+    if: github.event.label.name == 'status:needs-human-review'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mention the owner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          body="@${OWNER} this issue needs your decision. See the latest **Ready for Human Review** or escalation comment: ${ISSUE_URL}
+
+          Remove the \`status:needs-human-review\` label once you've decided. The issue stays open until you close it.
+
+          ---
+          *Automated notification from the notify-human-review workflow.*"
+          gh api "repos/${REPO}/issues/${NUMBER}/comments" -f body="$body"
