@@ -61,3 +61,13 @@ Notes
 - Tailscale connectivity must be active on the client device.
 - All self-hosted services should live under ~/services.
 - Each service should contain its own compose.yml and persistent data.
+
+AI-authored work
+----------------
+- Claude and ChatGPT post through the owner's GitHub account, so the
+  GitHub author is always jasnbro. Mark AI-written work explicitly.
+- Issues and PRs: add the `author:claude` or `author:chatgpt` label.
+- Issue bodies, PR descriptions and comments: end with a footer naming
+  the model, e.g. `*Authored by Claude (Anthropic, Claude Opus 5.5)
+  via the user's GitHub account.*`
+- Commits: include a `Co-Authored-By:` trailer for the agent.
