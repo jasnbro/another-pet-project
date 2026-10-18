@@ -13,6 +13,11 @@ const { site, title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} · ${site.meta.title}` : site.meta.title}</title>
     <meta name="description" content={site.meta.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title ? `${title} · ${site.meta.title}` : site.meta.title} />
+    <meta property="og:description" content={site.meta.description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#1d192b" />
     <link rel="icon" type="image/png" href={site.header.logo.src} />
   </head>
