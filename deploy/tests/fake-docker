@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Stand-in for `docker` in deploy tests. Simulates just enough state (built
+# images, the running container's image, health, Alembic output) in $FAKE_DIR.
+#   FAKE_UNHEALTHY  space-separated images whose health check fails
+#   FAKE_CURRENT    `alembic current` revision ("" = not tracked)
+#   FAKE_HEAD       `alembic heads` revision
+#   FAKE_DB_DOWN    1 = alembic can't connect
+#   FAKE_MIGRATE_FAIL 1 = `alembic upgrade` fails
+set -uo pipefail
+d="$FAKE_DIR"; touch "$d/images" "$d/calls"
+echo "docker $*" >> "$d/calls"
+
+case "$1" in
+  network) exit 0 ;;
+  build)
+    while (($#)); do [[ "$1" == -t ]] && { echo "$2" >> "$d/images"; shift; }; shift; done ;;
+  image)  grep -qxF "$3" "$d/images"; exit $? ;;
+  images) tac "$d/images" ;;
+  rmi)    shift; for i in "$@"; do grep -vxF "$i" "$d/images" > "$d/i.tmp"; mv "$d/i.tmp" "$d/images"; done ;;
+  logs)   echo "(fake container logs)" ;;
+  exec)   echo "-- fake pg_dump of ${!#}" ;;
+  inspect)
+    [[ -f "$d/running" ]] || exit 1
+    img="$(cat "$d/running")"
+    if [[ "$3" == *Config.Image* ]]; then echo "$img"
+    elif [[ " ${FAKE_UNHEALTHY:-} " == *" $img "* ]]; then echo unhealthy
+    else echo healthy; fi ;;
+  compose)
+    if [[ " $* " == *" run "* ]]; then
+      [[ "${FAKE_DB_DOWN:-}" == 1 ]] && { echo "sqlalchemy.exc.OperationalError: connection refused"; exit 1; }
+      case "${!#}" in
+        current) [[ -n "${FAKE_CURRENT:-}" ]] && echo "${FAKE_CURRENT} (head)"; echo "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl." ;;
+        heads)   echo "${FAKE_HEAD} (head)" ;;
+        head)    echo "upgrade" >> "$d/migrations"; [[ "${FAKE_MIGRATE_FAIL:-}" == 1 ]] && exit 1 ;;
+      esac
+    elif [[ " $* " == *" up "* ]]; then
+      sed -nE 's/^ +image: (.*)$/\1/p' compose.override.yml > "$d/running"
+    fi ;;
+esac
+exit 0

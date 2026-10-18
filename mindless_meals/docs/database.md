@@ -559,6 +559,9 @@ forward.
    ```
    cd ~/services/mindless_meals && docker compose up -d --build
    ```
+   (Once automated deploys are set up -- see `deploy/README.md` -- use
+   **Actions → Mindless Meals → Run workflow** instead; `--build` no
+   longer applies in the deploy-managed service folder.)
    then confirm it works (`curl http://localhost:8000/health`,
    spot-check a recipe, confirm the recipe count matches step 0's
    backup) before considering this done -- the dump from step 0 and
