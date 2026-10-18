@@ -943,3 +943,15 @@ body.selection-mode .recipe-select {
     gap: 6px;
   }
 }
+
+/* "Add to Home Screen" shortcut (shared Undercurrent snippet) — themed to
+   match the atlas: hairline border, no shadow, orange as the one accent. */
+:root {
+  --uc-install-bg: var(--cream);
+  --uc-install-fg: var(--ink);
+  --uc-install-muted: var(--ink-muted);
+  --uc-install-border: var(--hairline);
+  --uc-install-accent: var(--orange);
+  --uc-install-radius: var(--radius);
+  --uc-install-radius-dialog: var(--radius);
+}

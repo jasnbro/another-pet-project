@@ -110,6 +110,8 @@ SQLite (default) or Postgres        (whichever DATABASE_URL points at)
 | `static/js/mindless-meals.js` | Wires up everything you click — filters, favorites, the recipe form, exporting |
 | `static/js/filtering.js`, `static/js/recipe-form.js` | The parts of that logic that don't touch the page directly, so they can be tested on their own |
 | `static/css/mindless-meals.css` | All the styling |
+| `static/undercurrent/`, `templates/_install_shortcut.html` | The "Add to Home Screen" shortcut and service worker. **Copied from `shared/undercurrent-web/`; edit there and re-run its `sync.sh`, not here** |
+| `static/img/icons/` | Home-screen app icons |
 | `migrations/` | Database schema history, managed by a tool called Alembic (more on this below) |
 
 Recipes you add through the app live in the database — nothing
@@ -141,7 +143,7 @@ tables are tracked in detail.
 
 ```bash
 cd mindless_meals/app
-uv run pytest                   # 41 tests — the API, persistence, and seeding
+uv run pytest               # 45 tests — the API, persistence, seeding and install shortcut
 node --test tests/*.test.js # 26 tests — client-side filtering and the recipe form
 ```
 

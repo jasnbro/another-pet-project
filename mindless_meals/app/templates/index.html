@@ -6,6 +6,14 @@
   <title>Mindless Meals</title>
   <meta name="description" content="A quiet meal atlas — what should we eat?">
   <link rel="stylesheet" href="{{ asset_url('css/mindless-meals.css') }}">
+  <link rel="stylesheet" href="{{ asset_url('undercurrent/install-shortcut.css') }}">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="{{ theme_color }}">
+  <link rel="apple-touch-icon" href="{{ asset_url('img/icons/apple-touch-icon.png') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Meals">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
   <a class="skip-link" href="#atlas">Skip to recipes</a>
@@ -379,5 +387,8 @@
   <script src="{{ asset_url('js/filtering.js') }}" defer></script>
   <script src="{{ asset_url('js/recipe-form.js') }}" defer></script>
   <script src="{{ asset_url('js/mindless-meals.js') }}" defer></script>
+
+  {% include "_install_shortcut.html" %}
+  <script src="{{ asset_url('undercurrent/install-shortcut.js') }}" defer></script>
 </body>
 </html>
