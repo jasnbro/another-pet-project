@@ -1,0 +1,23 @@
+[project]
+name = "mindless-meals"
+version = "0.1.0"
+description = "A quiet meal atlas — what should we eat?"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "flask",
+    "flask-sqlalchemy",
+    "pyyaml",
+    "psycopg2-binary",
+    "alembic",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+# An app, not a library: uv manages the environment but doesn't build or
+# install this folder as a package.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]

@@ -51,3 +51,11 @@ paragraph, concrete and specific, not general advice.
 - **Redact credentials even in your own output.** When inspecting a
   live container's env/config (e.g. `DATABASE_URL`), strip embedded
   passwords before printing them, even to yourself.
+
+- **Python environments are uv-managed; never `pip install` into one.**
+  Each app has its own `pyproject.toml` + `uv.lock` (e.g.
+  `mindless_meals/`). Add deps with `uv add <pkg>` (or `uv add --dev`),
+  commit the updated `uv.lock`, and run things with `uv run`. In Docker,
+  the venv lives at `/opt/venv` (`UV_PROJECT_ENVIRONMENT`), not in `/app`:
+  `compose.yml` bind-mounts `./app` over `/app`, which would silently hide
+  a venv built there.

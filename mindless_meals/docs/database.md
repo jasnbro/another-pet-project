@@ -239,10 +239,9 @@ alternative) in `postgres/README.md`.
 ## Local startup
 
 ```
-cd mindless_meals/app
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-FLASK_APP=app flask run --port=8000
+cd mindless_meals
+uv sync
+cd app && uv run flask --app app run --port=8000
 ```
 
 Runs against SQLite with no further setup (this is unchanged from
@@ -283,7 +282,7 @@ anyone ran a migration.)
 
 ```
 cd mindless_meals/app
-source .venv/bin/activate           # after `pip install -r requirements.txt`
+source ../.venv/bin/activate        # after `uv sync` in mindless_meals/ (or prefix commands with `uv run`)
 export DATABASE_URL=postgresql+psycopg2://<POSTGRES_USER>:<password>@<host>:5432/mindless_meals
 
 alembic upgrade head                # apply all migrations
@@ -535,7 +534,7 @@ forward.
    it can't paper over anything left undone here):
    ```
    cd ~/services/mindless_meals/app
-   source .venv/bin/activate   # after pip install -r requirements.txt
+   source ../.venv/bin/activate   # after `uv sync` in mindless_meals/ (or prefix with `uv run`)
    export DATABASE_URL=<the same value now in mindless_meals/.env>
 
    alembic stamp head   # tables already match head; just start tracking them
