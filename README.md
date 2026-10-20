@@ -39,3 +39,4 @@ Claude and ChatGPT act as coding agents; I own the architecture, data model, rev
   the model, e.g. `*Authored by Claude (Anthropic, Claude Opus 5.5)
   via the user's GitHub account.*`
 - Commits: include a `Co-Authored-By:` trailer for the agent.
+- No Claude Code session links anywhere in the repo (see AGENTS.md).
