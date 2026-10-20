@@ -95,7 +95,7 @@ def create_recipe():
 
 @api.put("/recipes/<int:recipe_id>")
 def update_recipe(recipe_id):
-    recipe = Recipe.query.get_or_404(recipe_id)
+    recipe = db.get_or_404(Recipe, recipe_id)
     payload = request.get_json(silent=True) or {}
     fields = validate_recipe_payload(payload)
     for key, value in fields.items():
@@ -106,7 +106,7 @@ def update_recipe(recipe_id):
 
 @api.delete("/recipes/<int:recipe_id>")
 def delete_recipe(recipe_id):
-    recipe = Recipe.query.get_or_404(recipe_id)
+    recipe = db.get_or_404(Recipe, recipe_id)
 
     Favorite.query.filter_by(recipe_id=recipe_id).delete()
     RecipeIngredient.query.filter_by(recipe_id=recipe_id).delete()
@@ -181,7 +181,7 @@ def list_favorites():
 
 @api.post("/favorites/<int:recipe_id>")
 def add_favorite(recipe_id):
-    Recipe.query.get_or_404(recipe_id)
+    db.get_or_404(Recipe, recipe_id)
     if not Favorite.query.filter_by(recipe_id=recipe_id).first():
         db.session.add(Favorite(recipe_id=recipe_id))
         db.session.commit()
