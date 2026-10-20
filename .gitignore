@@ -1,8 +1,11 @@
 # Persistent application data
 **/config/
+**/config_old/
 **/data/
 **/cache/
 **/logs/
+**/log/
+*.log
 **/instance/
 **/backups/
 
