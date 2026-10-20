@@ -4,6 +4,10 @@ Mindless Meals 🐙
 A quiet little recipe app that answers one question: **what should I eat
 this week?**
 
+**Live:** [meals.undercurrentlabs.dev](https://meals.undercurrentlabs.dev/)
+
+![Mindless Meals home page](https://github.com/user-attachments/assets/a7fe2c8f-f350-4a6a-8799-efd2c60613fe)
+
 No calorie counting, no dashboards, no gamification — just a calm place
 to browse recipes, build a meal plan, and get back to your day. Think
 "personal field guide," not "SaaS product." It's part of the Undercurrent

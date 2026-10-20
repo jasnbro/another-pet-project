@@ -6,6 +6,10 @@ Self-hosted apps and the infrastructure that runs them, built and operated by Ja
 
 A recipe and meal-planning web app that answers one question: what should I eat this week? Browse and filter recipes, save favorites, build a meal plan, and export recipes or a grocery list.
 
+**Live:** [meals.undercurrentlabs.dev](https://meals.undercurrentlabs.dev/)
+
+![Mindless Meals home page](https://github.com/user-attachments/assets/a7fe2c8f-f350-4a6a-8799-efd2c60613fe)
+
 - **Stack:** Python, Flask, SQLAlchemy, Alembic, Postgres (SQLite for local dev), vanilla JavaScript, Docker Compose
 - **Tests:** 45 Python tests (API, persistence, seeding) and 26 JavaScript tests (filtering, recipe form)
 - **Run it locally:** no database server needed; see the [Mindless Meals README](mindless_meals/README.md)
