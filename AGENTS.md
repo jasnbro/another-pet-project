@@ -51,3 +51,18 @@ paragraph, concrete and specific, not general advice.
 - **Redact credentials even in your own output.** When inspecting a
   live container's env/config (e.g. `DATABASE_URL`), strip embedded
   passwords before printing them, even to yourself.
+
+- **Python environments are uv-managed; never `pip install` into one.**
+  Each app has its own `pyproject.toml` + `uv.lock` (e.g.
+  `mindless_meals/`). Add deps with `uv add <pkg>` (or `uv add --dev`),
+  commit the updated `uv.lock`, and run things with `uv run`. In Docker,
+  the venv lives at `/opt/venv` (`UV_PROJECT_ENVIRONMENT`), not in `/app`,
+  so mounting source over `/app` (local dev, or a future compose change)
+  can't silently hide it.
+
+- **Production deploys go through `deploy/` only; never hand-edit or
+  `git pull` in `~/services/mindless_meals` on ATLAS.** It's
+  deploy-managed: code lives in tagged images, `compose.override.yml` pins
+  the running one. A deploy step that can fail (preflight, migrations)
+  must run before anything in that folder is modified -- a refused deploy
+  has to leave it exactly as it was. Covered by `deploy/tests/`.

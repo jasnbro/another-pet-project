@@ -1,12 +1,15 @@
 import os
 
-from flask import Flask, render_template, url_for
+from flask import Flask, jsonify, render_template, send_from_directory, url_for
 
 from api import api
 from db import db
 from import_ingredients import import_ingredients
 from models import EFFORT_LEVELS, MEAL_TYPES, Favorite, Recipe, other_tag_label
 from seed import seed_recipes
+
+# Matches --cream in static/css/mindless-meals.css.
+THEME_COLOR = "#f4ede0"
 
 
 def _default_database_uri():
@@ -125,11 +128,51 @@ def create_app(config_overrides=None):
             other_tag_options=other_tag_options,
             recipes_json=[r.to_dict() for r in recipes],
             favorite_ids_json=list(favorite_ids),
+            uc_app_name="Mindless Meals",
+            theme_color=THEME_COLOR,
         )
 
     @app.route("/health")
     def health():
         return {"status": "ok"}
+
+    # --- Installable web app (Undercurrent web standard; issue #34) -------
+    # Both live at the site root: a service worker only controls pages at or
+    # below its own path, and the manifest's scope is "/".
+    @app.route("/sw.js")
+    def service_worker():
+        response = send_from_directory(app.static_folder, "undercurrent/sw.js")
+        response.headers["Content-Type"] = "text/javascript"
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+    @app.route("/manifest.webmanifest")
+    def manifest():
+        icon = lambda name: url_for("static", filename=f"img/icons/{name}")
+        response = jsonify(
+            {
+                "name": "Mindless Meals",
+                "short_name": "Meals",
+                "description": "A quiet meal atlas — what should we eat?",
+                "start_url": "/",
+                "scope": "/",
+                "display": "standalone",
+                "background_color": THEME_COLOR,
+                "theme_color": THEME_COLOR,
+                "icons": [
+                    {"src": icon("icon-192.png"), "sizes": "192x192", "type": "image/png"},
+                    {"src": icon("icon-512.png"), "sizes": "512x512", "type": "image/png"},
+                    {
+                        "src": icon("icon-maskable-512.png"),
+                        "sizes": "512x512",
+                        "type": "image/png",
+                        "purpose": "maskable",
+                    },
+                ],
+            }
+        )
+        response.headers["Content-Type"] = "application/manifest+json"
+        return response
 
     return app
 

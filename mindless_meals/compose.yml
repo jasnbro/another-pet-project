@@ -1,17 +1,31 @@
+# Production: deploy/deploy.sh builds a tagged image (mindless_meals:<git sha>)
+# and pins it via compose.override.yml next to this file on ATLAS. The code
+# lives in the image -- there is deliberately no ./app bind mount, so a
+# deploy (or rollback) is just "run a different image".
+#
+# Local dev: `docker compose up --build` builds mindless_meals:local from
+# this folder.
 services:
   mindless_meals:
     build: .
+    image: mindless_meals:local
     container_name: mindless_meals
     env_file: .env
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
       - ./data:/data
     restart: unless-stopped
+    healthcheck:
+      # python:slim has no curl; the app's own interpreter does the probe.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     networks:
-     - atlas-proxy
-     - postgres_default
+      - atlas-proxy
+      - postgres_default
 
 networks:
   atlas-proxy:

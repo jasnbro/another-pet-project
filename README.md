@@ -11,6 +11,11 @@ Location
 ~/services/jellyfin
 ~/services/mindless_meals
 
+Deploying
+---------
+Mindless Meals deploys itself when a PR merges to main: see
+deploy/README.md (setup, rollback, what to do when something fails).
+
 Start
 -----
 cd ~/services/<service_name>

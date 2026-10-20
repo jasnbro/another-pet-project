@@ -40,3 +40,7 @@ Thumbs.db
 # Future backups
 *.bak
 *.old
+
+# Written on ATLAS by deploy/ (pinned image, deploy history/lock)
+mindless_meals/compose.override.yml
+mindless_meals/.deploy/
