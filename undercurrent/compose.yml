@@ -1,0 +1,12 @@
+services:
+  undercurrent:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "8080"
+    networks:
+      - atlas-proxy
+
+networks:
+  atlas-proxy:
+    external: true
