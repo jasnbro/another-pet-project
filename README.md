@@ -1,63 +1,46 @@
-A repo for random projects that I think of as I fall back in love with data.
+# Undercurrent on ATLAS
 
-Atlas
+Self-hosted apps and the infrastructure that runs them, built and operated by Jasmine Brooks-Beltran with AI coding agents.
 
-Services
---------
-Jellyfin
+## Mindless Meals
 
-Location
---------
-~/services/jellyfin
-~/services/mindless_meals
+A recipe and meal-planning web app that answers one question: what should I eat this week? Browse and filter recipes, save favorites, build a meal plan, and export recipes or a grocery list.
 
-Start
------
-cd ~/services/<service_name>
-docker compose up -d
+**Live:** [meals.undercurrentlabs.dev](https://meals.undercurrentlabs.dev/)
 
-Stop
-----
-cd ~/services/<service_name>
-docker compose down
+![Mindless Meals home page](https://github.com/user-attachments/assets/a7fe2c8f-f350-4a6a-8799-efd2c60613fe)
 
-Logs
-----
-cd ~/services/<service_name>
-docker compose logs -f
+- **Stack:** Python, Flask, SQLAlchemy, Alembic, Postgres (SQLite for local dev), vanilla JavaScript, Docker Compose
+- **Tests:** 45 Python tests (API, persistence, seeding) and 26 JavaScript tests (filtering, recipe form)
+- **Run it locally:** no database server needed; see the [Mindless Meals README](mindless_meals/README.md)
+- **Database:** schema, migrations and backups in [docs/database.md](mindless_meals/docs/database.md)
 
-Access
-------
-LAN:
-http://<atlas-lan-ip>:8096
+## Infrastructure
 
-Tailscale:
-http://<atlas-tailscale-ip>:8096
+| Service | Role |
+|---|---|
+| `postgres/` | Shared Postgres server, one database per app, internal network only, scripted backup and restore |
+| `cloudflared/` | Cloudflare tunnel for external access without open ports |
+| `mindless_meals/` | The app, containerized |
+| `jellyfin/` | Personal media server |
 
-Infrastructure Services
------------------------
-postgres
-- Shared database server
-- One database per application
-- Internal only (atlas-data network) — never exposed on a host port in
-  production; see postgres/compose.dev.yml for local-dev-only access
-- Setup, schema, migrations, backups: see mindless_meals/docs/database.md
-  (written from the mindless_meals app's perspective, but the postgres
-  service setup / backup scripts there apply to any app sharing this
-  server)
+Server runbook: [docs/atlas.md](docs/atlas.md).
 
-Application Services
---------------------
-jellyfin
-mindless_meals
-future applications
+## How it's built with AI agents
 
-Notes
------
-- Use the jasmine user for day-to-day administration.
-- Avoid working as root unless performing OS-level maintenance.
-- Jellyfin uses HTTP by default.
-- Safari may attempt HTTPS and show SSL errors.
-- Tailscale connectivity must be active on the client device.
-- All self-hosted services should live under ~/services.
-- Each service should contain its own compose.yml and persistent data.
+Claude and ChatGPT act as coding agents; I own the architecture, data model, review and deploys.
+
+- [AGENTS.md](AGENTS.md) is a checklist agents must read before working here. Each entry comes from a real mistake, such as ORM schema creation colliding with database migrations.
+- AI-authored issues and PRs are labeled (`author:claude`, `author:chatgpt`) and carry a footer naming the model.
+- When an agent needs a decision, it applies `status:needs-human-review`, and a GitHub Action notifies me.
+
+## Attribution convention
+
+- Claude and ChatGPT post through the owner's GitHub account, so the
+  GitHub author is always jasnbro. Mark AI-written work explicitly.
+- Issues and PRs: add the `author:claude` or `author:chatgpt` label.
+- Issue bodies, PR descriptions and comments: end with a footer naming
+  the model, e.g. `*Authored by Claude (Anthropic, Claude Opus 5.5)
+  via the user's GitHub account.*`
+- Commits: include a `Co-Authored-By:` trailer for the agent.
+- No Claude Code session links anywhere in the repo (see AGENTS.md).

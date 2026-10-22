@@ -1,8 +1,11 @@
 # Persistent application data
 **/config/
+**/config_old/
 **/data/
 **/cache/
 **/logs/
+**/log/
+*.log
 **/instance/
 **/backups/
 
@@ -40,3 +43,7 @@ Thumbs.db
 # Future backups
 *.bak
 *.old
+
+# Written on ATLAS by deploy/ (pinned image, deploy history/lock)
+mindless_meals/compose.override.yml
+mindless_meals/.deploy/
