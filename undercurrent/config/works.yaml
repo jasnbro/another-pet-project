@@ -61,7 +61,7 @@ works:
     image:
       src: /images/disputes-architecture.svg
       alt: >-
-        Proceses for managing disputes data needed for
+        Processes for managing disputes data needed for
         regulatory and operational reporting
  
   - slug: hot-parts
@@ -90,7 +90,7 @@ works:
     title: cash bonus
     tagline: a promotions engine where every decision has a reason
     tier: featured
-    order: 1
+    order: 2
     published: false   # when the diagram exists: flip to true, and set pipelinetools to tier: more
     summary:
       - >-
@@ -107,7 +107,7 @@ works:
     source: content/work/cash-bonus.md
     image:
       src: /images/cash-bonus-architecture.svg
-      alt: Automated campaing management, tracking and rewarding processes.
+      alt: Automated campaign management, tracking and rewarding processes.
 
   - slug: mindless-meals
     title: mindless meals

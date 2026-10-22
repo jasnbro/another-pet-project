@@ -6,7 +6,7 @@
 
 ## The problem
 
-Disputes reporting at Cash App ran on a pair of versioned tables the team called the big nasty: `bignasty` and `bignasty_ii`. Between them, 50+ columns covered cases, transaction details, and customer information in one place. The stack was Snowflake, Prefect, and Google Sheets, in 2022–2023.
+Disputes reporting at Cash App ran on a pair of versioned tables the team nicknamed the big nasty. Between them, 50+ columns covered cases, transaction details, and customer information in one place. The stack was Snowflake, Prefect, and Google Sheets, in 2022–2023.
 
 It had three problems:
 

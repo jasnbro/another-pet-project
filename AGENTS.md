@@ -52,12 +52,25 @@ paragraph, concrete and specific, not general advice.
   live container's env/config (e.g. `DATABASE_URL`), strip embedded
   passwords before printing them, even to yourself.
 
-- **Normalize both sides of filesystem containment checks with realpath.** macOS aliases `/tmp` to `/private/tmp`; comparing a resolved file to an unresolved boundary rejects legitimate files. Test both alias paths and escaping symlinks before relying on path validation. (undercurrent: content validator.)
+- **Normalize both sides of filesystem containment checks with
+  realpath.** macOS aliases `/tmp` to `/private/tmp`; comparing a
+  resolved file to an unresolved boundary rejects legitimate files.
+  Test both alias paths and escaping symlinks before relying on path
+  validation. (undercurrent: content validator.)
 
-- **Validate source-file lookup after the framework bundles it.** `import.meta.url` moves into build output during Astro prerendering; a relative source-root calculation that passes unit tests then reads `dist/config` instead of the original YAML. Run a real static build, and resolve source content from the documented project working directory. (undercurrent.)
+- **Validate source-file lookup after the framework bundles it.**
+  `import.meta.url` moves into build output during Astro prerendering;
+  a relative source-root calculation that passes unit tests then reads
+  `dist/config` instead of the original YAML. Run a real static build,
+  and resolve source content from the documented project working
+  directory. (undercurrent.)
 
+- **Verify HEIC conversion visually.** Sandboxed macOS `sips` can exit
+  successfully while writing a solid-black JPEG when image decoding is
+  unavailable. Inspect the output before integrating it, and use an
+  authorized conversion with system decoder access if necessary.
+  (undercurrent.)
 
-- **Verify HEIC conversion visually.** Sandboxed macOS `sips` can exit successfully while writing a solid-black JPEG when image decoding is unavailable. Inspect the output before integrating it, and use an authorized conversion with system decoder access if necessary. (undercurrent.)
 - **Python environments are uv-managed; never `pip install` into one.**
   Each app has its own `pyproject.toml` + `uv.lock` (e.g.
   `mindless_meals/`). Add deps with `uv add <pkg>` (or `uv add --dev`),
