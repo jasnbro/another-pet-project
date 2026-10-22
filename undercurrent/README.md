@@ -18,25 +18,13 @@ npm run dev
 
 Build output is static HTML in `dist/`.
 
-## Docker on Atlas
+## Deploying to Atlas
 
-The multi-stage `Dockerfile` installs locked dependencies, runs tests and content/type checks, and builds Astro. Nginx serves only the resulting static files on port 8080. Content is baked into the image: rebuild after YAML, Markdown, or asset edits, and when a scheduled note's publication date arrives.
+Merging to `main` deploys automatically. The **Undercurrent** workflow runs the checks below, then the self-hosted runner on Atlas runs `deploy/deploy-undercurrent.sh`. That script builds `undercurrent:<sha>` (the image build runs the tests and content validation again), switches the container in `~/services/undercurrent` to it, waits for its health check, and switches back automatically if the check fails. It never touches other services. Content is baked into the image, so a scheduled note's publication date needs a redeploy: **Actions → Undercurrent → Run workflow → deploy**.
 
-Use a separate checkout for this branch rather than switching a checkout bind-mounted into another live service. From its `undercurrent/` directory on Atlas:
+Roll back the same way, using action `rollback` with ref blank (the previous version) or a commit SHA. To do it by hand on Atlas, run `APP=undercurrent deploy/rollback.sh` from the runner's checkout. Don't run `docker compose up --build` in `~/services/undercurrent`: that folder is deploy-managed, like Mindless Meals'.
 
-```sh
-# The shared network is normally already present for cloudflared.
-docker network inspect atlas-proxy
-# Only if it does not exist:
-# docker network create atlas-proxy
-docker compose up -d --build
-docker compose ps
-docker compose logs --tail=50 undercurrent
-```
-
-In the existing Cloudflare Tunnel's published application routes, select the desired public hostname and set the HTTP service URL to `http://undercurrent:8080`. Both services must join the same `atlas-proxy` network on the same Docker host. The hostname is configured in Cloudflare, not in these files. No host port, tunnel token, or database is needed by the site container.
-
-To rebuild content, run `docker compose up -d --build` again. To stop just this site, run `docker compose down`; the external network remains available to the other services.
+**Public hostname (one-time, in Cloudflare):** Zero Trust → Networks → Tunnels → the Atlas tunnel → Public hostnames → Add. Use the site's hostname, service type `HTTP`, URL `undercurrent:8080`. cloudflared and the site share the `atlas-proxy` Docker network, so the service name resolves. No host port, token, or database is needed by the site container.
 
 For an isolated local smoke test without the Atlas network:
 
