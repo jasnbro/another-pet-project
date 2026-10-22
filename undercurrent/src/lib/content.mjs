@@ -234,7 +234,18 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
   return { site, works, notes, warnings };
 }
 
-export function loadContent(root = projectRoot, now = new Date()) {
+// Pages call loadContent() with no arguments once per route; validate the real
+// content once per build day instead of once per page. Explicit root/now
+// arguments (tests, fixtures) always reload.
+let cached = null;
+export function loadContent(...args) {
+  if (args.length) return readContent(...args);
+  const day = todayISO();
+  if (cached?.day !== day) cached = { day, content: readContent() };
+  return cached.content;
+}
+
+function readContent(root = projectRoot, now = new Date()) {
   const read = (name, keys) => {
     const path = resolve(root, 'config', `${name}.yaml`);
     const doc = parseDocument(readFileSync(path, 'utf8'), { uniqueKeys: true });

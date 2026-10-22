@@ -25,6 +25,8 @@ try {
   }
   const home = await get('/');
   assert.equal(home.headers.get('cache-control'), 'no-cache');
+  assert.equal(home.headers.get('x-content-type-options'), 'nosniff');
+  assert.match(home.headers.get('content-security-policy') ?? '', /frame-ancestors 'none'/);
   const html = await home.text();
   assert.ok(!html.includes('id="notes-label"'), 'Draft notes leaked');
   const css = html.match(/href="([^"\s]*\/_astro\/[^"\s]+\.css)"/)?.[1];
@@ -32,6 +34,7 @@ try {
   const asset = await get(css);
   assert.equal(asset.status, 200);
   assert.match(asset.headers.get('cache-control'), /immutable/);
+  assert.equal(asset.headers.get('x-content-type-options'), 'nosniff');
   for (const path of ['/missing', '/notes/what-data-organizations-get-wrong/', '/work/disputes-refactor/', '/_astro/missing.css']) assert.equal((await get(path)).status, 404, path);
   const redirect = await get('/work/pipelinetools');
   assert.equal(redirect.status, 301);
@@ -39,7 +42,7 @@ try {
   // A second container resolves the service name over the shared network,
   // matching how cloudflared reaches the production service.
   docker('run', '--rm', '--network', network, '--entrypoint', 'wget', image, '-q', '-O', '/dev/null', 'http://undercurrent:8080/');
-  console.log('Container health, static routes/assets, draft exclusion, 404s, redirects, cache headers, and tunnel-network DNS passed.');
+  console.log('Container health, static routes/assets, draft exclusion, 404s, redirects, cache and security headers, and tunnel-network DNS passed.');
 } finally {
   for (const args of [['rm', '-f', container], ['network', 'rm', network], ['image', 'rm', image]]) {
     try { docker(...args); } catch { /* Preserve the original failure; clean only test resources. */ }

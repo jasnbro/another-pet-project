@@ -1,21 +1,50 @@
-name: Undercurrent checks
+# Undercurrent site: test every PR; deploy every merge to main on ATLAS.
+#
+#   PR or push   -> site checks + deploy-script tests (GitHub-hosted, no secrets)
+#   push to main -> deploy   (self-hosted runner on ATLAS, label "atlas")
+#   Run workflow -> deploy a chosen commit, or roll back (Actions tab, main only)
+#
+# Same security model as mindless-meals.yml (see deploy/README.md): the ATLAS
+# jobs only ever run for main, and actions are pinned to commit SHAs.
+name: Undercurrent
 on:
   push:
-    branches: ['feature/undercurrent-astro']
-    paths: ['undercurrent/**', '.github/workflows/undercurrent-checks.yml']
+    branches: [main]
+    paths:
+      - 'undercurrent/**'
+      - 'deploy/**'
+      - '.github/workflows/undercurrent-checks.yml'
   pull_request:
-    paths: ['undercurrent/**', '.github/workflows/undercurrent-checks.yml']
+    paths:
+      - 'undercurrent/**'
+      - 'deploy/**'
+      - '.github/workflows/undercurrent-checks.yml'
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "What to do"
+        type: choice
+        options: [deploy, rollback]
+        default: deploy
+      ref:
+        description: "Commit SHA. Deploy: blank = latest main. Rollback: blank = the version before the current one."
+        required: false
+        default: ""
 permissions:
   contents: read
 jobs:
   implementation:
+    if: github.event_name != 'workflow_dispatch' || inputs.action == 'deploy'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: undercurrent
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
       - run: npm ci --no-audit --no-fund
@@ -28,3 +57,43 @@ jobs:
       - run: npm run build
       - name: Build and smoke-test production container
         run: npm run test:container
+      - name: Deploy script (shellcheck + tests)
+        working-directory: .
+        run: |
+          shellcheck -x deploy/deploy-undercurrent.sh deploy/tests/test_deploy_undercurrent.sh
+          bash deploy/tests/test_deploy_undercurrent.sh
+
+  deploy:
+    needs: [implementation]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && inputs.action == 'deploy'))
+    runs-on: [self-hosted, atlas]
+    concurrency:
+      group: undercurrent-atlas
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - name: Deploy to ATLAS
+        run: deploy/deploy-undercurrent.sh "$(git rev-parse HEAD)"
+
+  rollback:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.action == 'rollback'
+    runs-on: [self-hosted, atlas]
+    concurrency:
+      group: undercurrent-atlas
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Roll back on ATLAS
+        env:
+          APP: undercurrent
+          CONTAINER: undercurrent
+          TARGET: ${{ inputs.ref }}
+        run: deploy/rollback.sh ${TARGET:+"$TARGET"}

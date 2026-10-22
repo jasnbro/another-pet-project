@@ -11,7 +11,7 @@ I work in the space between building and architecture: close enough to the code 
 - data pipelines and ingestion
 - workflow orchestration
 - data quality and operational reliability
-- Python, SQL, and PySpark backend work
+- Python and SQL backend work
 - turning one-off processes into reusable patterns
 - making legacy or under-documented systems easier to reason about
 

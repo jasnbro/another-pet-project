@@ -106,6 +106,7 @@ Manual commands in `~/services/mindless_meals` (`docker compose logs`,
 | `deploy/rollback.sh [sha]` | Switch to an earlier image |
 | `deploy/common.sh` | Shared helpers |
 | `deploy/tests/` | Tests for the scripts, run in CI against a fake `docker` |
+| `deploy/deploy-undercurrent.sh <sha>` | The Undercurrent site deploy (static, no database), run by `.github/workflows/undercurrent-checks.yml`; roll back with `APP=undercurrent deploy/rollback.sh` |
 
 Settings (environment variables, all optional): `SERVICE_DIR` (default
 `~/services/mindless_meals`), `BACKUP_DIR` (default `~/backups/postgres`),

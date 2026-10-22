@@ -1,6 +1,13 @@
+# Production: deploy/deploy-undercurrent.sh builds a tagged image
+# (undercurrent:<git sha>) and pins it via compose.override.yml next to this
+# file in ~/services/undercurrent on ATLAS. Content is baked into the image.
+#
+# Local: `docker compose up --build` builds undercurrent:local from this folder.
 services:
   undercurrent:
     build: .
+    image: undercurrent:local
+    container_name: undercurrent
     restart: unless-stopped
     expose:
       - "8080"
