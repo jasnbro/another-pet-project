@@ -36,7 +36,8 @@ for net in atlas-proxy postgres_default; do
 done
 
 # --- 1. Build ------------------------------------------------------------
-docker build --label "org.opencontainers.image.revision=$SHA" -t "$IMAGE" "$REPO_DIR/$APP"
+# --pull refreshes the base image so OS and Python security patches land on every deploy.
+docker build --pull --label "org.opencontainers.image.revision=$SHA" -t "$IMAGE" "$REPO_DIR/$APP"
 
 previous="$(running_image)"
 log "Currently running: ${previous:-nothing}"
