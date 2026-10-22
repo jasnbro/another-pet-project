@@ -1,0 +1,6 @@
+---
+import type { ImageSpec } from '../lib/content.mjs';
+interface Props { image: ImageSpec; eager?: boolean; class?: string }
+const { image, eager = false, class: className } = Astro.props;
+---
+<img src={image.src} alt={image.decorative ? '' : image.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} class={className} style={image.position ? { objectPosition: image.position } : undefined} />

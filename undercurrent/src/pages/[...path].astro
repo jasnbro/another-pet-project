@@ -1,0 +1,26 @@
+---
+import { loadContent, pageEntries } from '../lib/content.mjs';
+import { renderBody } from '../lib/markdown';
+import { escapeHTML } from '../lib/icons';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+import type { Page } from '../lib/content.mjs';
+export function getStaticPaths() {
+  return pageEntries(loadContent()).map(entry => ({ params: { path: entry.url.replace(/^\//, '').replace(/\/$/, '') }, props: { entry } }));
+}
+interface Props { entry: Page & { kind: string; date?: string | null; series?: string | null } }
+const { entry } = Astro.props;
+const { site } = loadContent();
+let html = await renderBody(entry.source);
+if (entry.kind === 'note' && entry.date) {
+  const date = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(entry.date));
+  const metadata = `<p class="reading-meta"><time datetime="${escapeHTML(entry.date)}">${escapeHTML(date)}</time>${entry.series ? ` · ${escapeHTML(entry.series)}` : ''}</p>`;
+  html = html.replace(/<\/h1>/, `</h1>${metadata}`);
+}
+---
+<SiteLayout site={site} title={entry.title}>
+  <div class="reading-shell">
+    <nav class="reading-nav" aria-label="Reading navigation"><a href="/" class="utility-link">{site.header.brand}<Icon name="arrow-right" /></a>{entry.kind === 'note' && <a class="utility-link" href={site.sections.notes.archive.url}>{site.sections.notes.archive.label}<Icon name="arrow-right" /></a>}</nav>
+    <article class="prose" set:html={html} />
+  </div>
+</SiteLayout>

@@ -1,0 +1,79 @@
+# undercurrent: page-level content
+#
+# Content only. Layout, typography, colors, and section order live in code.
+# Lists that grow (work, notes) live in works.yaml and notes.yaml.
+
+meta:
+  title: undercurrent
+  description: >-
+    jasmine brooks-beltran, data systems engineer. Systems that quiet the
+    problems you don't want to think about.
+
+header:
+  brand: undercurrent
+  tagline: systems for a quieter life
+  logo:
+    src: /images/undercurrent-approved-clean-cream.png
+    alt: ""                # decorative: the brand name sits next to it
+    decorative: true
+  telemetry:
+    day_of_year: true      # computed at build/render time, never hardcoded
+    moon_phase: true       # computed at build/render time, never hardcoded
+    facts:                 # one shown per day, rotating in order
+      - octopuses have three hearts
+      - octopuses taste with their arms
+      - an octopus has no bones
+
+hero:
+  label: 00 / human
+  name: jasmine brooks-beltran
+  title: data systems engineer
+  image:
+    src: /images/hero-hillside.jpg
+    alt: Jasmine sitting on a hillside overlooking a mountain valley at dusk
+    position: right 75%   # CSS object-position, for cropping on narrow screens
+  intro:
+    - >-
+      I build systems that quiet the problems you don't want to think about,
+      so you have more space for the ones you do.
+    - >-
+      Ten years in data systems: pipelines, orchestration, and the
+      infrastructure underneath them.
+  links:
+    - label: linkedin
+      url: https://www.linkedin.com/in/jasnbro/
+    - label: how to work with me
+      url: /how-to-work-with-me
+
+pages:                     # standalone long-form pages, rendered from markdown
+  - slug: how-to-work-with-me
+    title: How to work with me
+    url: /how-to-work-with-me
+    source: content/pages/how-to-work-with-me.md
+
+sections:
+  work:
+    label: 01 / work
+    enabled: true
+  notes:
+    label: 02 / notes
+    enabled: auto          # true | false | auto (shown only if a published note exists)
+    max_items: 3
+    archive:
+      label: view archive
+      url: /notes
+
+footer:
+  brand: undercurrent
+  tagline: systems for a quieter life
+  logo:
+    src: /images/undercurrent-approved-clean-cream.png
+    alt: ""
+    decorative: true
+  links:
+    - label: linkedin
+      url: https://www.linkedin.com/in/jasnbro/
+    - label: how to work with me
+      url: /how-to-work-with-me
+  copyright_name: jasmine brooks-beltran   # year is computed
+  credits: designed by me · built with claude code & codex

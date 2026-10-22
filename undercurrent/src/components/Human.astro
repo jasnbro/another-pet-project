@@ -1,0 +1,18 @@
+---
+import type { Site } from '../lib/content.mjs';
+import ContentImage from './ContentImage.astro';
+import ContentLink from './ContentLink.astro';
+interface Props { hero: Site['hero'] }
+const { hero } = Astro.props;
+---
+<section class="human" aria-labelledby="human-name">
+  <ContentImage image={hero.image} eager class="human-landscape" />
+  <div class="human-shade" aria-hidden="true"></div>
+  <div class="human-copy">
+    <p class="section-label">{hero.label}</p>
+    <h1 id="human-name">{hero.name}</h1>
+    <p class="human-title">{hero.title}</p>
+    <div class="human-intro">{hero.intro.map(line => <p>{line}</p>)}</div>
+    <nav class="human-links" aria-label="About Jasmine">{hero.links.map(link => <ContentLink link={link} />)}</nav>
+  </div>
+</section>
