@@ -125,3 +125,17 @@ test('missing draft files warn; publishing the same entry requires its files', t
   draft.published = false; draft.image.src = '/../outside.svg';
   assert.throws(f.validate, /escapes/);
 });
+
+for (const [label, body, pattern] of [
+  ['shortcut image', '![diagram]\n\n[diagram]: /images/missing.svg', /missing file/],
+  ['shortcut link', '[destination]\n\n[destination]: /missing', /no published page/],
+  ['collapsed image alt', '![][diagram]\n\n[diagram]: /images/test.svg', /requires alt/],
+  ['HTML link', '<a href="http://example.com">Read</a>', /https/]
+]) test(`rejects invalid ${label} through the Markdown parser`, t => {
+  const f = fixture(t); f.put('content/pages/about.md', '# About\n\n' + body); assert.throws(f.validate, pattern);
+});
+test('valid shortcut images pass and inline/fenced code is ignored', t => {
+  const f = fixture(t);
+  f.put('content/pages/about.md', '# About\n\n![diagram]\n\n[diagram]: /images/test.svg\n\n`![fake](/missing.svg)`\n\n```md\n![fake](/missing.svg)\n```');
+  f.validate();
+});

@@ -4,7 +4,7 @@ Astro portfolio in the `another-pet-project` monorepo. This project is independe
 
 ## Run
 
-Node 22.12 or newer:
+Node 22.19 or newer (matching the resolved dependencies):
 
 ```sh
 cd undercurrent
@@ -47,7 +47,7 @@ docker run --rm -p 127.0.0.1:8080:8080 undercurrent:local
 
 Open `http://localhost:8080/` and `/work/pipelinetools/`. Unknown paths return 404. Directory redirects remain relative so Cloudflare's public HTTPS hostname and port are preserved.
 
-Verification: Compose configuration, 41 application tests, Astro type checking, and the static build pass. Image build and container HTTP/health checks still need to run on a machine with a working Docker daemon; the local daemon was unavailable during preparation.
+Run `npm run test:container` on a machine with Docker to build and verify the production image in an isolated network. It tests container health, public pages and assets, hidden draft routes, 404s, relative redirects, cache headers, and service DNS resolution from another container. CI runs this test on every applicable PR/push alongside application tests, Astro checks, and the actual static build. Test containers, images, and networks are removed afterward.
 
 ## Content
 

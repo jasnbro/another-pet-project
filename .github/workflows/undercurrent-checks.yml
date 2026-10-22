@@ -18,9 +18,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: npm run test:build
       - name: Check actual supplied content
         if: always()
         run: npm run validate
+      - run: npm run check
+      - run: npm run build
+      - name: Build and smoke-test production container
+        run: npm run test:container

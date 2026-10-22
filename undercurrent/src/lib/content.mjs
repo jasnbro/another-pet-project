@@ -1,6 +1,10 @@
 import { readFileSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { resolve, relative, sep } from 'node:path';
 import { parseDocument } from 'yaml';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+const markdownParser = unified().use(remarkParse).use(remarkGfm);
 import { todayISO } from './dates.mjs';
 export { todayISO } from './dates.mjs';
 
@@ -195,19 +199,27 @@ export function validateContent(data, root = projectRoot, now = new Date()) {
     const heading = md.match(/^# (.+)/)?.[1].trim();
     if (heading && heading !== s.title) warnings.push(`${s.path}: H1 "${heading}" differs from YAML title "${s.title}"`);
     if (s.published && /TODO/i.test(md)) err(s.path, 'published Markdown contains TODO');
-    // Strip fenced code before finding Markdown/HTML assets and links.
-    const body = md.replace(/(^|\n)(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\2[^\n]*(?=\n|$)/g, '$1');
-    const defs = new Map([...body.matchAll(/^\s*\[([^\]]+)\]:\s*<?([^\s>]+)>?/gm)].map(m => [m[1].toLowerCase(), m[2]]));
+    // Parse the same CommonMark/GFM syntax as rendering, including shortcut
+    // references, escaped labels, multiline destinations, and code exclusions.
+    const tree = markdownParser.parse(md);
+    const nodes = [];
+    const walk = node => { nodes.push(node); node.children?.forEach(walk); };
+    walk(tree);
+    const defs = new Map(nodes.filter(n => n.type === 'definition').map(n => [n.identifier, n.url]));
     const refs = [];
-    for (const m of body.matchAll(/(!?)\[([^\]]*)\]\(\s*<?([^\s)>]+)>?(?:\s+["'][^\n]*?["'])?\s*\)/g)) refs.push({ image: m[1] === '!', alt: m[2], url: m[3] });
-    for (const m of body.matchAll(/(!?)\[([^\]]*)\]\[([^\]]*)\]/g)) {
-      const url = defs.get((m[3] || m[2]).toLowerCase());
-      if (!url) err(s.path, `undefined Markdown reference ${m[3] || m[2]}`);
-      else refs.push({ image: m[1] === '!', alt: m[2], url });
-    }
-    for (const m of body.matchAll(/<img\b[^>]*>/gi)) {
-      const src = m[0].match(/\bsrc=["']([^"']+)["']/i)?.[1], alt = m[0].match(/\balt=["']([^"']*)["']/i)?.[1];
-      if (!src) err(s.path, 'HTML image requires src'); else refs.push({ image: true, alt, url: src });
+    for (const node of nodes) {
+      if (node.type === 'image' || node.type === 'link') refs.push({ image: node.type === 'image', alt: node.alt, url: node.url });
+      if (node.type === 'imageReference' || node.type === 'linkReference') {
+        const url = defs.get(node.identifier);
+        if (url) refs.push({ image: node.type === 'imageReference', alt: node.alt, url });
+      }
+      if (node.type === 'html') {
+        for (const m of node.value.matchAll(/<img\b[^>]*>/gi)) {
+          const src = m[0].match(/\bsrc=["']([^"']+)["']/i)?.[1], alt = m[0].match(/\balt=["']([^"']*)["']/i)?.[1];
+          if (!src) err(s.path, 'HTML image requires src'); else refs.push({ image: true, alt, url: src });
+        }
+        for (const m of node.value.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)) refs.push({ image: false, url: m[1] });
+      }
     }
     for (const ref of refs) {
       if (ref.image) {
