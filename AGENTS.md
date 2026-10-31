@@ -99,3 +99,11 @@ paragraph, concrete and specific, not general advice.
   "Claude Code Sessions → PRs" (under Human Developer Support) when you
   have Notion access; otherwise tell the owner the session and PR so she
   can log it.
+
+- **Bash `set -e` does nothing inside a function called from `if`, `||`,
+  `&&` or `!`, even inside a subshell.** A loop like
+  `if ! ( do_one "$x" ); then ...` runs `do_one` with errexit off. A failed
+  pipeline then falls through to the next line, e.g. an `mv` that publishes
+  a half-written file. Give every step its own `|| return 1`. Then
+  mutation-test by deleting the guard to confirm a test fails.
+  (postgres/scripts/backup.sh.)
