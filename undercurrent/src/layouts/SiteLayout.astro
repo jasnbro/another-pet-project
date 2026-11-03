@@ -2,6 +2,7 @@
 import type { Site } from '../lib/content.mjs';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import NightSky from '../components/NightSky.astro';
 import '../styles/global.css';
 interface Props { site: Site; title?: string }
 const { site, title } = Astro.props;
@@ -18,10 +19,11 @@ const { site, title } = Astro.props;
     <meta property="og:description" content={site.meta.description} />
     <meta name="twitter:card" content="summary" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#1d192b" />
+    <meta name="theme-color" content="#090d1b" />
     <link rel="icon" type="image/png" href={site.header.logo.src} />
   </head>
   <body>
+    <NightSky />
     <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="page-shell"><Header header={site.header} /><main id="main-content" tabindex="-1"><slot /></main><Footer footer={site.footer} /></div>
   </body>
