@@ -386,61 +386,26 @@ tokens, and a second run creates 0 new rows (confirming idempotency).
 
 ## Backups
 
-`postgres/scripts/backup.sh` -- plain-SQL `pg_dump` (via `docker exec` into
-the running `postgres` container), gzip-compressed, timestamped:
+Backups are shared across every app on the Postgres server. They're
+documented in [`postgres/README.md` → Backups](../../postgres/README.md#backups):
 
-```
-postgres/scripts/backup.sh [database_name]     # default: mindless_meals
-```
+- nightly encrypted dumps to the backup SSD
+- an automatic restore test
+- restoring for real
 
-Writes to `postgres/backups/<database_name>_<UTC timestamp>.sql.gz`
-(configurable via `BACKUP_DIR`) and deletes that database's backups older
-than `RETENTION_DAYS` (default 14; set to `0` to disable). See the
-script's header comment for a cron example. `postgres/backups/` is
-gitignored -- backups are runtime data, not repo content.
+Disaster recovery is in [`docs/recovery.md`](../../docs/recovery.md).
 
-Plain SQL (not `pg_dump`'s custom format) is deliberate: it can be
-restored with nothing more than `psql`, and inspected/grepped with
-`zcat` if you ever need to check what's actually in a backup.
-
-On Atlas, backups land on local disk first (per the product requirements
-for this project); off-site copies (e.g. synced to another machine or
-cloud storage) are a deliberately separate, later step -- not implemented
-here.
+The dumps are plain SQL (not `pg_dump`'s custom format) on purpose. They
+can be restored with nothing more than `psql`, and once decrypted they can
+be inspected with `zcat`.
 
 ## Restoring a backup
 
-`postgres/scripts/restore.sh`:
-
-```
-postgres/scripts/restore.sh <backup_file.sql.gz> [database_name]     # default: mindless_meals
-```
-
-The target database must already exist and be empty -- restoring into a
-database with existing tables fails on the first conflicting object
-rather than silently overwriting data. Create a fresh one first:
-
-```
-docker exec -it postgres psql -U <POSTGRES_USER> -c \
-  "CREATE DATABASE mindless_meals_restored OWNER mindless_meals;"
-postgres/scripts/restore.sh postgres/backups/mindless_meals_<timestamp>.sql.gz mindless_meals_restored
-```
-
-**Test a restore periodically**, not just when you need one for real:
-restore into a throwaway database (as above), spot-check row counts and a
-few real rows, then drop it:
-
-```
-docker exec -it postgres psql -U <POSTGRES_USER> -d mindless_meals_restored \
-  -c "SELECT count(*) FROM recipes;" \
-  -c "SELECT name, cuisine FROM recipes LIMIT 5;"
-docker exec -it postgres psql -U <POSTGRES_USER> -c "DROP DATABASE mindless_meals_restored;"
-```
-
-(This exact backup → restore → row-count-comparison flow was run against
-a real local Postgres 16 instance while building this feature, using the
-full 48-recipe / 107-ingredient / 278-link dataset -- see the PR/commit
-history for the verification output.)
+See [`postgres/README.md` → Restoring for real](../../postgres/README.md#restoring-for-real).
+In short: restore into a **new** database with `postgres/scripts/restore.sh`,
+check it, then switch over. Never restore over the live database. To check
+that the newest backup restores without touching anything, run
+`postgres/scripts/restore_test.sh mindless_meals`.
 
 ## Verification steps
 

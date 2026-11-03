@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Stand-in for `mountpoint -q <dir>`: succeeds only for dirs in FAKE_MOUNTS.
+[[ " ${FAKE_MOUNTS:-} " == *" ${!#} "* ]]

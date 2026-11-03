@@ -15,6 +15,7 @@ on:
       - "shared/undercurrent-web/**"
       - "deploy/**"
       - "postgres/scripts/**"
+      - "postgres/tests/**"
       - ".github/workflows/mindless-meals.yml"
   push:
     branches: [main]
@@ -23,6 +24,7 @@ on:
       - "shared/undercurrent-web/**"
       - "deploy/**"
       - "postgres/scripts/**"
+      - "postgres/tests/**"
       - ".github/workflows/mindless-meals.yml"
   workflow_dispatch:
     inputs:
@@ -59,10 +61,12 @@ jobs:
         run: node --test mindless_meals/app/tests/*.test.js shared/undercurrent-web/*.test.js
       - name: Shared snippet is in sync
         run: shared/undercurrent-web/sync.sh --check mindless_meals
-      - name: Deploy scripts (shellcheck + tests)
+      - name: Deploy and backup scripts (shellcheck + tests)
         run: |
-          shellcheck -x deploy/*.sh deploy/tests/* shared/undercurrent-web/sync.sh
+          sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends age
+          shellcheck -x deploy/*.sh deploy/tests/* shared/undercurrent-web/sync.sh postgres/scripts/*.sh postgres/tests/*
           bash deploy/tests/test_deploy.sh
+          bash postgres/tests/test_backup.sh
 
   image:
     if: github.event_name != 'workflow_dispatch' || inputs.action == 'deploy'

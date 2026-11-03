@@ -12,6 +12,11 @@ Location
 ~/services/jellyfin
 ~/services/mindless_meals
 
+Recovery
+--------
+When something breaks beyond a bad deploy: docs/recovery.md.
+Backups (nightly, encrypted, SSD): postgres/README.md#backups.
+
 Deploying
 ---------
 Mindless Meals deploys itself when a PR merges to main: see
