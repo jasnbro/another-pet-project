@@ -1,0 +1,45 @@
+---
+// A repeatable, decorative sky rendered at build time: no animation or client JS.
+// Coordinates are atmospheric, rather than an astronomical star chart.
+let seed = 8137;
+const random = () => {
+  seed = (seed * 1664525 + 1013904223) >>> 0;
+  return seed / 4294967296;
+};
+const stars = Array.from({ length: 850 }, () => {
+  const brightness = random();
+  return {
+    x: random() * 1800,
+    y: random() * 1200,
+    radius: brightness > .985 ? 1.35 : brightness > .88 ? .85 : .45,
+    opacity: .16 + Math.pow(brightness, 3) * .65,
+    color: random() > .83 ? '#e7d5bc' : '#dbe3f5',
+  };
+});
+const dust = Array.from({ length: 650 }, () => {
+  const x = random() * 2100 - 150;
+  // Several samples give the star cloud soft, irregular edges.
+  const spread = (random() + random() + random() - 1.5) * 230;
+  return { x, y: 1020 - x * .58 + spread, radius: .25 + random() * .35, opacity: .08 + random() * .22 };
+});
+---
+<div class="night-sky" aria-hidden="true">
+  <svg viewBox="0 0 1800 1200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" focusable="false">
+    <defs>
+      <radialGradient id="sky-haze">
+        <stop offset="0" stop-color="#77748e" stop-opacity=".13" />
+        <stop offset=".4" stop-color="#565a7f" stop-opacity=".07" />
+        <stop offset="1" stop-color="#313b61" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="sky-depth">
+        <stop offset="0" stop-color="#090d1b" stop-opacity=".52" />
+        <stop offset="1" stop-color="#090d1b" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <ellipse cx="990" cy="455" rx="1220" ry="190" transform="rotate(-30 990 455)" fill="url(#sky-haze)" />
+    <ellipse cx="1260" cy="295" rx="680" ry="105" transform="rotate(-30 1260 295)" fill="url(#sky-haze)" />
+    {dust.map(star => <circle cx={star.x} cy={star.y} r={star.radius} fill="#c8cce0" opacity={star.opacity} />)}
+    {stars.map(star => <circle cx={star.x} cy={star.y} r={star.radius} fill={star.color} opacity={star.opacity} />)}
+    <ellipse cx="800" cy="600" rx="740" ry="850" fill="url(#sky-depth)" />
+  </svg>
+</div>
