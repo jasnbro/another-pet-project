@@ -39,19 +39,22 @@ Do not redraw, reinterpret, regenerate, or substitute the mark.
 - more museum catalogue / field notebook / technical publication than startup marketing page
 
 ### Background
-Use a deep **Scientific Indigo**, not pure black.
+Use a deep night indigo (`#090D1B`), not pure black. The background
+should evoke lying outside beneath stars with no light pollution.
 
-The entire page should have a subtle **paper-like texture**:
-- fine fibers / grain
-- slight tonal variation
-- low contrast
-- no obvious grunge, scratches, distressed edges, or vintage effects
-- texture should be felt more than noticed
+A continuous, still starfield replaces the earlier paper texture:
+- irregular fine stars with varied brightness, size, and subtle warm/cool tones
+- a faint diagonal Milky Way haze and denser distant stars
+- restrained contrast behind readable text
+- no repeating tiles, animation, parallax, or client-side rendering
+
+`NightSky.astro` generates the decorative SVG at build time from a fixed seed.
+The sky fills the viewport on every page and stays behind all content.
 
 ### Color system
 Suggested starting points; tune for contrast and cohesion rather than treating these as immutable hex values.
 
-- Scientific Indigo background: around `#1B1729`, `#1D192B`, or `#201A30`
+- Night Indigo background: `#090D1B`
 - warm cream / off-white text: around `#F1EEE7` or `#EAE6DD`
 - muted lavender-gray secondary text / rules: around `#A8A1B2` or `#8F899A`
 - Electric Moss accent: around `#B8F24A` or `#AEEA3A`
@@ -370,7 +373,7 @@ Owns:
 ### Important separation
 Content and publication state live in YAML / Markdown.
 
-Layout, typography, color, paper texture, photo treatment, responsive behavior, and per-tier rendering stay in code.
+Layout, typography, color, night sky, photo treatment, responsive behavior, and per-tier rendering stay in code.
 
 Do not turn YAML into a page builder.
 
