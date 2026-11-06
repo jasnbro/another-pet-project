@@ -120,9 +120,67 @@ Back up *everything* on the server (all databases + roles) in one file:
 
     docker exec postgres pg_dumpall -U madamada > all_databases_backup.sql
 
-There's no automated backup schedule set up — these are manual
-commands to run (and copy off this machine) whenever you want a
-snapshot. Worth doing before any risky change.
+Those are fine for a one-off snapshot before a risky change. The
+regular backups use the scripts in `scripts/`:
+
+- `backup.sh <db>` — one gzip'd plain-SQL dump, timestamped, with
+  14-day local retention.
+- `restore.sh <file.sql.gz> <db>` — restores a dump into an existing,
+  empty database.
+- `nightly.sh` — runs `backup.sh` for every app database, then copies
+  the dumps to the attached backup drive and to an encrypted Google
+  Drive folder. Every step runs even if one fails; the log says which.
+
+### Where the copies live (3-2-1)
+
+1. `~/backups/postgres` on Atlas (14 days).
+2. The plugged-in drive, `/mnt/backupdrive/postgres` (kept until you
+   prune it). Protects against Atlas's main disk dying.
+3. Google Drive, encrypted, via the `gdrive-crypt:` rclone remote (90
+   days). The off-site copy: survives theft, fire or a dead Atlas.
+
+### One-time setup
+
+1. **Install rclone:** `sudo -v ; curl https://rclone.org/install.sh | sudo bash`
+2. **Google Drive remote:** `rclone config` → new remote `gdrive`,
+   type `drive`, blank client id/secret, scope `drive.file` (rclone
+   only sees files it created). Answer `n` to auto config, run
+   `rclone authorize "drive"` on a laptop with a browser, paste the
+   token back.
+3. **Encrypted remote:** `rclone config` → new remote `gdrive-crypt`,
+   type `crypt`, remote `gdrive:atlas-backups`, standard filename
+   encryption, directory names encrypted, generate both passwords.
+   **Store both passwords in the password manager.** Without them the
+   off-site backups can't be decrypted by anyone.
+4. **Attached drive:** make sure it mounts at `/mnt/backupdrive` on
+   boot (an `/etc/fstab` entry by UUID). `nightly.sh` skips it, with a
+   warning, whenever it isn't mounted.
+5. **Cron** (`crontab -e`; your user must be in the `docker` group):
+
+        0 2 * * * /home/jasmine/services/postgres/scripts/nightly.sh >> /home/jasmine/backups/postgres/backup.log 2>&1
+
+   `nightly.sh` loads `../.env` itself, so cron gets `POSTGRES_USER`.
+6. **New app database?** Add it to `BACKUP_DATABASES` (an env var
+   read by `nightly.sh`, default `mindless_meals`), e.g. in the cron
+   line: `BACKUP_DATABASES="mindless_meals gym_log" /home/jasmine/...`.
+
+### Checking it works
+
+- After the first night: `tail -n 20 ~/backups/postgres/backup.log`
+  should end with `Nightly backup OK`.
+- `rclone ls gdrive-crypt:postgres` shows readable file names;
+  `rclone ls gdrive:atlas-backups` shows scrambled ones (that's the
+  encryption).
+- **Test a restore from the off-site copy** at least once, and again
+  every few months:
+
+        rclone copy gdrive-crypt:postgres/<file>.sql.gz /tmp/restore-test/
+        docker exec postgres createdb -U madamada restore_test
+        DB_ROLE=madamada ./scripts/restore.sh /tmp/restore-test/<file>.sql.gz restore_test
+        docker exec -it postgres psql -U madamada -d restore_test -c '\dt'
+        docker exec postgres dropdb -U madamada restore_test
+
+  Never restore over a real app database to test.
 
 Changing the password
 ------------------------
