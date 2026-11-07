@@ -105,3 +105,10 @@ paragraph, concrete and specific, not general advice.
   "Claude Code Sessions → PRs" (under Human Developer Support) when you
   have Notion access; otherwise tell the owner the session and PR so she
   can log it.
+
+- **Tests must not inherit the CI job's env.** A workflow-level `env:`
+  (e.g. `APP: gym_log` in `gym-log.yml`) reaches every step, including
+  shared test suites that read the same variable as an override. Tests
+  passed locally and failed only in that workflow. Unset such variables
+  in the test's `setup()`, and reproduce CI failures with the workflow's
+  `env:` exported locally.

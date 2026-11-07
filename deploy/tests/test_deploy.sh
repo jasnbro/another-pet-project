@@ -11,6 +11,9 @@ setup() {
   mkdir -p "$T/bin" "$T/fake" "$T/svc" "$T/backups"
   ln -s "$here/fake-docker" "$T/bin/docker"
   export PATH="$T/bin:$PATH" FAKE_DIR="$T/fake" SERVICE_DIR="$T/svc" BACKUP_DIR="$T/backups" HEALTH_TIMEOUT=5
+  # The calling environment may set these (gym-log.yml sets APP=gym_log for
+  # every job); each test starts from the default app unless it sets them.
+  unset APP CONTAINER
   export FAKE_CURRENT=aaaa1111 FAKE_HEAD=aaaa1111 FAKE_UNHEALTHY="" FAKE_DB_DOWN="" FAKE_MIGRATE_FAIL="" FAKE_TABLES=3
   echo 'DATABASE_URL="postgresql+psycopg2://mm_app:secret@postgres:5432/mindless_meals"' > "$T/svc/.env"
   echo "mindless_meals_old:latest" > "$T/fake/running"
