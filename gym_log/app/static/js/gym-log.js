@@ -399,8 +399,10 @@
       " · weeks count from the start date (week 1 is odd)</p>";
 
     if (c.warnings.length) {
-      html += '<div class="banner banner--warn">' + icon("triangle-alert") + "<div><strong>Heads up</strong><ul>" +
-        c.warnings.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div></div>";
+      // Collapsed by default: the warnings are long, and the plan is what this page is for.
+      html += '<details class="banner banner--warn heads-up"><summary>' + icon("triangle-alert") +
+        "<strong>Heads up</strong> <span class=\"muted\">(" + c.warnings.length + ")</span></summary><ul>" +
+        c.warnings.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></details>";
     }
 
     html += '<h3 class="block__title">Schedule</h3><div class="table-wrap"><table class="table schedule"><thead><tr><th scope="col">Week</th>' +

@@ -141,6 +141,15 @@ main:focus { outline: none; }
 .banner--warn { background: var(--warn-soft); }
 .banner--warn .icon { color: var(--warn); }
 .banner ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 0.9rem; }
+.heads-up { display: block; }
+.heads-up summary {
+  display: flex; align-items: center; gap: 8px; min-height: 32px;
+  cursor: pointer; list-style: none;
+}
+.heads-up summary::-webkit-details-marker { display: none; }
+.heads-up summary::after { content: "▸"; margin-left: auto; color: var(--muted); }
+.heads-up[open] summary::after { content: "▾"; }
+.heads-up ul { margin-top: 8px; }
 
 /* --- today ---------------------------------------------------------------------- */
 .today__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
