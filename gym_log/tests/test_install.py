@@ -30,6 +30,14 @@ def test_home_page(client):
     assert client.get("/static/img/icons/apple-touch-icon.png").status_code == 200
 
 
+def test_undercurrent_mark_links_home(client):
+    html = client.get("/").get_data(as_text=True)
+    assert '<a class="app-mark" href="https://undercurrentlabs.dev" aria-label="Undercurrent Labs">' in html
+    css = client.get("/static/css/gym-log.css").get_data(as_text=True)
+    assert 'url("../img/octopus-mark.png")' in css
+    assert client.get("/static/img/octopus-mark.png").status_code == 200
+
+
 def test_shared_snippet_copy_is_up_to_date():
     if not SYNC.exists():  # not in a full checkout (e.g. inside the image)
         return
