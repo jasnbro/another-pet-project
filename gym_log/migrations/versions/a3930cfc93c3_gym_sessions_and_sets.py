@@ -1,6 +1,6 @@
 """gym_sessions and gym_sets
 
-Revision ID: 0001
+Revision ID: a3930cfc93c3
 Revises:
 Create Date: 2026-11-07
 """
@@ -8,7 +8,7 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
-revision = "0001"
+revision = "a3930cfc93c3"
 down_revision = None
 branch_labels = None
 depends_on = None
