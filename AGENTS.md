@@ -106,6 +106,15 @@ paragraph, concrete and specific, not general advice.
   have Notion access; otherwise tell the owner the session and PR so she
   can log it.
 
+- **Never let validation depend on today's date.** A rule that turns a
+  warning into an error once a date passes is a time bomb: the same
+  commit goes red later, unrelated PRs fail, and an app that validates at
+  startup won't come back after a reboot (rollback doesn't help, since
+  older images share the rule). Real-world state that changes on its own
+  (gear not arrived yet) is a warning; only broken data is an error.
+  (gym_log: equipment ownership flipped to an error on the plan's start
+  date; now always a warning.)
+
 - **Tests must not inherit the CI job's env.** A workflow-level `env:`
   (e.g. `APP: gym_log` in `gym-log.yml`) reaches every step, including
   shared test suites that read the same variable as an override. Tests

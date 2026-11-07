@@ -33,12 +33,11 @@ def create_app(config_overrides=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL") or _default_database_uri()
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["GYM_DATA_DIR"] = os.environ.get("GYM_DATA_DIR")  # default: gym_log/data
-    app.config["GYM_TODAY"] = None  # tests pin the validation date
     if config_overrides:
         app.config.update(config_overrides)
 
     try:
-        catalog = load_catalog(app.config["GYM_DATA_DIR"], today=app.config["GYM_TODAY"])
+        catalog = load_catalog(app.config["GYM_DATA_DIR"])
     except CatalogError as exc:
         # Refuse to start: a half-valid plan is worse than a clear error.
         raise SystemExit(f"{exc}\nFix the YAML and restart. See gym_log/README.md.") from None

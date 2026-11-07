@@ -59,14 +59,14 @@ take it out of the plan. Old logs still point at its key.
 
 In `data/equipment.yaml`, change `status:`
 
-- `planned` → `owned` when it arrives. **Do this for `powerblocks` after
-  pickup:** once the plan's start date has passed, CI fails while the plan
-  uses equipment that isn't owned.
+- `planned` → `owned` when it arrives (e.g. `powerblocks` after pickup).
+  Until then the app shows a "Needs …" note on those exercises and lists
+  them under **Heads up** on the Plan page. It never blocks CI or the app.
 - `owned` → `retired` when it leaves the house. Never delete the line.
 
-Retiring something the active plan needs makes CI fail, unless the
-exercise has an `alt` that's fully owned. Swap those exercises in the plan
-first (or add an `alt`).
+Retiring something the active plan needs shows a warning (unless the
+exercise has an `alt` that's fully owned). Swap those exercises in the plan,
+or add an `alt`.
 
 ## Reading a CI failure
 
@@ -81,7 +81,7 @@ step. Each problem is one line naming the file. The common ones:
 | `uses 'x', which isn't in exercises.yaml` | The plan names a key that doesn't exist. Check spelling against `exercises.yaml`. |
 | `which is retired` | The plan (or an `alt`) uses a retired exercise. Pick another key. |
 | `uses equipment 'x', which isn't in equipment.yaml` | Add the item to `equipment.yaml`, or fix the spelling. |
-| `needs equipment that isn't owned` | Mark it `owned` if you have it; otherwise swap the exercise. Before the plan's start date this is only a warning. |
+| `needs equipment that isn't owned` | Only ever a warning (it never fails CI). Mark it `owned` once you have it, or swap the exercise. |
 | `more than one plan has active: true` / `no plan has active: true` | Exactly one plan file needs `active: true`. |
 | `low ... is greater than high` / `sets must be at least 1` | Fix the numbers: `reps: [low, high]`, `sets` 1 or more. |
 | `schedule.odd.mon is day 'C'` | The schedule names a day that isn't under `days:`. |

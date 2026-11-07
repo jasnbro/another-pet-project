@@ -4,9 +4,9 @@ from datetime import date, timedelta
 from app.loader import load_catalog
 from app.schedule import deload_sets, is_deload, next_session, plan_week, progression_cue, scheduled_day
 
-from .conftest import DATA, BEFORE_START
+from .conftest import DATA
 
-PLAN = load_catalog(DATA, today=BEFORE_START).plans["home-gym-v1"]  # starts Mon 2026-11-09
+PLAN = load_catalog(DATA).plans["home-gym-v1"]  # starts Mon 2026-11-09
 
 
 def mondays(start, count):
