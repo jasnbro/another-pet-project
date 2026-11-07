@@ -120,9 +120,12 @@ Back up *everything* on the server (all databases + roles) in one file:
 
     docker exec postgres pg_dumpall -U madamada > all_databases_backup.sql
 
-There's no automated backup schedule set up — these are manual
-commands to run (and copy off this machine) whenever you want a
-snapshot. Worth doing before any risky change.
+For routine backups use `scripts/backup.sh`, which takes one or more
+database names (`scripts/backup.sh mindless_meals gym_log`) and writes
+timestamped, gzipped dumps; `scripts/restore.sh` restores one into a
+fresh database. Each deploy backs up its app's database first; a nightly
+cron entry (see the top of `backup.sh`) covers the rest. Copy backups off
+this machine separately.
 
 Changing the password
 ------------------------

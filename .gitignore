@@ -2,6 +2,8 @@
 **/config/
 **/config_old/
 **/data/
+# ...except Gym Log's data/, which is YAML source (plans, exercises), not runtime data.
+!gym_log/data/
 **/cache/
 **/logs/
 **/log/
@@ -47,3 +49,5 @@ Thumbs.db
 # Written on ATLAS by deploy/ (pinned image, deploy history/lock)
 mindless_meals/compose.override.yml
 mindless_meals/.deploy/
+gym_log/compose.override.yml
+gym_log/.deploy/

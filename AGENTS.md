@@ -71,6 +71,12 @@ paragraph, concrete and specific, not general advice.
   authorized conversion with system decoder access if necessary.
   (undercurrent.)
 
+- **YAML flow mappings split on unquoted commas.** `{ name: Single-arm
+  row, lat-biased, ... }` parses as `name: Single-arm row` plus a bogus
+  `lat-biased: null` key, silently. Quote any value containing a comma
+  inside `{ }`, and validate with `extra="forbid"` so it fails loudly.
+  (gym_log: two of the issue's seed lines had this.)
+
 - **Python environments are uv-managed; never `pip install` into one.**
   Each app has its own `pyproject.toml` + `uv.lock` (e.g.
   `mindless_meals/`). Add deps with `uv add <pkg>` (or `uv add --dev`),

@@ -11,11 +11,12 @@ Location
 --------
 ~/services/jellyfin
 ~/services/mindless_meals
+~/services/gym_log
 
 Deploying
 ---------
-Mindless Meals deploys itself when a PR merges to main: see
-deploy/README.md (setup, rollback, what to do when something fails).
+Mindless Meals and Gym Log deploy themselves when a PR merges to main:
+see deploy/README.md (setup, rollback, what to do when something fails).
 
 Start
 -----
@@ -56,6 +57,7 @@ Application Services
 --------------------
 jellyfin
 mindless_meals
+gym_log (gym.undercurrentlabs.dev, behind Cloudflare Access; see gym_log/README.md)
 future applications
 
 Notes

@@ -1,0 +1,28 @@
+[project]
+name = "gym-log"
+version = "0.1.0"
+description = "A single-user home gym log. Plans live in YAML; Postgres holds what was done."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "flask",
+    "flask-sqlalchemy",
+    "pyyaml",
+    "psycopg2-binary",
+    "alembic",
+    "pydantic",
+    # zoneinfo data for the America/New_York fallback "today"; python:slim
+    # images don't ship the system tz database.
+    "tzdata",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+# An app, not a library: uv manages the environment but doesn't build or
+# install this folder as a package.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

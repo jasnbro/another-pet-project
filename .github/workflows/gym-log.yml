@@ -1,0 +1,125 @@
+# Gym Log: validate YAML + test every PR; deploy every merge to main on ATLAS.
+#
+#   PR or push   -> test + image  (GitHub-hosted runners, no secrets)
+#   push to main -> deploy        (self-hosted runner on ATLAS, label "atlas")
+#   Run workflow -> deploy a chosen commit, or roll back (Actions tab, main only)
+#
+# Same security model as mindless-meals.yml (see deploy/README.md): the ATLAS
+# jobs only ever run for main, and actions are pinned to commit SHAs.
+name: Gym Log
+
+on:
+  pull_request:
+    paths:
+      - "gym_log/**"
+      - "shared/undercurrent-web/**"
+      - "deploy/**"
+      - "postgres/scripts/**"
+      - ".github/workflows/gym-log.yml"
+  push:
+    branches: [main]
+    paths:
+      - "gym_log/**"
+      - "shared/undercurrent-web/**"
+      - "deploy/**"
+      - "postgres/scripts/**"
+      - ".github/workflows/gym-log.yml"
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "What to do"
+        type: choice
+        options: [deploy, rollback]
+        default: deploy
+      ref:
+        description: "Commit SHA. Deploy: blank = latest main. Rollback: blank = the version before the current one."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+env:
+  APP: gym_log
+
+jobs:
+  test:
+    if: github.event_name != 'workflow_dispatch' || inputs.action == 'deploy'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Validate the YAML in gym_log/data
+        working-directory: gym_log
+        run: uv sync --frozen && uv run pytest -q tests/test_yaml_valid.py
+      - name: Python tests
+        working-directory: gym_log
+        run: uv run pytest -q
+      - name: JavaScript tests
+        run: node --test gym_log/tests/*.test.js
+      - name: Shared snippet is in sync
+        run: shared/undercurrent-web/sync.sh --check gym_log
+      - name: Deploy scripts (shellcheck + tests)
+        run: |
+          shellcheck -x deploy/*.sh deploy/tests/* postgres/scripts/*.sh
+          bash deploy/tests/test_deploy.sh
+
+  image:
+    if: github.event_name != 'workflow_dispatch' || inputs.action == 'deploy'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - name: Build the production image
+        run: docker build -t gym_log:ci gym_log
+      - name: Boot it and check health + catalog (SQLite, no secrets)
+        run: |
+          docker run -d --name gl -p 8000:8000 gym_log:ci
+          for _ in $(seq 1 30); do
+            if curl -fsS localhost:8000/health && curl -fsS localhost:8000/api/gym/catalog >/dev/null; then echo; exit 0; fi
+            sleep 2
+          done
+          docker logs gl; exit 1
+      - name: Alembic runs inside the image
+        run: docker run --rm gym_log:ci alembic heads
+
+  deploy:
+    needs: [test, image]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && inputs.action == 'deploy'))
+    runs-on: [self-hosted, atlas]
+    concurrency:
+      group: gym-log-atlas
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - name: Deploy to ATLAS
+        run: deploy/deploy.sh "$(git rev-parse HEAD)"
+
+  rollback:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.action == 'rollback'
+    runs-on: [self-hosted, atlas]
+    concurrency:
+      group: gym-log-atlas
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Roll back on ATLAS
+        env:
+          TARGET: ${{ inputs.ref }}
+        run: deploy/rollback.sh ${TARGET:+"$TARGET"}

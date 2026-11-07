@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
-# Deploy one revision of Mindless Meals on ATLAS.
+# Deploy one revision of an app (default Mindless Meals) on ATLAS.
 #
 #   deploy/deploy.sh <git sha>
+#   APP=gym_log deploy/deploy.sh <git sha>
 #
 # Run from a checkout of that revision (the GitHub Actions runner does this;
 # see deploy/README.md). Steps:
 #   1. Build mindless_meals:<sha> from this checkout.
-#   2. If on Postgres: refuse unless the database is under Alembic, back it
-#      up, then apply any pending migrations with the NEW image.
+#   2. If on Postgres: refuse unless the database is under Alembic (or is
+#      completely empty, for an app's first deploy), back it up, then apply
+#      any pending migrations with the NEW image.
 #   3. Switch the container to the new image and wait for its health check.
 #   4. If it isn't healthy, switch back to the previous image and fail.
 #
 # Never touches other services, ./data, or .env. Safe to re-run.
 #
-# Env overrides: SERVICE_DIR (default ~/services/mindless_meals),
+# Env overrides: APP (default mindless_meals), SERVICE_DIR (default ~/services/$APP),
 # BACKUP_DIR (default ~/backups/postgres), HEALTH_TIMEOUT (default 90s),
 # KEEP_IMAGES (default 5).
 set -euo pipefail
@@ -25,6 +27,8 @@ TAG="${SHA:0:12}"
 IMAGE="$APP:$TAG"
 BACKUP_DIR="${BACKUP_DIR:-$HOME/backups/postgres}"
 KEEP_IMAGES="${KEEP_IMAGES:-5}"
+# Prints how many tables DATABASE_URL's database has (run in the new image).
+COUNT_TABLES='import os, sqlalchemy as sa; print(len(sa.inspect(sa.create_engine(os.environ["DATABASE_URL"])).get_table_names()))'
 
 take_lock
 log "Deploying $IMAGE to $SERVICE_DIR"
@@ -60,7 +64,20 @@ $current_out"
   current_rev="$(grep -Eo '^[0-9a-f]{6,}' <<<"$current_out" | head -n 1 || true)"
   head_rev="$(alembic heads 2>&1 | grep -Eo '^[0-9a-f]{6,}' | head -n 1 || true)"
   [[ -n "$head_rev" ]] || die "could not read migration heads from $IMAGE"
-  [[ -n "$current_rev" ]] || die "database isn't tracked by Alembic yet. Do the one-time adoption in mindless_meals/docs/database.md (Atlas deployment) first. Nothing was changed; $previous is still running."
+  if [[ -z "$current_rev" ]]; then
+    # Untracked. Only safe to migrate from scratch if it holds no tables at
+    # all (a new app's freshly created database); anything else needs the
+    # one-time adoption, or migrations would collide with existing tables.
+    tables_out="$(docker compose -p "$APP" --project-directory "$SERVICE_DIR" \
+        -f "$REPO_DIR/$APP/compose.yml" -f "$candidate" \
+        run --rm --no-deps -T "$APP" python -c "$COUNT_TABLES" 2>&1)" \
+      || die "couldn't inspect the database (is Postgres up?):
+$tables_out"
+    tables="$(tail -n 1 <<<"$tables_out" | tr -d '[:space:]')"
+    [[ "$tables" == 0 ]] || die "database isn't tracked by Alembic yet and already has tables. Do the one-time adoption in mindless_meals/docs/database.md (Atlas deployment) first. Nothing was changed; ${previous:-nothing} is still running."
+    log "Empty database; creating the schema from scratch"
+    current_rev="(empty)"
+  fi
 
   # backup.sh connects as the app's own role, taken from DATABASE_URL.
   db_user="$(sed -E 's#^[^:]+://([^:@/]+).*#\1#' <<<"$db_url")"

@@ -15,6 +15,13 @@ A recipe and meal-planning web app that answers one question: what should I eat 
 - **Run it locally:** no database server needed; see the [Mindless Meals README](mindless_meals/README.md)
 - **Database:** schema, migrations and backups in [docs/database.md](mindless_meals/docs/database.md)
 
+## Gym Log
+
+A single-user home gym log for the iPad: today's workout from the active plan, a rest timer, "last time" values and progression cues, history and CSV export. Plans, exercises and equipment are YAML files in git, validated in CI; Postgres stores only what was done.
+
+- **Stack:** same as Mindless Meals (Flask, SQLAlchemy, Alembic, Postgres, Pydantic for the YAML, vanilla JavaScript)
+- **Change a plan:** edit YAML and merge; see the [Gym Log README](gym_log/README.md)
+
 ## Infrastructure
 
 | Service | Role |
@@ -22,6 +29,7 @@ A recipe and meal-planning web app that answers one question: what should I eat 
 | `postgres/` | Shared Postgres server, one database per app, internal network only, scripted backup and restore |
 | `cloudflared/` | Cloudflare tunnel for external access without open ports |
 | `mindless_meals/` | The app, containerized |
+| `gym_log/` | Gym Log, containerized |
 | `jellyfin/` | Personal media server |
 
 Server runbook: [docs/atlas.md](docs/atlas.md).

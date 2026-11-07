@@ -1,0 +1,109 @@
+/* Undercurrent "Add to Home Screen" shortcut (shared; see README.md).
+   Theme it per app by setting these on :root:
+     --uc-install-bg, --uc-install-fg, --uc-install-muted,
+     --uc-install-border, --uc-install-accent, --uc-install-radius */
+
+.uc-install {
+  position: fixed;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: calc(100vw - 32px);
+  padding: 4px 4px 4px 6px;
+  background: var(--uc-install-bg, Canvas);
+  color: var(--uc-install-fg, CanvasText);
+  border: 1px solid var(--uc-install-border, currentColor);
+  border-radius: var(--uc-install-radius, 999px);
+  font: inherit;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.uc-install[hidden],
+.uc-install-steps__list[hidden] {
+  display: none;
+}
+
+.uc-install__button,
+.uc-install__dismiss,
+.uc-install-steps__close {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  min-height: 44px; /* touch target */
+}
+
+.uc-install__button {
+  padding: 0 8px 0 12px;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--uc-install-accent, inherit);
+}
+
+.uc-install__dismiss {
+  min-width: 44px;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--uc-install-muted, inherit);
+}
+
+.uc-install__button:focus-visible,
+.uc-install__dismiss:focus-visible,
+.uc-install-steps__close:focus-visible {
+  outline: 2px solid var(--uc-install-accent, Highlight);
+  outline-offset: 2px;
+}
+
+.uc-install-steps {
+  width: min(28rem, calc(100vw - 32px));
+  padding: 20px;
+  background: var(--uc-install-bg, Canvas);
+  color: var(--uc-install-fg, CanvasText);
+  border: 1px solid var(--uc-install-border, currentColor);
+  border-radius: var(--uc-install-radius-dialog, 6px);
+  font: inherit;
+}
+
+.uc-install-steps::backdrop {
+  background: rgb(0 0 0 / 0.35);
+}
+
+.uc-install-steps__title {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.uc-install-steps__list {
+  margin: 0 0 16px;
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.uc-install-steps__icon {
+  vertical-align: -4px;
+  margin: 0 2px;
+}
+
+.uc-install-steps__hint {
+  display: block;
+  font-size: 0.85em;
+  color: var(--uc-install-muted, inherit);
+}
+
+.uc-install-steps__close {
+  padding: 0 16px;
+  font-weight: 600;
+  border: 1px solid var(--uc-install-border, currentColor);
+  border-radius: var(--uc-install-radius-dialog, 6px);
+  color: var(--uc-install-accent, inherit);
+}
+
+@media print {
+  .uc-install { display: none; }
+}

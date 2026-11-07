@@ -106,8 +106,24 @@ Manual commands in `~/services/mindless_meals` (`docker compose logs`,
 | `deploy/rollback.sh [sha]` | Switch to an earlier image |
 | `deploy/common.sh` | Shared helpers |
 | `deploy/tests/` | Tests for the scripts, run in CI against a fake `docker` |
+| `.github/workflows/gym-log.yml` | The same for Gym Log (`APP=gym_log`); see below |
 | `deploy/deploy-undercurrent.sh <sha>` | The Undercurrent site deploy (static, no database), run by `.github/workflows/undercurrent-checks.yml`; roll back with `APP=undercurrent deploy/rollback.sh` |
 
-Settings (environment variables, all optional): `SERVICE_DIR` (default
-`~/services/mindless_meals`), `BACKUP_DIR` (default `~/backups/postgres`),
+Settings (environment variables, all optional): `APP` (default
+`mindless_meals`), `SERVICE_DIR` (default `~/services/$APP`), `BACKUP_DIR` (default `~/backups/postgres`),
 `HEALTH_TIMEOUT` (default 90s), `KEEP_IMAGES` (default 5).
+
+## Gym Log
+
+Gym Log (`gym_log/`) deploys with the same scripts: the **Gym Log**
+workflow sets `APP=gym_log`, so everything above applies with
+`~/services/gym_log`, image `gym_log:<sha>` and its own `gym_log`
+database. Roll back from **Actions → Gym Log**, or by hand with
+`APP=gym_log deploy/rollback.sh`.
+
+A brand-new app's database has no Alembic revision yet. The deploy
+accepts that only when the database has **no tables at all** and then
+creates the schema from scratch; an untracked database that already has
+tables is still refused (Mindless Meals' one-time adoption case).
+One-time setup (database, `.env`, tunnel hostname, Cloudflare Access,
+backups): `gym_log/README.md` → *Deploying*.

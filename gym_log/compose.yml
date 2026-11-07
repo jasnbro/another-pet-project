@@ -1,0 +1,34 @@
+# Production: deploy/deploy.sh (APP=gym_log) builds a tagged image
+# (gym_log:<git sha>) and pins it via compose.override.yml next to this file
+# in ~/services/gym_log on ATLAS. Code, YAML and migrations live in the
+# image; there is deliberately no bind mount.
+#
+# Local: `docker compose up --build` builds gym_log:local from this folder
+# (needs the atlas-proxy and postgres_default networks; for plain local dev
+# without Docker see README.md).
+services:
+  gym_log:
+    build: .
+    image: gym_log:local
+    container_name: gym_log
+    env_file: .env
+    # No published port: cloudflared reaches it as http://gym_log:8000 on
+    # the atlas-proxy network.
+    expose:
+      - "8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - atlas-proxy
+      - postgres_default
+
+networks:
+  atlas-proxy:
+    external: true
+  postgres_default:
+    external: true
