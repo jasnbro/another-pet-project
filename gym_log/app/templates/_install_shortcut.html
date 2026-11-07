@@ -1,0 +1,35 @@
+{# Undercurrent "Add to Home Screen" shortcut (shared; see shared/undercurrent-web/README.md).
+   Include near the end of <body>:  {% include "_install_shortcut.html" %}
+   Expects `uc_app_name` in the template context (falls back to "this app"). #}
+{% set uc_name = uc_app_name | default("this app") %}
+<aside id="uc-install" class="uc-install" hidden aria-label="Install {{ uc_name }}">
+  <button type="button" class="uc-install__button" data-uc-install-button>
+    Add to Home Screen
+  </button>
+  <button type="button" class="uc-install__dismiss" data-uc-install-dismiss aria-label="Not now">&times;</button>
+</aside>
+
+<dialog id="uc-install-steps" class="uc-install-steps" aria-labelledby="uc-install-steps-title">
+  <h2 id="uc-install-steps-title" class="uc-install-steps__title">Add {{ uc_name }} to your Home Screen</h2>
+
+  <ol class="uc-install-steps__list" data-uc-steps="ios" hidden>
+    <li>
+      Tap the <strong>Share</strong> button
+      <svg class="uc-install-steps__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+        <path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 11v9h12v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="uc-install-steps__hint">(bottom of the screen in Safari, top-right in Chrome)</span>
+    </li>
+    <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+    <li>Tap <strong>Add</strong>. It opens full-screen, like an app.</li>
+  </ol>
+
+  <ol class="uc-install-steps__list" data-uc-steps="mac" hidden>
+    <li>In the menu bar, choose <strong>File</strong>.</li>
+    <li>Choose <strong>Add to Dock</strong>.</li>
+    <li>Click <strong>Add</strong>. It opens in its own window.</li>
+  </ol>
+
+  <button type="button" class="uc-install-steps__close" data-uc-install-close>Got it</button>
+</dialog>

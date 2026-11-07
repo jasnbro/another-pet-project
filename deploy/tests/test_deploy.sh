@@ -11,7 +11,7 @@ setup() {
   mkdir -p "$T/bin" "$T/fake" "$T/svc" "$T/backups"
   ln -s "$here/fake-docker" "$T/bin/docker"
   export PATH="$T/bin:$PATH" FAKE_DIR="$T/fake" SERVICE_DIR="$T/svc" BACKUP_DIR="$T/backups" HEALTH_TIMEOUT=5
-  export FAKE_CURRENT=aaaa1111 FAKE_HEAD=aaaa1111 FAKE_UNHEALTHY="" FAKE_DB_DOWN="" FAKE_MIGRATE_FAIL=""
+  export FAKE_CURRENT=aaaa1111 FAKE_HEAD=aaaa1111 FAKE_UNHEALTHY="" FAKE_DB_DOWN="" FAKE_MIGRATE_FAIL="" FAKE_TABLES=3
   echo 'DATABASE_URL="postgresql+psycopg2://mm_app:secret@postgres:5432/mindless_meals"' > "$T/svc/.env"
   echo "mindless_meals_old:latest" > "$T/fake/running"
 }
@@ -49,6 +49,25 @@ check "untracked DB: old version still running" test "$(running)" = mindless_mea
 check "untracked DB: no backup/migration" test ! -f "$FAKE_DIR/migrations"
 check "untracked DB: explains next step" grep -q "one-time adoption" "$T/out"
 check "untracked DB: service dir untouched" test ! -f "$T/svc/compose.yml" -a ! -f "$T/svc/compose.override.yml"
+
+# 3b. Brand-new, empty database (a new app's first deploy) -> migrate from scratch
+setup; export FAKE_CURRENT="" FAKE_TABLES=0
+quiet "$deploy" 3b3b3b3b3b3b3b3b; rc=$?
+check "empty DB deploy exits 0" test $rc -eq 0
+check "empty DB: schema created by migrating" test -f "$FAKE_DIR/migrations"
+check "empty DB: backed up first" bash -c "ls '$T/backups' | grep -q sql.gz"
+check "empty DB: switched to new image" test "$(running)" = mindless_meals:3b3b3b3b3b3b
+
+# 3c. Another app (APP=gym_log) uses its own image, service dir and database
+setup; export APP=gym_log CONTAINER=gym_log FAKE_CURRENT="" FAKE_TABLES=0
+echo 'DATABASE_URL="postgresql+psycopg2://gym_log_app:secret@postgres:5432/gym_log"' > "$T/svc/.env"
+quiet "$deploy" 3c3c3c3c3c3c3c3c; rc=$?
+check "gym_log deploy exits 0" test $rc -eq 0
+check "gym_log: built its own folder" grep -q 'docker build .* -t gym_log:3c3c3c3c3c3c .*/gym_log$' "$FAKE_DIR/calls"
+check "gym_log: backed up its own database" bash -c "ls '$T/backups' | grep -q '^gym_log_.*\.sql\.gz$'"
+check "gym_log: backup used its own role" grep -q 'pg_dump -U gym_log_app' "$FAKE_DIR/calls"
+check "gym_log: image pinned" grep -q 'image: gym_log:3c3c3c3c3c3c' "$T/svc/compose.override.yml"
+unset APP CONTAINER
 
 # 4. Database unreachable -> clear error, nothing changed
 setup; export FAKE_DB_DOWN=1

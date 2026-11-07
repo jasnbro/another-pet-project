@@ -1,0 +1,24 @@
+# The exercise key catalog: the one place each key's meaning is defined.
+#
+# Keys are permanent. Never reuse or delete a key; set retired: true instead.
+# Old logs refer to keys, so a reused key would rewrite history.
+#
+# Fields: name, what, muscles, equipment (keys from equipment.yaml; [] for
+# bodyweight), load (db_single | db_per_hand | bodyweight | seconds | band),
+# optional retired (default false), optional alt (substitute exercise shown
+# when any of this one's equipment is not owned). See ../README.md.
+goblet:    { name: Goblet squat, what: "Squat holding one dumbbell vertically at the chest, heels on wedges.", muscles: [quads, glutes], equipment: [powerblocks, squat_wedges], load: db_single }
+floor_press: { name: Dumbbell floor press, what: "Lie on the floor (on the mat), knees bent, press dumbbells; elbows stop at the floor.", muscles: [chest, triceps], equipment: [powerblocks], load: db_per_hand }
+bench:     { alt: floor_press, name: Dumbbell bench press, what: "Press on a flat bench with feet on the foot platform. Floor press until the platform is built.", muscles: [chest, triceps, front delts], equipment: [powerblocks, flybird_bench], load: db_per_hand }
+csrow:     { name: Chest-supported row, what: "Lie face down on the incline bench and row both dumbbells, squeezing shoulder blades.", muscles: [upper back, lats, rear delts], equipment: [powerblocks, flybird_bench], load: db_per_hand }
+rdl:       { name: Romanian deadlift, what: "Hip hinge with dumbbells; hips back, flat back, stop at mid-shin.", muscles: [hamstrings, glutes], equipment: [powerblocks], load: db_per_hand }
+towel:     { name: Towel hamstring curl, what: "On your back, heels on a towel on hardwood, hips up, slide heels in and out.", muscles: [hamstrings], equipment: [], load: bodyweight }
+deadbug:   { name: Dead bug, what: "On your back, extend opposite arm and leg while keeping the low back flat. Reps per side.", muscles: [core], equipment: [], load: bodyweight }
+lunge:     { name: Reverse lunge, what: "Step back into a lunge holding dumbbells; front shin stays vertical. Reps per leg.", muscles: [quads, glutes], equipment: [powerblocks], load: db_per_hand }
+ohp:       { name: Seated overhead press, what: "Bench upright, press dumbbells overhead with ribs down.", muscles: [shoulders, triceps], equipment: [powerblocks, flybird_bench], load: db_per_hand }
+pullover:  { name: Dumbbell pullover, what: "Lie across the bench and lower one dumbbell behind your head for a deep lat stretch.", muscles: [lats, chest], equipment: [powerblocks, flybird_bench], load: db_single }
+thrust:    { name: Hip thrust, what: "Upper back on the bench, dumbbell on hips, drive up and pause 1 sec at top.", muscles: [glutes, hamstrings], equipment: [powerblocks, flybird_bench], load: db_single }
+sarow:     { name: "Single-arm row, lat-biased", what: "One hand and knee on the bench; pull the elbow toward the hip. Reps per arm.", muscles: [lats, upper back], equipment: [powerblocks, flybird_bench], load: db_single }
+bandcurl:  { name: Prone band leg curl, what: "Face down, band looped around a bed frame leg and ankle; curl heel to glutes. Reps per leg.", muscles: [hamstrings], equipment: [band_20_80], load: band }
+pushup:    { name: Push-ups, what: "Full push-ups; elevate hands if form breaks. Stop 2 reps short of failure.", muscles: [chest, triceps, core], equipment: [], load: bodyweight }
+hollow:    { name: Hollow hold, what: "On your back, lift shoulders and legs, low back pressed down. Bend knees if the back arches.", muscles: [core], equipment: [], load: seconds }

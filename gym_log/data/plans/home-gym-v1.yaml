@@ -1,0 +1,34 @@
+# A training plan. Exactly one plan file may have active: true.
+# Edit, merge, and the app picks it up on the next deploy. See ../../README.md.
+plan: home-gym-v1
+active: true
+starts: 2026-11-09
+session_minutes: 40
+schedule:                 # weeks counted from `starts` (week 1 = odd), NOT ISO week numbers
+  odd:  { mon: A, wed: B, fri: A }
+  even: { mon: B, wed: A, fri: B }
+warmup:
+  - Jump rope, easy pace — 2 min
+  - Bodyweight squats on wedges — 10
+  - Glute bridges with mini band — 12
+  - Reverse snow angels — 8
+  - Band pull-aparts — 15
+progression: { rule: double, deload_every_weeks: 9 }   # top of rep range on every set -> go up one jump
+days:
+  A:
+    - { key: goblet,   pair: A1, sets: 3, reps: [8, 12],  start: "20–30 lb" }
+    - { key: bench,    pair: A2, sets: 3, reps: [8, 12],  start: "15–20 lb/hand" }
+    - { key: csrow,    pair: B1, sets: 3, reps: [10, 12], start: "15–20 lb/hand" }
+    - { key: rdl,      pair: B2, sets: 3, reps: [8, 12],  start: "20–25 lb/hand" }
+    - { key: towel,    pair: C1, sets: 2, reps: [8, 12] }
+    - { key: deadbug,  pair: C2, sets: 2, reps: [8, 8] }
+  B:
+    - { key: lunge,    pair: A1, sets: 3, reps: [8, 10],  start: "10–15 lb/hand" }
+    - { key: ohp,      pair: A2, sets: 3, reps: [8, 12],  start: "10–15 lb/hand" }
+    - { key: pullover, pair: B1, sets: 3, reps: [10, 12], start: "15–20 lb" }
+    - { key: thrust,   pair: B2, sets: 3, reps: [10, 12], start: "30–40 lb" }
+    - { key: sarow,    pair: C1, sets: 2, reps: [10, 12], start: "20–25 lb" }
+    - { key: bandcurl, pair: C2, sets: 2, reps: [12, 15] }
+    - { key: pushup,   pair: D1, sets: 2, reps: [8, 15] }
+    - { key: hollow,   pair: D2, sets: 2, reps: [20, 30] }
+finisher: { name: Jump rope, rounds: 5, work_sec: 30, rest_sec: 30 }

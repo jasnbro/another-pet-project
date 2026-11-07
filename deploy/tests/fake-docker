@@ -6,6 +6,7 @@
 #   FAKE_HEAD       `alembic heads` revision
 #   FAKE_DB_DOWN    1 = alembic can't connect
 #   FAKE_MIGRATE_FAIL 1 = `alembic upgrade` fails
+#   FAKE_TABLES     tables in the database, for the empty-database check (default 3)
 set -uo pipefail
 d="$FAKE_DIR"; touch "$d/images" "$d/calls"
 echo "docker $*" >> "$d/calls"
@@ -28,6 +29,7 @@ case "$1" in
   compose)
     if [[ " $* " == *" run "* ]]; then
       [[ "${FAKE_DB_DOWN:-}" == 1 ]] && { echo "sqlalchemy.exc.OperationalError: connection refused"; exit 1; }
+      if [[ " $* " == *" python -c "* ]]; then echo "${FAKE_TABLES:-3}"; exit 0; fi
       case "${!#}" in
         current) [[ -n "${FAKE_CURRENT:-}" ]] && echo "${FAKE_CURRENT} (head)"; echo "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl." ;;
         heads)   echo "${FAKE_HEAD} (head)" ;;
