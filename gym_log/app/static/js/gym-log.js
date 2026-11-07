@@ -256,7 +256,7 @@
       '<div class="today__date">' +
       '<button type="button" class="btn btn--quiet" data-action="date-prev" aria-label="Previous day">‹</button>' +
       '<div><h2 id="today-title">' + esc(L.formatDate(t.date)) + "</h2>" +
-      '<p class="muted">' + (t.week ? "Week " + t.week + " · " : "") + esc(t.plan) +
+      '<p class="muted">' + (t.week ? "Week " + t.week + " · " : "") + esc(t.plan_name || t.plan) +
       (t.date !== L.localISODate(new Date()) ? ' · <button type="button" class="link-button" data-action="date-today">Back to today</button>' : "") +
       "</p></div>" +
       '<button type="button" class="btn btn--quiet" data-action="date-next" aria-label="Next day">›</button>' +
@@ -393,7 +393,7 @@
 
   function renderPlan() {
     var c = state.catalog, p = c.plan;
-    var html = '<section class="view" aria-labelledby="plan-title"><h2 id="plan-title">' + icon("calendar-check") + " " + esc(p.plan) + "</h2>";
+    var html = '<section class="view" aria-labelledby="plan-title"><h2 id="plan-title">' + icon("calendar-check") + " " + esc(p.name || p.plan) + "</h2>";
     html += '<p class="muted">Starts ' + esc(L.formatDate(p.starts)) +
       (p.session_minutes ? " · about " + p.session_minutes + " min a session" : "") +
       " · weeks count from the start date (week 1 is odd)</p>";

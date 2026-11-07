@@ -1,6 +1,7 @@
 # A training plan. Exactly one plan file may have active: true.
 # Edit, merge, and the app picks it up on the next deploy. See ../../README.md.
-plan: Fall 2026
+plan: home-gym-v1        # permanent id: must match this file's name; never change it
+name: Fall 2026          # what the app shows; change freely
 active: true
 starts: 2026-11-09
 session_minutes: 40

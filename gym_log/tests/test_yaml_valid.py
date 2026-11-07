@@ -99,9 +99,10 @@ def test_active_plan_with_unowned_equipment_is_a_warning_not_an_error(data_dir):
     assert "plans/home-gym-v1.yaml: day B uses 'bandcurl', which needs equipment that isn't owned: band_20_80 (planned)" in catalog.warnings
 
 
-def test_real_data_with_planned_gear_still_loads(data_dir):
-    """Regression: with the seed data (powerblocks planned), validation used
-    to flip from warning to error on the plan's start date (2026-11-09)."""
+def test_planned_gear_still_loads(data_dir):
+    """Regression: with powerblocks planned (as the seed data had it),
+    validation used to flip from warning to error on the plan's start date."""
+    data_dir.edit("equipment.yaml", lambda eq: eq["powerblocks"].update(status="planned"))
     catalog = load_catalog(data_dir.path)
     assert any("powerblocks (planned)" in w for w in catalog.warnings)
 
@@ -172,6 +173,23 @@ def test_alt_with_unowned_equipment_is_a_warning(data_dir):
     data_dir.edit("equipment.yaml", lambda eq: eq["foot_platform"].update(status="planned"))
     catalog = load_catalog(data_dir.path)
     assert "exercises.yaml: bench's alt 'floor_press' needs equipment that isn't owned: foot_platform (planned)" in catalog.warnings
+
+
+# --- rule: a plan's id matches its file name (#70) --------------------------------------------
+
+def test_changing_the_plan_id_fails_with_a_pointer_to_name(data_dir):
+    """Renaming via `plan:` would split history across two ids; `name:` is
+    the display name."""
+    data_dir.edit(PLAN, lambda p: p.update(plan="Fall 2026"))
+    msg = errors_for(data_dir)
+    assert "plans/home-gym-v1.yaml: plan id 'Fall 2026' must match the file name ('home-gym-v1')" in msg
+    assert "set name: Fall 2026 instead and put back plan: home-gym-v1" in msg
+
+
+def test_plan_display_name_is_optional(data_dir):
+    data_dir.edit(PLAN, lambda p: p.pop("name", None))
+    plan = load_catalog(data_dir.path).active_plan
+    assert (plan.plan, plan.display_name) == ("home-gym-v1", "home-gym-v1")
 
 
 # --- extra safety rules ----------------------------------------------------------------------

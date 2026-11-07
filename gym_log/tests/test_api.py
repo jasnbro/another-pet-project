@@ -64,6 +64,7 @@ def test_since_filter_and_newest_first(client):
 def test_today_uses_the_schedule_and_the_client_date(client):
     t = client.get("/api/gym/today?date=2026-11-09").json
     assert (t["day"], t["week"], t["deload"], t["rest"]) == ("A", 1, False, False)
+    assert (t["plan"], t["plan_name"]) == ("home-gym-v1", "Fall 2026")
     assert [i["key"] for i in t["items"]][:2] == ["goblet", "bench"]
     rest = client.get("/api/gym/today?date=2026-11-10").json
     assert rest["rest"] and rest["next"] == {"date": "2026-11-11", "day": "B"}
@@ -117,6 +118,7 @@ def test_no_swap_when_bench_owned(client):
 def test_catalog(client):
     c = client.get("/api/gym/catalog").json
     assert c["plan"]["plan"] == "home-gym-v1"
+    assert c["plan"]["name"] == "Fall 2026"
     assert c["exercises"]["goblet"]["what"].startswith("Squat holding")
     assert "goblet" in c["equipment"]["squat_wedges"]["supports"]
     assert c["exercises"]["towel"]["equipment"] == []

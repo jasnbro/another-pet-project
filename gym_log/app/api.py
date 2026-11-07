@@ -198,6 +198,7 @@ def get_today():
         {
             "date": on.isoformat(),
             "plan": plan.plan,
+            "plan_name": plan.display_name,
             "plan_starts": plan.starts.isoformat(),
             "week": week,
             "deload": deload,

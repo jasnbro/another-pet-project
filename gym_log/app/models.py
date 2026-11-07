@@ -85,7 +85,10 @@ class Finisher(Strict):
 
 
 class Plan(Strict):
+    # Permanent id: sessions store it, and it must match the file name
+    # (plans/<id>.yaml). Never change it; use `name` for what's displayed.
     plan: str = Field(min_length=1)
+    name: str | None = Field(default=None, min_length=1)
     active: bool = False
     starts: date
     session_minutes: int | None = Field(default=None, ge=1)
@@ -94,6 +97,10 @@ class Plan(Strict):
     progression: Progression
     days: dict[str, list[PlanItem]]
     finisher: Finisher | None = None
+
+    @property
+    def display_name(self) -> str:
+        return self.name or self.plan
 
     @model_validator(mode="after")
     def _check_schedule_days(self):

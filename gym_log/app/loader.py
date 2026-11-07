@@ -10,6 +10,7 @@ Rules (README.md "Reading a CI failure" explains each):
   - exercises only use equipment keys defined in equipment.yaml
   - an exercise's `alt` is a known, non-retired key whose equipment is owned
   - exactly one plan has active: true
+  - a plan's id (`plan:`) matches its file name; `name:` is the display name
   - the active plan only uses exercises whose equipment is owned (counting
     an automatic swap to `alt`)
 The two ownership rules are always warnings, never errors: gear that hasn't
@@ -162,6 +163,13 @@ def load_catalog(data_dir: Path | str | None = None) -> Catalog:
             plan = Plan.model_validate(raw)
         except ValidationError as exc:
             errors.extend(_pydantic_errors(where, exc))
+            continue
+        if plan.plan != path.stem:
+            errors.append(
+                f"{where}: plan id '{plan.plan}' must match the file name ('{path.stem}'). "
+                "The id is permanent (logged sessions store it); to rename the plan, "
+                f"set name: {plan.plan} instead and put back plan: {path.stem}"
+            )
             continue
         if plan.plan in plans:
             errors.append(f"{where}: plan id '{plan.plan}' is already used by plans/{plan_files[plan.plan]}")

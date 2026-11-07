@@ -23,6 +23,8 @@ editing YAML; keep it that way.
 - **Keys are permanent.** Never rename, reuse or delete an exercise or
   equipment key: logs store keys. Retire with `retired: true` /
   `status: retired`.
+- **A plan's `plan:` id is permanent** and equals its file name (enforced).
+  Sessions store it. The display name is `name:`.
 - **Plans are never stored in Postgres.** A plan change must never need
   code or a migration. If it seems to, the design is wrong; ask.
 - **Schedule uses plan weeks from `starts`, never ISO weeks.** "Today" is
