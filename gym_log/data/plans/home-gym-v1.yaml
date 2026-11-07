@@ -1,6 +1,6 @@
 # A training plan. Exactly one plan file may have active: true.
 # Edit, merge, and the app picks it up on the next deploy. See ../../README.md.
-plan: home-gym-v1
+plan: Fall 2026
 active: true
 starts: 2026-11-09
 session_minutes: 40
