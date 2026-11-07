@@ -27,11 +27,15 @@ The plan is `data/plans/home-gym-v1.yaml`.
   `starts:`; week 1 is `odd`.
 - **Change how often deload weeks come:** `deload_every_weeks:`. In a
   deload week the app halves the sets.
+- **Rename the plan:** change `name:` (e.g. `name: Fall 2026`). That's what
+  the app shows. **Never change `plan:`**: it's the plan's permanent id,
+  must match the file name, and every logged session stores it.
 
 **Starting a whole new plan:** copy the file to
-`data/plans/home-gym-v2.yaml`, change `plan:` to `home-gym-v2` and
-`starts:` to the new start date, then set `active: false` in the old file.
-Only one plan can be active. Old logs keep the plan they were done under.
+`data/plans/home-gym-v2.yaml`, change `plan:` to `home-gym-v2` (matching
+the new file name), set `name:` and `starts:`, then set `active: false` in
+the old file. Only one plan can be active. Old logs keep the plan they
+were done under.
 
 ## Add an exercise
 
@@ -85,6 +89,7 @@ step. Each problem is one line naming the file. The common ones:
 | `more than one plan has active: true` / `no plan has active: true` | Exactly one plan file needs `active: true`. |
 | `low ... is greater than high` / `sets must be at least 1` | Fix the numbers: `reps: [low, high]`, `sets` 1 or more. |
 | `schedule.odd.mon is day 'C'` | The schedule names a day that isn't under `days:`. |
+| `plan id '…' must match the file name` | `plan:` was changed. Put it back to the file's name and use `name:` for the plan's display name. |
 
 The app runs the same check when it starts and won't start if it fails, so
 a bad file can never go live.
