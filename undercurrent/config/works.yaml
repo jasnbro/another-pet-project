@@ -134,7 +134,5 @@ works:
         in YAML that CI validates; the database only records what was lifted.
     disclosure: Designed and directed by me, built with AI coding agents.
     link:
-      # The app itself is private (single user, behind Cloudflare Access),
-      # so the public link is the source.
-      label: view source
-      url: https://github.com/jasnbro/another-pet-project/tree/main/gym_log
+      label: view project
+      url: https://gym.undercurrentlabs.dev/
