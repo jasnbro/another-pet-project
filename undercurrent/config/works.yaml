@@ -121,3 +121,18 @@ works:
     link:
       label: view project
       url: https://meals.undercurrentlabs.dev/
+
+  - slug: gym-log
+    title: gym log
+    tagline: a workout plan you edit like a config file
+    tier: side
+    order: 2
+    published: true
+    summary:
+      - >-
+        A home gym log for the iPad. The plan, exercises, and equipment live
+        in YAML that CI validates; the database only records what was lifted.
+    disclosure: Designed and directed by me, built with AI coding agents.
+    link:
+      label: view project
+      url: https://gym.undercurrentlabs.dev/

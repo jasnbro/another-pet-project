@@ -73,6 +73,7 @@ h3 { font-size: 1.1rem; }
 .icon { width: 1.25em; height: 1.25em; flex: none; vertical-align: -0.25em; }
 .icon--lg { width: 2.5rem; height: 2.5rem; color: var(--accent); }
 .icon--flip { transform: rotate(180deg); }
+.icon__cut { stroke: var(--bg); }
 
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
@@ -88,7 +89,21 @@ h3 { font-size: 1.1rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.4em; color: var(--ink); text-decoration: none; font-weight: 650; font-size: 1.1rem; }
 .brand .icon { color: var(--accent); width: 1.5em; height: 1.5em; }
 
-.save-status { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.save-status { margin: 0 0 0 auto; font-size: 0.875rem; color: var(--muted); }
+
+/* Undercurrent mark, linking home (same file and treatment as Mindless
+   Meals). Used as a mask so it takes the theme's ink in light and dark. */
+.app-mark {
+  flex: none; display: block; width: 2.25rem; box-sizing: content-box;
+  padding: 11px 4px; margin: -11px -4px; /* 44px tap target, same look */
+  color: var(--ink); opacity: 0.35; transition: opacity 150ms ease;
+}
+.app-mark:hover, .app-mark:focus-visible { opacity: 0.7; }
+.app-mark span {
+  display: block; width: 100%; aspect-ratio: 256 / 157; background: currentColor;
+  -webkit-mask: url("../img/octopus-mark.png") center / contain no-repeat;
+  mask: url("../img/octopus-mark.png") center / contain no-repeat;
+}
 .save-status[data-status="saved"]::before { content: "✓ "; color: var(--ok); }
 .save-status[data-status="error"] { color: var(--warn); font-weight: 600; }
 
@@ -141,6 +156,15 @@ main:focus { outline: none; }
 .banner--warn { background: var(--warn-soft); }
 .banner--warn .icon { color: var(--warn); }
 .banner ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 0.9rem; }
+.heads-up { display: block; }
+.heads-up summary {
+  display: flex; align-items: center; gap: 8px; min-height: 32px;
+  cursor: pointer; list-style: none;
+}
+.heads-up summary::-webkit-details-marker { display: none; }
+.heads-up summary::after { content: "▸"; margin-left: auto; color: var(--muted); }
+.heads-up[open] summary::after { content: "▾"; }
+.heads-up ul { margin-top: 8px; }
 
 /* --- today ---------------------------------------------------------------------- */
 .today__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }

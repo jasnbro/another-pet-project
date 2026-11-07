@@ -34,6 +34,10 @@ editing YAML; keep it that way.
   `uv run alembic revision --autogenerate` against a real Postgres, and
   confirm `uv run alembic check` is clean afterwards.
 - Icons: Lucide 0.468.0 only, stroke-width 1.5 (see `icons.js`). No emoji.
+  The one exception is the Undercurrent octopus: the corner mark
+  (`static/img/octopus-mark.png`, Mindless Meals' file, shown as a CSS
+  mask) and the home-screen icons (Mindless Meals' icons recolored to
+  this theme's `--accent` on `--bg`).
 - Shared install snippet: edit `shared/undercurrent-web/`, then
   `shared/undercurrent-web/sync.sh gym_log`. Never edit the copies.
 
