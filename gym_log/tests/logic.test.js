@@ -125,4 +125,8 @@ test("icons render as Lucide SVG at stroke-width 1.5", () => {
     assert.match(svg, /viewBox="0 0 24 24"/);
   }
   assert.throws(() => icon("not-an-icon"));
+  // The header's filled biceps: outer shape filled, detail lines cut out.
+  const biceps = icon("biceps-flexed-filled");
+  assert.match(biceps, /<path fill="currentColor" d="M12\.409 13\.017/);
+  assert.equal((biceps.match(/class="icon__cut"/g) || []).length, 2);
 });

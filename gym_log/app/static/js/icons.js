@@ -1,10 +1,15 @@
 /* Lucide icons (lucide 0.468.0, ISC license, https://lucide.dev), rendered
  * like undercurrent/src/lib/icons.ts: 24x24, stroke-width 1.5. Generated from
  * the npm package; to add one, copy its child elements from
- * node_modules/lucide/dist/esm/icons/<name>.js in the same format. */
+ * node_modules/lucide/dist/esm/icons/<name>.js in the same format.
+ *
+ * "-filled" entries are a Lucide icon with its outer shape filled
+ * (fill="currentColor"); inner detail lines get class "icon__cut", which the
+ * CSS strokes in the background color so they read as cut-outs. */
 (function (root) {
   "use strict";
   var ICONS = {
+  "biceps-flexed-filled": "<path fill=\"currentColor\" d=\"M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1\"/><path class=\"icon__cut\" d=\"M15 14a5 5 0 0 0-7.584 2\"/><path class=\"icon__cut\" d=\"M9.964 6.825C8.019 7.977 9.5 13 8 15\"/>",
   "dumbbell": "<path d=\"M14.4 14.4 9.6 9.6\"/><path d=\"M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z\"/><path d=\"m21.5 21.5-1.4-1.4\"/><path d=\"M3.9 3.9 2.5 2.5\"/><path d=\"M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z\"/>",
   "timer": "<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/><line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/><circle cx=\"12\" cy=\"14\" r=\"8\"/>",
   "calendar-check": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>",
