@@ -6,7 +6,7 @@
 # Keys are permanent: never reuse or delete one. When something leaves the
 # house, set status: retired. See ../README.md ("Retire equipment").
 flybird_bench:   { name: FLYBIRD adjustable bench (XL), status: owned }
-powerblocks:     { name: PowerBlock Elite EXP (5–50 lb), status: planned, notes: Pickup at DICK'S }
+powerblocks:     { name: PowerBlock Elite EXP (5–50 lb), status: owned }
 squat_wedges:    { name: UNMERA wooden squat wedges, status: owned }
 band_20_80:      { name: '41" loop band, 20–80 lb', status: owned }
 mini_bands:      { name: Mini loop bands (glutes/squats), status: owned }
