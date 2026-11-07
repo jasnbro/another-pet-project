@@ -1,34 +1,33 @@
 """CI gate for gym_log/data/: the real YAML must validate, and each rule in
-the loader fails when broken (one test per rule, as issue #62 asks)."""
-from datetime import date
-
+the loader fails when broken (one test per rule, as issue #62 asks).
+Validation never depends on the date: equipment ownership is a warning only."""
 import pytest
 
 from app.loader import CatalogError, load_catalog
 
-from .conftest import BEFORE_START, DATA
+from .conftest import DATA
 
 PLAN = "plans/home-gym-v1.yaml"
 
 
-def errors_for(data_dir, today=BEFORE_START):
+def errors_for(data_dir):
     with pytest.raises(CatalogError) as exc:
-        load_catalog(data_dir.path, today=today)
+        load_catalog(data_dir.path)
     return "\n".join(exc.value.errors)
 
 
 # --- the real data ------------------------------------------------------------
 
-def test_real_data_is_valid_today():
-    """The actual files in gym_log/data, validated as of today. If this
-    fails, the message says which file and line of thinking to fix."""
-    catalog = load_catalog(DATA, today=date.today())
+def test_real_data_is_valid():
+    """The actual files in gym_log/data. If this fails, the message says
+    which file to fix."""
+    catalog = load_catalog(DATA)
     assert catalog.active_plan
 
 
 def test_seed_data_valid_with_everything_owned(data_dir):
     data_dir.own_everything()
-    catalog = load_catalog(data_dir.path, today=date(2027, 1, 1))
+    catalog = load_catalog(data_dir.path)
     assert catalog.warnings == []
     assert catalog.active_plan.plan == "home-gym-v1"
 
@@ -79,7 +78,7 @@ def test_retired_exercise_not_in_any_plan_is_fine(data_dir):
     data_dir.own_everything()
     data_dir.edit("exercises.yaml", lambda ex: ex.update(
         old_move={"name": "Old move", "what": "Gone.", "muscles": [], "equipment": [], "load": "bodyweight", "retired": True}))
-    assert load_catalog(data_dir.path, today=BEFORE_START).exercises["old_move"].retired
+    assert load_catalog(data_dir.path).exercises["old_move"].retired
 
 
 # --- rule: exercise references an equipment key not in equipment.yaml ---------------
@@ -91,18 +90,20 @@ def test_exercise_with_unknown_equipment_fails(data_dir):
 
 # --- rule: active plan uses equipment that isn't owned --------------------------------
 
-def test_active_plan_with_unowned_equipment_fails_once_started(data_dir):
+def test_active_plan_with_unowned_equipment_is_a_warning_not_an_error(data_dir):
+    """Gear that hasn't arrived isn't broken data: it must never fail CI or
+    stop the app, before or after the plan's start date."""
     data_dir.own_everything()
     data_dir.edit("equipment.yaml", lambda eq: eq["band_20_80"].update(status="planned"))
-    assert "day B uses 'bandcurl', which needs equipment that isn't owned: band_20_80 (planned)" in errors_for(
-        data_dir, today=date(2026, 11, 9))
+    catalog = load_catalog(data_dir.path)
+    assert "plans/home-gym-v1.yaml: day B uses 'bandcurl', which needs equipment that isn't owned: band_20_80 (planned)" in catalog.warnings
 
 
-def test_unowned_equipment_is_only_a_warning_before_the_plan_starts(data_dir):
-    data_dir.own_everything()
-    data_dir.edit("equipment.yaml", lambda eq: eq["band_20_80"].update(status="planned"))
-    catalog = load_catalog(data_dir.path, today=date(2026, 11, 8))
-    assert any("bandcurl" in w for w in catalog.warnings)
+def test_real_data_with_planned_gear_still_loads(data_dir):
+    """Regression: with the seed data (powerblocks planned), validation used
+    to flip from warning to error on the plan's start date (2026-11-09)."""
+    catalog = load_catalog(data_dir.path)
+    assert any("powerblocks (planned)" in w for w in catalog.warnings)
 
 
 def test_unowned_equipment_with_an_owned_alt_is_fine(data_dir):
@@ -115,7 +116,7 @@ def test_unowned_equipment_with_an_owned_alt_is_fine(data_dir):
         p["days"]["A"] = [i for i in p["days"]["A"] if i["key"] in ("goblet", "bench", "rdl", "towel", "deadbug")]
         p["days"]["B"] = [i for i in p["days"]["B"] if i["key"] in ("lunge", "bandcurl", "pushup", "hollow")]
     data_dir.edit(PLAN, strip)
-    catalog = load_catalog(data_dir.path, today=date(2027, 1, 1))
+    catalog = load_catalog(data_dir.path)
     assert catalog.effective_key("bench") == "floor_press"
 
 
@@ -133,7 +134,7 @@ def test_second_inactive_plan_is_fine(data_dir):
     plan = data_dir.load(PLAN)
     plan.update(plan="home-gym-v2", active=False)
     data_dir.save("plans/home-gym-v2.yaml", plan)
-    assert set(load_catalog(data_dir.path, today=BEFORE_START).plans) == {"home-gym-v1", "home-gym-v2"}
+    assert set(load_catalog(data_dir.path).plans) == {"home-gym-v1", "home-gym-v2"}
 
 
 def test_no_active_plan_fails(data_dir):
@@ -165,12 +166,12 @@ def test_alt_to_retired_key_fails(data_dir):
     assert "bench has alt 'floor_press', which is retired" in errors_for(data_dir)
 
 
-def test_alt_with_unowned_equipment_fails(data_dir):
+def test_alt_with_unowned_equipment_is_a_warning(data_dir):
     data_dir.own_everything()
     data_dir.edit("exercises.yaml", lambda ex: ex["floor_press"].update(equipment=["powerblocks", "foot_platform"]))
     data_dir.edit("equipment.yaml", lambda eq: eq["foot_platform"].update(status="planned"))
-    assert "bench's alt 'floor_press' needs equipment that isn't owned: foot_platform (planned)" in errors_for(
-        data_dir, today=date(2027, 1, 1))
+    catalog = load_catalog(data_dir.path)
+    assert "exercises.yaml: bench's alt 'floor_press' needs equipment that isn't owned: foot_platform (planned)" in catalog.warnings
 
 
 # --- extra safety rules ----------------------------------------------------------------------

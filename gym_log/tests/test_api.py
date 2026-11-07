@@ -101,7 +101,7 @@ def test_last_time_and_progression_cue(client):
 def test_swap_to_alt_when_bench_not_owned(make_app, data_dir):
     data_dir.own_everything()
     data_dir.edit("equipment.yaml", lambda eq: eq["flybird_bench"].update(status="planned"))
-    client = make_app().test_client()  # before the plan starts, so this is a warning
+    client = make_app().test_client()  # unowned gear is only a warning
     items = client.get("/api/gym/today?date=2026-11-09").json["items"]
     a2 = items[1]
     assert (a2["key"], a2["planned_key"], a2["swapped_for"]) == ("floor_press", "bench", "Dumbbell bench press")

@@ -12,12 +12,12 @@ Rules (README.md "Reading a CI failure" explains each):
   - exactly one plan has active: true
   - the active plan only uses exercises whose equipment is owned (counting
     an automatic swap to `alt`)
-The two ownership rules are warnings, not errors, while the active plan's
-`starts` date is still in the future: you can merge a plan before the gear
-arrives.
+The two ownership rules are always warnings, never errors: gear that hasn't
+arrived yet isn't broken data, and must never block a deploy or stop the app
+from starting. The app shows them on the Plan page ("Heads up") and on each
+affected exercise card. Everything else is an error.
 """
 from dataclasses import dataclass, field
-from datetime import date
 from pathlib import Path
 
 import yaml
@@ -138,11 +138,10 @@ def _parse_mapping(path: Path, model, errors: list[str]) -> dict:
     return parsed
 
 
-def load_catalog(data_dir: Path | str | None = None, today: date | None = None) -> Catalog:
+def load_catalog(data_dir: Path | str | None = None) -> Catalog:
     """Load everything under data_dir and validate it. Raises CatalogError
     listing every problem found (not just the first)."""
     data_dir = Path(data_dir) if data_dir else DEFAULT_DATA_DIR
-    today = today or date.today()
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -179,7 +178,7 @@ def load_catalog(data_dir: Path | str | None = None, today: date | None = None) 
     def owned(key):
         return all(equipment.get(k) is not None and equipment[k].status == "owned" for k in exercises[key].equipment)
 
-    ownership: list[str] = []  # errors, or warnings before the plan starts
+    ownership: list[str] = []  # always warnings (see the module docstring)
     for key, ex in exercises.items():
         if ex.alt is None:
             continue
@@ -243,12 +242,7 @@ def load_catalog(data_dir: Path | str | None = None, today: date | None = None) 
                         + ", ".join(f"{k} ({equipment[k].status})" for k in missing)
                     )
 
-    future_start = len(active) == 1 and active[0].starts > today
-    for msg in dict.fromkeys(ownership):  # de-duplicate, keep order
-        if future_start:
-            warnings.append(f"{msg} -- a warning only until the plan starts on {active[0].starts}")
-        else:
-            errors.append(msg)
+    warnings.extend(dict.fromkeys(ownership))  # de-duplicate, keep order
 
     if errors:
         raise CatalogError(errors, warnings)

@@ -9,7 +9,6 @@ from app import create_app
 from app.db import db
 
 DATA = Path(__file__).resolve().parents[1] / "data"
-BEFORE_START = date(2026, 11, 1)  # the seed plan starts 2026-11-09
 
 
 class DataDir:
@@ -46,12 +45,11 @@ def data_dir(tmp_path):
 def make_app(data_dir):
     apps = []
 
-    def _make(today=BEFORE_START):
+    def _make():
         app = create_app(
             {
                 "SQLALCHEMY_DATABASE_URI": "sqlite://",
                 "GYM_DATA_DIR": str(data_dir.path),
-                "GYM_TODAY": today,
                 "TESTING": True,
             }
         )
