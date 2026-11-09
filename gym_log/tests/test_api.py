@@ -126,12 +126,21 @@ def test_catalog(client):
 
 def test_frames_for_the_looping_illustration(client):
     ex = client.get("/api/gym/catalog").json["exercises"]
-    assert ex["goblet"]["frames"] == [f"/static/img/exercises/goblet-squat/frame-{i}.png" for i in (1, 2, 3)]
+    assert ex["goblet"]["frames"] == [f"/frames/goblet-squat/frame-{i}.png" for i in (1, 2, 3)]
     assert ex["pullover"]["frames"] == []  # custom catalog row: no illustration
     for url in ex["goblet"]["frames"]:
-        assert client.get(url).status_code == 200
+        r = client.get(url)
+        assert (r.status_code, r.mimetype) == (200, "image/png")
+        assert "max-age=2592000" in r.headers["Cache-Control"]
+        r.close()
     items = client.get("/api/gym/today?date=2026-11-09").json["items"]
     assert items[0]["frames"] == ex["goblet"]["frames"]
+
+
+def test_frames_route_stays_inside_the_frames_folder(client):
+    assert client.get("/frames/../data/exercises.yaml").status_code == 404
+    assert client.get("/frames/%2e%2e/data/exercises.yaml").status_code == 404
+    assert client.get("/frames/no-such-exercise/frame-1.png").status_code == 404
 
 
 def test_progress_best_set_per_session(client):

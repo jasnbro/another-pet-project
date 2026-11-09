@@ -15,6 +15,10 @@ from .db import db
 from .loader import CatalogError, load_catalog
 
 APP_DIR = Path(__file__).resolve().parent
+# Exercise illustration frames (Workout Guide). Kept outside app/ so the
+# Dockerfile copies them in their own layer, which every image version shares.
+FRAMES_DIR = APP_DIR.parent / "frames"
+FRAMES_MAX_AGE = 30 * 24 * 3600  # frames never change within a Workout Guide version
 # Matches --bg in static/css/gym-log.css (light and dark).
 THEME_COLOR = "#f5f3ee"
 THEME_COLOR_DARK = "#16191c"
@@ -72,6 +76,11 @@ def create_app(config_overrides=None):
             theme_color=THEME_COLOR,
             theme_color_dark=THEME_COLOR_DARK,
         )
+
+    @app.route("/frames/<path:filename>")
+    def frames(filename):
+        # send_from_directory refuses paths that escape FRAMES_DIR.
+        return send_from_directory(FRAMES_DIR, filename, max_age=FRAMES_MAX_AGE)
 
     @app.route("/health")
     def health():

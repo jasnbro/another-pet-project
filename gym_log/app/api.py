@@ -74,7 +74,7 @@ def exercise_json(key):
         "owned": cat.is_owned(key),
         "missing_equipment": cat.missing_equipment(key),
         # Illustration frames (start, mid, end) to loop; [] when there are none.
-        "frames": [url_for("static", filename=f"img/exercises/{p}") for p in cat.frames(key)],
+        "frames": [url_for("frames", filename=p) for p in cat.frames(key)],
     }
 
 

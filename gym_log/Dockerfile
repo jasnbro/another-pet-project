@@ -13,6 +13,11 @@ WORKDIR /srv/gym_log
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
+# Exercise frames (33 MB) in their own layer, before anything that changes
+# often. Docker stores an unchanged layer once, so every kept image version
+# shares one copy. Must stay above the code COPYs. See frames/README.md.
+COPY frames/ frames/
+
 # Code, YAML data, and migrations are all baked into the image: a plan
 # change is a merge plus a deploy. alembic.ini sits in the working dir so
 # deploy/deploy.sh can run `alembic ...` in this image.

@@ -48,7 +48,7 @@ class CatalogError(Exception):
 
 @dataclass(frozen=True)
 class CatalogEntry:
-    """One row of catalog.csv. `frames` are paths under static/img/exercises/,
+    """One row of catalog.csv. `frames` are paths under gym_log/frames/,
     in pose order (start, mid, end); empty when there's no illustration."""
 
     id: str

@@ -7,7 +7,7 @@ from pathlib import Path
 from .conftest import DATA
 
 GYM_LOG = DATA.parent
-FRAMES = GYM_LOG / "app" / "static" / "img" / "exercises"
+FRAMES = GYM_LOG / "frames"
 BUILDER = GYM_LOG / "catalog" / "build_catalog.py"
 
 
@@ -36,3 +36,11 @@ def test_every_frame_in_the_catalog_exists():
 def test_frame_license_files_ship_with_the_frames():
     assert (FRAMES / "LICENSE-ASSETS").is_file()
     assert (FRAMES / "ATTRIBUTION.md").is_file()
+
+
+def test_dockerfile_copies_frames_before_the_code():
+    """The frames' layer must come before the code COPYs, or it rebuilds on
+    every deploy and each kept image stores its own 33 MB (frames/README.md)."""
+    copies = [line.split()[1] for line in (GYM_LOG / "Dockerfile").read_text().splitlines() if line.startswith("COPY ") and "--from" not in line]
+    assert "frames/" in copies
+    assert copies.index("frames/") < min(copies.index(p) for p in ("app/", "data/", "migrations/"))

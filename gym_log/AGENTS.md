@@ -12,7 +12,7 @@ editing YAML; keep it that way.
 | `data/plans/*.yaml` | Plans. Exactly one has `active: true`. |
 | `data/catalog.csv` | Exercise catalog: illustration frames + training metadata. **Generated**; never hand-edit. |
 | `catalog/` | `build_catalog.py` (writes `data/catalog.csv`), its vendored sources, and provenance/licenses. Not shipped in the image. |
-| `app/static/img/exercises/` | Workout Guide 1.0.0 frames (`<slug>/frame-1..3.png`), committed unmodified with their license. |
+| `frames/` | Workout Guide 1.0.0 frames (`<slug>/frame-1..3.png`), committed unmodified with their license; served at `/frames/`. Outside `app/` on purpose: the Dockerfile copies it in its own layer, before the code, so all kept images share one copy. Read `frames/README.md` before moving it. |
 | `app/models.py` | Pydantic models for the YAML (`extra="forbid"`). |
 | `app/loader.py` | Loads + cross-validates the YAML; same check in CI and at startup. |
 | `app/schedule.py` | Plan week, A/B day, deload, progression cue. Pure functions. |

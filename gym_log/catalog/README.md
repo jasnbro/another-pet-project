@@ -20,8 +20,9 @@ uv run python catalog/build_catalog.py
 | `sources/workout-guide-1.0.0/` | `manifest.json` from `@bryllim/workout-guide@1.0.0` (npm) | Code MIT; frames and metadata CC BY-SA 4.0 (`LICENSE-ASSETS`, `ATTRIBUTION.md`) |
 | `sources/exerciseapi-1.1.0/` | `data/exercises.json` from github.com/aschenoni/exercise-api, dataset 1.1.0 | CC BY 4.0 (`DATA-LICENSE`) |
 
-The 906 frames themselves live in `../app/static/img/exercises/`, copied
-unmodified from the npm package, with its license files beside them.
+The 906 frames themselves live in `../frames/`, copied unmodified from the
+npm package, with its license files beside them. `../frames/README.md`
+explains why they're outside `app/`.
 
 ## Where each row's metadata came from (`metadata_source`)
 
@@ -38,7 +39,7 @@ unmodified from the npm package, with its license files beside them.
 
 ## Columns
 
-- `frame_paths`: `|`-separated paths under `app/static/img/exercises/`, in
+- `frame_paths`: `|`-separated paths under `frames/`, in
   pose order (start, mid, end). Empty for custom rows.
 - `preferred_rank`: computed, never copied. 1-based within
   `substitution_group`, ordered by SFR, then ExerciseAPI's curator rank where
