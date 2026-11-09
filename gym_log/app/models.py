@@ -37,6 +37,8 @@ class Exercise(Strict):
     load: LoadType
     retired: bool = False
     alt: str | None = None
+    # Row id in data/catalog.csv (illustration frames + training metadata).
+    catalog: str | None = None
 
 
 class Equipment(Strict):

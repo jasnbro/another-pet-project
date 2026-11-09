@@ -50,6 +50,20 @@
   function storageGet(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
   function storageSet(key, value) { try { window.localStorage.setItem(key, value); } catch (e) { /* private mode */ } }
 
+  // Looping illustration from the exercise's catalog frames (start, mid, end).
+  // CSS plays them start → mid → end → mid on repeat (a rep, there and back);
+  // with reduced motion it shows the start pose only. Frames are white on
+  // transparent and drawn as CSS masks, so they follow the theme's ink color.
+  function demoHtml(name, frames, extraClass) {
+    if (!frames || !frames.length) return "";
+    var loop = frames.length === 3;
+    return '<span class="demo' + (loop ? " demo--loop" : "") + (extraClass ? " " + extraClass : "") +
+      '" role="img" aria-label="' + esc(name) + ' demonstration">' +
+      frames.slice(0, loop ? 3 : 1).map(function (src, i) {
+        return '<span class="demo__frame demo__frame--' + (i + 1) + '" style="--src: url(&quot;' + esc(src) + '&quot;)"></span>';
+      }).join("") + "</span>";
+  }
+
   function currentYear() { return L.parseISODate(state.date).getFullYear(); }
   function exName(key) { var ex = state.catalog.exercises[key]; return ex ? ex.name : key; }
 
@@ -330,6 +344,7 @@
     var html = '<article class="exercise" data-key="' + esc(item.key) + '">' +
       '<header class="exercise__head">' +
       (item.pair ? '<span class="pair">' + esc(item.pair) + "</span>" : "") +
+      demoHtml(item.name, item.frames) +
       '<div class="exercise__title"><h3>' + esc(item.name) + "</h3>" +
       (item.swapped_for ? '<p class="swap">' + icon("repeat") + " Swap for " + esc(item.swapped_for) + "</p>" : "") +
       "</div>" +
@@ -454,6 +469,7 @@
     Object.keys(c.exercises).forEach(function (key) {
       var ex = c.exercises[key];
       html += '<article class="glossary__item' + (ex.retired ? " is-retired" : "") + '" id="ex-' + esc(key) + '">' +
+        demoHtml(ex.name, ex.frames, "demo--lg") +
         '<header><code class="key">' + esc(key) + "</code><h3>" + esc(ex.name) + "</h3>" +
         (ex.retired ? '<span class="tag">retired</span>' : "") + "</header>" +
         "<p>" + esc(ex.what) + "</p><dl class=\"facts\">" +
@@ -466,7 +482,13 @@
         (ex.alt ? '<dt>Alt</dt><dd><a href="#ex-' + esc(ex.alt) + '">' + esc(exName(ex.alt)) + "</a> when equipment is missing</dd>" : "") +
         "</dl></article>";
     });
-    return html + "</div></section>";
+    // Both licenses require this credit (catalog/README.md).
+    return html + '</div><p class="credits muted">Exercise illustrations by ' +
+      '<a href="https://bryllim.com">Bryl Lim</a> (<a href="https://github.com/bryllim/workout-guide">Workout Guide</a>), ' +
+      'based on artwork by <a href="https://github.com/everkinetic/data">Everkinetic</a>, licensed under ' +
+      '<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. ' +
+      'Exercise data by <a href="https://exercise-api.com">ExerciseAPI</a>, licensed under ' +
+      '<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p></section>';
   }
 
   // --- Equipment ---------------------------------------------------------------------

@@ -124,6 +124,16 @@ def test_catalog(client):
     assert c["exercises"]["towel"]["equipment"] == []
 
 
+def test_frames_for_the_looping_illustration(client):
+    ex = client.get("/api/gym/catalog").json["exercises"]
+    assert ex["goblet"]["frames"] == [f"/static/img/exercises/goblet-squat/frame-{i}.png" for i in (1, 2, 3)]
+    assert ex["pullover"]["frames"] == []  # custom catalog row: no illustration
+    for url in ex["goblet"]["frames"]:
+        assert client.get(url).status_code == 200
+    items = client.get("/api/gym/today?date=2026-11-09").json["items"]
+    assert items[0]["frames"] == ex["goblet"]["frames"]
+
+
 def test_progress_best_set_per_session(client):
     log(client, "2026-11-09", sets_of("goblet", (25, 12), (30, 6), (30, 8)))
     log(client, "2026-11-13", sets_of("goblet", (30, 10)))

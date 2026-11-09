@@ -192,6 +192,26 @@ def test_plan_display_name_is_optional(data_dir):
     assert (plan.plan, plan.display_name) == ("home-gym-v1", "home-gym-v1")
 
 
+# --- rule: an exercise's catalog id is in catalog.csv ---------------------------------------
+
+def test_catalog_id_not_in_catalog_csv_fails(data_dir):
+    data_dir.edit("exercises.yaml", lambda ex: ex["goblet"].update(catalog="goblet-squatt"))
+    assert "exercises.yaml: goblet has catalog 'goblet-squatt', which isn't in catalog.csv" in errors_for(data_dir)
+
+
+def test_catalog_is_optional(data_dir):
+    data_dir.own_everything()
+    data_dir.edit("exercises.yaml", lambda ex: ex["goblet"].pop("catalog"))
+    catalog = load_catalog(data_dir.path)
+    assert catalog.frames("goblet") == ()
+
+
+def test_every_real_exercise_has_a_catalog_entry():
+    """Not a rule (catalog is optional), but every current key should have one."""
+    catalog = load_catalog(DATA)
+    assert [k for k, ex in catalog.exercises.items() if ex.catalog is None] == []
+
+
 # --- extra safety rules ----------------------------------------------------------------------
 
 def test_schedule_naming_a_missing_day_fails(data_dir):
