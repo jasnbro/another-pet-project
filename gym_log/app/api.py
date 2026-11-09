@@ -8,7 +8,7 @@ from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from zoneinfo import ZoneInfo
 
-from flask import Blueprint, Response, abort, current_app, jsonify, request
+from flask import Blueprint, Response, abort, current_app, jsonify, request, url_for
 
 from .db import GymSession, GymSet, db
 from .loader import Catalog
@@ -73,6 +73,8 @@ def exercise_json(key):
         "load_label": LOAD_LABELS[ex.load],
         "owned": cat.is_owned(key),
         "missing_equipment": cat.missing_equipment(key),
+        # Illustration frames (start, mid, end) to loop; [] when there are none.
+        "frames": [url_for("frames", filename=p) for p in cat.frames(key)],
     }
 
 

@@ -1,0 +1,4941 @@
+[
+  {
+    "id": "ab_wheel_rollout",
+    "name": "Ab Wheel Rollout",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "ab_wheel"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "abs_anti_extension",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Brace hard, roll out as far as you can hold a flat spine, pull back with abs."
+  },
+  {
+    "id": "advanced_tuck_front_lever",
+    "name": "Advanced Tuck Front Lever Hold",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "abs",
+      "lower_back"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 5,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 3,
+    "cues": "Open the hips so the back is flat and horizontal, knees bent, depress scapulae, hold (seconds)."
+  },
+  {
+    "id": "advanced_tuck_planche",
+    "name": "Advanced Tuck Planche",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "chest",
+      "abs",
+      "lower_back",
+      "biceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 5,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 5,
+    "cues": "Open the hips so the back is flat and parallel to floor, knees still bent, hold (seconds)."
+  },
+  {
+    "id": "archer_pullup",
+    "name": "Archer Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 5,
+    "cues": "Pull to one hand while the other arm stays nearly straight along the bar; alternate sides."
+  },
+  {
+    "id": "arnold_press",
+    "name": "Arnold Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Start palms facing you, rotate out as you press overhead, reverse on the way down."
+  },
+  {
+    "id": "assisted_pullup",
+    "name": "Assisted Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "assisted_pullup_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Set assist so last reps are hard; full range, elbows down."
+  },
+  {
+    "id": "assisted_squat",
+    "name": "Assisted (Pole/Door) Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 1,
+    "cues": "Hold a doorframe/pole for balance and assistance, squat to full depth, drive up."
+  },
+  {
+    "id": "back_extension",
+    "name": "45-Degree Back Extension",
+    "primary_muscle": "lower_back",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "lower_back_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hinge down with control, extend to neutral spine, squeeze glutes, don't hyperextend."
+  },
+  {
+    "id": "band_assisted_nordic_curl",
+    "name": "Band-Assisted Nordic Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "nordic_curl_progression",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "nordic_curl_line",
+    "progression_level": 1,
+    "cues": "Anchor ankles, loop a band across the chest for assistance, lower under control, pull back up."
+  },
+  {
+    "id": "band_assisted_pullup",
+    "name": "Band-Assisted Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar",
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 5,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 2,
+    "cues": "Loop a band on the bar and foot/knee, full hang to chin over bar; thinner band as you progress."
+  },
+  {
+    "id": "band_chest_fly",
+    "name": "Band Chest Fly",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts"
+    ],
+    "pattern": "fly",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "chest_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band behind you, sweep hands together with soft elbows."
+  },
+  {
+    "id": "band_curl",
+    "name": "Band Biceps Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand on band, curl up with elbows pinned, slow eccentric for tension."
+  },
+  {
+    "id": "band_face_pull",
+    "name": "Band Face Pull",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band at face height, pull to forehead, elbows high, squeeze rear delts."
+  },
+  {
+    "id": "band_glute_bridge",
+    "name": "Band Glute Bridge",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Band above knees, drive hips up off floor, push knees out, squeeze glutes."
+  },
+  {
+    "id": "band_good_morning",
+    "name": "Band Good Morning",
+    "primary_muscle": "lower_back",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "lower_back_extension",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Band over shoulders under feet, hinge at hips with flat back, drive hips through."
+  },
+  {
+    "id": "band_lat_pulldown",
+    "name": "Band Lat Pulldown",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band overhead, kneel, pull elbows down to ribs."
+  },
+  {
+    "id": "band_lateral_raise",
+    "name": "Band Lateral Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand on band, raise hands out to sides to shoulder height, slow eccentric."
+  },
+  {
+    "id": "band_overhead_press",
+    "name": "Band Overhead Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand on band, press handles overhead, control the descent."
+  },
+  {
+    "id": "band_rdl",
+    "name": "Band Romanian Deadlift",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "glutes",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "hamstring_hinge",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand on band, hinge at hips, push hips back, feel hamstring tension."
+  },
+  {
+    "id": "band_rear_delt_fly",
+    "name": "Band Rear Delt Fly",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band in front at chest height, pull hands apart and back."
+  },
+  {
+    "id": "band_seated_row",
+    "name": "Band Seated Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band at foot level, sit tall, pull to navel, squeeze blades."
+  },
+  {
+    "id": "band_triceps_pushdown",
+    "name": "Band Triceps Pushdown",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor band overhead, elbows pinned, push down to lockout."
+  },
+  {
+    "id": "band_wrist_curl",
+    "name": "Band Wrist Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [],
+    "pattern": "curl",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand on band, palms up, flex wrists up through full range."
+  },
+  {
+    "id": "barbell_back_squat",
+    "name": "Barbell Back Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings",
+      "lower_back"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Brace, sit between hips, knees track over toes, depth to parallel or below."
+  },
+  {
+    "id": "barbell_bench_press",
+    "name": "Barbell Bench Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "barbell",
+      "flat_bench",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "chest_horizontal_press",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Tuck elbows ~45 degrees, touch lower chest, drive bar back over shoulders."
+  },
+  {
+    "id": "barbell_hip_thrust",
+    "name": "Barbell Hip Thrust",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "barbell",
+      "flat_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Upper back on bench, drive hips up to full extension, squeeze glutes hard, chin tucked."
+  },
+  {
+    "id": "barbell_row",
+    "name": "Barbell Bent-Over Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hinge ~45 degrees, flat back, pull bar to lower ribs, squeeze shoulder blades."
+  },
+  {
+    "id": "barbell_shrug",
+    "name": "Barbell Shrug",
+    "primary_muscle": "traps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "shrug",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "traps_shrug",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Shrug straight up toward ears, brief squeeze, no rolling."
+  },
+  {
+    "id": "barbell_wrist_curl",
+    "name": "Barbell Wrist Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [],
+    "pattern": "curl",
+    "equipment": [
+      "barbell",
+      "flat_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Forearms on bench, palms up, let bar roll to fingertips, curl up."
+  },
+  {
+    "id": "bayesian_cable_curl",
+    "name": "Bayesian Cable Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 8,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Cable behind body, arm back for a deep stretch, curl up with elbow fixed."
+  },
+  {
+    "id": "belt_squat",
+    "name": "Belt Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "hack_squat_machine",
+      "dip_belt"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 8,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Load hangs from hips via belt, spine unloaded, sit deep, drive through heels."
+  },
+  {
+    "id": "bench_dip",
+    "name": "Bench Dip",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 1,
+    "cues": "Hands on a bench behind you, feet on floor, lower until shoulders are level, press up."
+  },
+  {
+    "id": "bird_dog",
+    "name": "Bird Dog",
+    "primary_muscle": "lower_back",
+    "secondary_muscles": [
+      "glutes",
+      "abs"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "lower_back_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "On hands and knees, extend opposite arm and leg, keep hips level, hold briefly."
+  },
+  {
+    "id": "bodyweight_calf_raise",
+    "name": "Single-Leg Bodyweight Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "calf_standing",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "One foot on stair edge, full stretch down, rise to full height, slow tempo."
+  },
+  {
+    "id": "bodyweight_pullup",
+    "name": "Bodyweight Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 5,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Use a doorway/portable bar; full hang to chin over bar."
+  },
+  {
+    "id": "bodyweight_split_squat",
+    "name": "Bodyweight Split Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "quad_lunge",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Split stance, drop straight down, slow tempo for added difficulty."
+  },
+  {
+    "id": "box_pistol_squat",
+    "name": "Box Pistol Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings",
+      "abs"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 4,
+    "cues": "One leg out front, sit back to a box on the working leg, stand without the other foot."
+  },
+  {
+    "id": "bulgarian_ring_dip",
+    "name": "Bulgarian (Wide) Ring Dip",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps",
+      "abs"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 4,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 6,
+    "cues": "Rings wide and turned out, lean forward into a deep stretch, press back to RTO support."
+  },
+  {
+    "id": "bulgarian_split_squat",
+    "name": "Bulgarian Split Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "quad_lunge",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Rear foot on bench, drop straight down, drive through front heel."
+  },
+  {
+    "id": "bulgarian_split_squat_bw",
+    "name": "Bodyweight Bulgarian Split Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 3,
+    "cues": "Rear foot on a box, drop straight down, drive through the front heel to stand."
+  },
+  {
+    "id": "cable_crunch",
+    "name": "Cable Crunch",
+    "primary_muscle": "abs",
+    "secondary_muscles": [],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Kneel under rope, crunch ribs toward pelvis, round the spine, control up."
+  },
+  {
+    "id": "cable_curl",
+    "name": "Cable Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Low pulley, constant tension, curl with elbows fixed at sides."
+  },
+  {
+    "id": "cable_fly",
+    "name": "Cable Fly",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts"
+    ],
+    "pattern": "fly",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "chest_fly",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Soft elbows, hug arms together, control the stretch."
+  },
+  {
+    "id": "cable_hammer_curl",
+    "name": "Cable Rope Hammer Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [
+      "biceps"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Rope on low pulley, neutral grip, curl with constant tension, thumbs up."
+  },
+  {
+    "id": "cable_hip_abduction",
+    "name": "Cable Hip Abduction",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "glute_abduction",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Ankle cuff on low pulley, sweep the working leg out and back, control return, glute medius."
+  },
+  {
+    "id": "cable_lateral_raise",
+    "name": "Cable Lateral Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Cable behind body, constant tension, raise to shoulder height with control."
+  },
+  {
+    "id": "cable_pull_through",
+    "name": "Cable Pull-Through",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Face away from low pulley, rope between legs, hinge back then snap hips forward, squeeze."
+  },
+  {
+    "id": "cable_rear_delt_fly",
+    "name": "Cable Rear Delt Fly",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Cross cables, sweep arms out and back, soft elbows, control return."
+  },
+  {
+    "id": "cable_shrug",
+    "name": "Cable Shrug",
+    "primary_muscle": "traps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "shrug",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "traps_shrug",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Low pulley, constant tension, shrug to ears and control down."
+  },
+  {
+    "id": "cable_triceps_pushdown",
+    "name": "Cable Triceps Pushdown",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Elbows pinned, push down to full lockout, control the return."
+  },
+  {
+    "id": "captains_chair_leg_raise",
+    "name": "Captain's Chair Leg Raise",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "dip_station"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Forearms on pads, posteriorly tilt pelvis, raise knees by curling hips up, control down."
+  },
+  {
+    "id": "chest_press_machine",
+    "name": "Chest Press Machine",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "chest_press_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "chest_horizontal_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Set seat so handles align with mid-chest, press without locking out hard."
+  },
+  {
+    "id": "chest_supported_dumbbell_row",
+    "name": "Chest-Supported Dumbbell Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Chest on incline bench, row dumbbells to hips, squeeze at top."
+  },
+  {
+    "id": "close_grip_bench_press",
+    "name": "Close-Grip Bench Press",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "barbell",
+      "flat_bench",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 8,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hands ~shoulder-width, elbows tucked tight, touch lower chest, press to lockout."
+  },
+  {
+    "id": "conventional_deadlift",
+    "name": "Conventional Barbell Deadlift",
+    "primary_muscle": "lower_back",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings",
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "lower_back_extension",
+    "default_rep_low": 4,
+    "default_rep_high": 8,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Flat back, push the floor away, bar drags up shins, lock out tall, no rounding."
+  },
+  {
+    "id": "decline_barbell_press",
+    "name": "Decline Barbell Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "barbell",
+      "adjustable_bench",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "chest_horizontal_press",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Slight decline, touch lower chest, press up and back; biases lower pec."
+  },
+  {
+    "id": "decline_weighted_crunch",
+    "name": "Decline Weighted Crunch",
+    "primary_muscle": "abs",
+    "secondary_muscles": [],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Decline bench, hold weight on chest, curl ribs to pelvis, full range, slow lower."
+  },
+  {
+    "id": "deficit_wall_hspu",
+    "name": "Deficit Wall Handstand Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "traps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "handstand_vertical_push",
+    "default_rep_low": 4,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "handstand_push_line",
+    "progression_level": 4,
+    "cues": "Hands on parallettes against a wall, lower head below hand level for added range."
+  },
+  {
+    "id": "diamond_pushup",
+    "name": "Diamond Push-up",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 8,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hands form a diamond under chest, elbows tucked, press to lockout."
+  },
+  {
+    "id": "dip",
+    "name": "Parallel Bar Dip",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "dip_station"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stay upright for triceps bias, lower to ~90 degrees, press to lockout."
+  },
+  {
+    "id": "dumbbell_bench_press",
+    "name": "Dumbbell Bench Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "chest_horizontal_press",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lower dumbbells to chest level for a deep stretch, press up and slightly together."
+  },
+  {
+    "id": "dumbbell_concentration_curl",
+    "name": "Dumbbell Concentration Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Elbow braced on inner thigh, curl with full supination, peak squeeze."
+  },
+  {
+    "id": "dumbbell_fly_flat",
+    "name": "Flat Dumbbell Fly",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts"
+    ],
+    "pattern": "fly",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "chest_fly",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Soft elbows, wide arc to a deep stretch, hug dumbbells together at top."
+  },
+  {
+    "id": "dumbbell_hammer_curl",
+    "name": "Dumbbell Hammer Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [
+      "biceps"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Neutral grip, curl up keeping thumbs up, hits brachioradialis."
+  },
+  {
+    "id": "dumbbell_hip_thrust",
+    "name": "Dumbbell Hip Thrust",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Dumbbell across hips, upper back on bench, drive hips to full lockout."
+  },
+  {
+    "id": "dumbbell_lateral_raise",
+    "name": "Dumbbell Lateral Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Slight forward lean, lead with elbows, raise to shoulder height, no swing."
+  },
+  {
+    "id": "dumbbell_overhead_extension",
+    "name": "Dumbbell Overhead Triceps Extension",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Both hands on one dumbbell, deep stretch behind head, extend fully."
+  },
+  {
+    "id": "dumbbell_rdl",
+    "name": "Dumbbell Romanian Deadlift",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "glutes",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "hamstring_hinge",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hinge at hips, dumbbells close to legs, stretch hamstrings, drive hips through."
+  },
+  {
+    "id": "dumbbell_rear_delt_fly",
+    "name": "Bent-Over Dumbbell Rear Delt Fly",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hinge over, sweep dumbbells out and back, lead with pinkies, no swing."
+  },
+  {
+    "id": "dumbbell_shrug",
+    "name": "Dumbbell Shrug",
+    "primary_muscle": "traps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "shrug",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "traps_shrug",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Arms hang at sides, shrug straight up, pause, lower under control."
+  },
+  {
+    "id": "dumbbell_standing_calf_raise",
+    "name": "Dumbbell Standing Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "calf_standing",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Balls of feet on a step, hold dumbbells, drop heels then rise to full height."
+  },
+  {
+    "id": "dumbbell_wrist_curl",
+    "name": "Dumbbell Wrist Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [],
+    "pattern": "curl",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Forearms on bench, let wrist roll open, curl up through full range."
+  },
+  {
+    "id": "eccentric_nordic_curl",
+    "name": "Eccentric-Only Nordic Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "nordic_curl_progression",
+    "default_rep_low": 4,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "nordic_curl_line",
+    "progression_level": 2,
+    "cues": "Anchor ankles, lower the torso as slowly as possible, then push back up with the hands."
+  },
+  {
+    "id": "elevated_pike_pushup",
+    "name": "Feet-Elevated Pike Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "handstand_vertical_push",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "handstand_push_line",
+    "progression_level": 2,
+    "cues": "Feet on a box for a more vertical torso, lower head toward floor, press back up."
+  },
+  {
+    "id": "ez_bar_curl",
+    "name": "EZ-Bar Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "ez_curl_bar"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Elbows pinned at sides, curl up, control the negative, no swing."
+  },
+  {
+    "id": "ez_bar_skullcrusher",
+    "name": "EZ-Bar Skullcrusher",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "ez_curl_bar",
+      "flat_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lower bar behind head for stretch, extend without flaring elbows."
+  },
+  {
+    "id": "face_pull",
+    "name": "Cable Face Pull",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Rope at face height, pull to forehead with elbows high, externally rotate at the end."
+  },
+  {
+    "id": "foot_supported_lsit",
+    "name": "Foot-Supported L-Sit (Tuck Hold)",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "triceps",
+      "front_delts"
+    ],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "lsit_flexion_progression",
+    "default_rep_low": 10,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "lsit_line",
+    "progression_level": 1,
+    "cues": "Support on parallettes, keep feet lightly on the floor for assistance, hold (seconds)."
+  },
+  {
+    "id": "freestanding_hspu",
+    "name": "Freestanding Handstand Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "traps",
+      "abs"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "handstand_vertical_push",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "handstand_push_line",
+    "progression_level": 5,
+    "cues": "Free balance handstand, lower head to floor while balancing, press up to lockout."
+  },
+  {
+    "id": "front_squat",
+    "name": "Barbell Front Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "abs",
+      "upper_back"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bar on front delts, elbows high, sit straight down, stay upright, drive up."
+  },
+  {
+    "id": "full_front_lever",
+    "name": "Full Front Lever Hold",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "abs",
+      "lower_back"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 2,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 5,
+    "cues": "Legs straight and together, body fully horizontal, straight arms, lats engaged, hold (seconds)."
+  },
+  {
+    "id": "full_front_lever_row",
+    "name": "Full Front Lever Row",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "abs",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 6,
+    "cues": "Hold a full front lever, row your body up to the rings, keep the line rigid throughout."
+  },
+  {
+    "id": "full_lsit",
+    "name": "Full L-Sit",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "triceps",
+      "front_delts",
+      "quads"
+    ],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "lsit_flexion_progression",
+    "default_rep_low": 5,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "lsit_line",
+    "progression_level": 3,
+    "cues": "Support on parallettes, legs straight out parallel to floor, depress shoulders, hold (seconds)."
+  },
+  {
+    "id": "full_nordic_curl",
+    "name": "Full Nordic Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "nordic_curl_progression",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "nordic_curl_line",
+    "progression_level": 3,
+    "cues": "Anchor ankles, lower fully and pull yourself back up using only the hamstrings."
+  },
+  {
+    "id": "full_pistol_squat",
+    "name": "Full Pistol Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings",
+      "abs"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 5,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 6,
+    "cues": "One leg straight out front, sit to full depth on the working leg, drive up to stand."
+  },
+  {
+    "id": "full_planche",
+    "name": "Full Planche",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "chest",
+      "abs",
+      "lower_back",
+      "biceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 2,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 7,
+    "cues": "Legs straight and together, body flat and parallel to floor, hold (seconds)."
+  },
+  {
+    "id": "full_pullup_progression",
+    "name": "Full Pull-up (Progression)",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 5,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 3,
+    "cues": "Full dead hang, pull chin over bar, drive elbows down, control the descent."
+  },
+  {
+    "id": "full_pushup_progression",
+    "name": "Full Push-up (Planche Line)",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 8,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 2,
+    "cues": "Rigid plank on the floor, lower chest to floor, elbows ~45 degrees, full lockout."
+  },
+  {
+    "id": "goblet_squat",
+    "name": "Dumbbell Goblet Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hold dumbbell at chest, sit deep between knees, drive up tall."
+  },
+  {
+    "id": "good_morning",
+    "name": "Barbell Good Morning",
+    "primary_muscle": "lower_back",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "lower_back_extension",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bar on traps, soft knees, hinge with flat back to a hamstring stretch, drive hips through."
+  },
+  {
+    "id": "hack_squat",
+    "name": "Hack Squat Machine",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "hack_squat_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Feet lower on platform for quad bias, descend deep, drive through whole foot."
+  },
+  {
+    "id": "hanging_leg_raise",
+    "name": "Hanging Leg Raise",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hang, posteriorly tilt pelvis, raise knees/legs by curling hips, control down."
+  },
+  {
+    "id": "hip_abduction_band",
+    "name": "Band Hip Abduction (Side-Lying)",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "resistance_bands"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "glute_abduction",
+    "default_rep_low": 15,
+    "default_rep_high": 25,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Band above knees, lift top leg up and back, control down, target glute medius."
+  },
+  {
+    "id": "hollow_body_hold",
+    "name": "Hollow Body Hold",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "core_anti_extension_progression",
+    "default_rep_low": 20,
+    "default_rep_high": 60,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "core_anti_extension_line",
+    "progression_level": 2,
+    "cues": "Lie flat, press low back into floor, lift shoulders and legs, hold the dish (seconds)."
+  },
+  {
+    "id": "incline_barbell_press",
+    "name": "Incline Barbell Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "incline_press",
+    "equipment": [
+      "barbell",
+      "adjustable_bench",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "chest_incline_press",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bench at ~30 degrees, touch upper chest, drive bar up over collarbone."
+  },
+  {
+    "id": "incline_dumbbell_curl",
+    "name": "Incline Dumbbell Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bench ~60 degrees, arms hang back for stretch, curl without shoulder drift."
+  },
+  {
+    "id": "incline_dumbbell_press",
+    "name": "Incline Dumbbell Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "incline_press",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "chest_incline_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bench ~30 degrees, deep stretch at bottom, press up and in."
+  },
+  {
+    "id": "incline_pushup",
+    "name": "Incline Push-up (Hands Elevated)",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 8,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 1,
+    "cues": "Hands on a box/wall, rigid plank, lower chest to the surface; easiest push-up angle."
+  },
+  {
+    "id": "incline_pushup_feet_low",
+    "name": "Decline Push-up (Feet Elevated)",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "incline_press",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "chest_incline_press",
+    "default_rep_low": 8,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Feet on box/bed, hands on floor; emphasizes upper chest."
+  },
+  {
+    "id": "inverted_row",
+    "name": "Inverted Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 1,
+    "cues": "Bar at hip height, body rigid and angled, pull chest to bar, squeeze shoulder blades."
+  },
+  {
+    "id": "jm_press",
+    "name": "JM Press",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "barbell",
+      "flat_bench",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 9,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lower bar toward upper chest/chin in a hybrid skullcrusher-press path, elbows forward."
+  },
+  {
+    "id": "kneeling_ab_wheel",
+    "name": "Kneeling Ab Wheel Rollout (Progression)",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "ab_wheel"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "core_anti_extension_progression",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "core_anti_extension_line",
+    "progression_level": 3,
+    "cues": "From knees, brace and roll out as far as you can hold a flat spine, pull back with abs."
+  },
+  {
+    "id": "kroc_row",
+    "name": "Kroc Row (Heavy DB Row)",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "traps",
+      "biceps",
+      "forearms"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 9,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Brace on bench, allow slight body English with a heavy dumbbell, row high, big range."
+  },
+  {
+    "id": "landmine_press",
+    "name": "Half-Kneeling Landmine Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "chest"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "landmine",
+      "barbell"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Half-kneel, press the bar end up and forward, full extension, control the return."
+  },
+  {
+    "id": "landmine_row",
+    "name": "Landmine Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "landmine",
+      "barbell"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 10,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Straddle the bar, hinge over, row handle to chest, drive elbows back and squeeze."
+  },
+  {
+    "id": "lat_pulldown",
+    "name": "Lat Pulldown",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "lat_pulldown"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pull bar to upper chest, drive elbows down, control the stretch up top."
+  },
+  {
+    "id": "leaning_cable_lateral_raise",
+    "name": "Leaning Cable Lateral Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lean away from the stack holding the upright, raise to shoulder height for a long stretch."
+  },
+  {
+    "id": "leg_extension",
+    "name": "Leg Extension",
+    "primary_muscle": "quads",
+    "secondary_muscles": [],
+    "pattern": "leg_extension",
+    "equipment": [
+      "leg_extension_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "quad_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pad on lower shin, extend to full lockout, squeeze, control down."
+  },
+  {
+    "id": "leg_press",
+    "name": "Leg Press",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "leg_press"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Feet mid-platform, lower until knees near chest, don't lock out hard."
+  },
+  {
+    "id": "leg_press_calf_raise",
+    "name": "Leg Press Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "leg_press"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "calf_standing",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Balls of feet on platform, legs near straight, deep stretch then full press."
+  },
+  {
+    "id": "low_to_high_cable_fly",
+    "name": "Low-to-High Cable Fly",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts"
+    ],
+    "pattern": "fly",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "chest_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pulleys low, sweep hands up and together to collarbone height; biases upper pec."
+  },
+  {
+    "id": "lsit_pullup",
+    "name": "L-Sit Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "abs"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 4,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 4,
+    "cues": "Hold legs straight out in an L while you pull; resist swing, chin over bar."
+  },
+  {
+    "id": "lu_raise",
+    "name": "Lu Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps",
+      "front_delts"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Raise light dumbbells out and overhead in a sweeping arc, pinkies up, control down."
+  },
+  {
+    "id": "lying_leg_curl",
+    "name": "Lying Leg Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "leg_curl_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "hamstring_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pad on lower calves, curl heels to glutes, control the negative."
+  },
+  {
+    "id": "lying_leg_raise",
+    "name": "Lying Leg Raise",
+    "primary_muscle": "abs",
+    "secondary_muscles": [],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lie flat, raise legs while tilting pelvis up, lower slowly without arching."
+  },
+  {
+    "id": "machine_hip_thrust",
+    "name": "Machine Hip Thrust",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "hip_thrust_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pad across hips, drive to full extension, hold squeeze at top."
+  },
+  {
+    "id": "machine_lateral_raise",
+    "name": "Machine Lateral Raise",
+    "primary_muscle": "side_delts",
+    "secondary_muscles": [
+      "traps"
+    ],
+    "pattern": "lateral_raise",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "side_delt_raise",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Pads against outer arms, drive elbows out to shoulder height."
+  },
+  {
+    "id": "machine_preacher_curl",
+    "name": "Machine Preacher Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "cable_stack",
+      "preacher_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 9,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Arms on pad, full stretch at bottom, curl to peak, control without bouncing."
+  },
+  {
+    "id": "meadows_row",
+    "name": "Meadows Row",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "landmine",
+      "barbell"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand perpendicular to landmine, overhand grip, row to hip with a big lat stretch."
+  },
+  {
+    "id": "negative_pullup",
+    "name": "Negative Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 1,
+    "cues": "Jump or step to the top, then lower as slowly as possible to a full hang."
+  },
+  {
+    "id": "neutral_grip_pulldown",
+    "name": "Neutral-Grip Lat Pulldown",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "lat_pulldown"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 8,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Neutral V-handle, pull to upper chest, drive elbows down and back, control the stretch."
+  },
+  {
+    "id": "nordic_curl",
+    "name": "Nordic Hamstring Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "hamstring_curl",
+    "default_rep_low": 5,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Anchor ankles, lower torso slowly under control, push back up with hands if needed."
+  },
+  {
+    "id": "one_arm_pullup",
+    "name": "One-Arm Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "forearms"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 1,
+    "default_rep_high": 5,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 7,
+    "cues": "From a one-arm hang, pull chin over bar with a single arm, minimize body rotation."
+  },
+  {
+    "id": "one_arm_pullup_negative",
+    "name": "One-Arm Pull-up Negative",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "forearms"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "vertical_pull_progression",
+    "default_rep_low": 2,
+    "default_rep_high": 5,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "vertical_pull_line",
+    "progression_level": 6,
+    "cues": "Start at the top with one hand, lower as slowly as possible to a full one-arm hang."
+  },
+  {
+    "id": "overhead_cable_triceps_extension",
+    "name": "Overhead Cable Triceps Extension",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Rope overhead, deep stretch behind head, extend fully, keep elbows narrow."
+  },
+  {
+    "id": "overhead_press",
+    "name": "Standing Barbell Overhead Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "traps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 5,
+    "default_rep_high": 8,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Brace hard, press bar overhead, finish with bar over mid-foot, shrug at top."
+  },
+  {
+    "id": "pallof_press",
+    "name": "Cable Pallof Press",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "abs_anti_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Stand side-on to the cable, press handle straight out, resist the rotation, hold, return."
+  },
+  {
+    "id": "parallel_bar_dip_progression",
+    "name": "Parallel Bar Dip (Progression)",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "dip_station"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 2,
+    "cues": "Support on parallel bars, lower to ~90 degrees, stay controlled, press to lockout."
+  },
+  {
+    "id": "pec_deck_fly",
+    "name": "Pec Deck Fly",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts"
+    ],
+    "pattern": "fly",
+    "equipment": [
+      "pec_deck"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "chest_fly",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Slight elbow bend fixed, squeeze pads together, feel stretch at back."
+  },
+  {
+    "id": "pendlay_row",
+    "name": "Pendlay Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 5,
+    "default_rep_high": 8,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Torso parallel to floor, bar resets on floor each rep, explosive pull to lower chest."
+  },
+  {
+    "id": "pike_pushup",
+    "name": "Pike Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "handstand_vertical_push",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "handstand_push_line",
+    "progression_level": 1,
+    "cues": "Pike at hips, hands on floor, lower the crown of head toward floor, press back up."
+  },
+  {
+    "id": "plank",
+    "name": "Front Plank",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "abs_anti_extension",
+    "default_rep_low": 30,
+    "default_rep_high": 60,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Forearms down, posteriorly tilt pelvis, squeeze abs and glutes, hold (seconds)."
+  },
+  {
+    "id": "plank_progression",
+    "name": "Front Plank (Core Line)",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "core_anti_extension_progression",
+    "default_rep_low": 30,
+    "default_rep_high": 60,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "core_anti_extension_line",
+    "progression_level": 1,
+    "cues": "Forearms down, posteriorly tilt pelvis, squeeze abs and glutes, hold (seconds)."
+  },
+  {
+    "id": "preacher_curl",
+    "name": "Preacher Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "ez_curl_bar",
+      "preacher_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Arms on pad, full stretch at bottom, curl up, don't bounce out of the hole."
+  },
+  {
+    "id": "pseudo_planche_pushup",
+    "name": "Pseudo-Planche Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "chest",
+      "triceps",
+      "abs"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 3,
+    "cues": "Hands by hips, lean shoulders far forward past the hands, protract scapulae, push up."
+  },
+  {
+    "id": "push_press",
+    "name": "Barbell Push Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "traps",
+      "quads"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 5,
+    "default_rep_high": 8,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Short leg dip, drive bar overhead with leg momentum, lock out tall over mid-foot."
+  },
+  {
+    "id": "pushup",
+    "name": "Push-up",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "chest_horizontal_press",
+    "default_rep_low": 8,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Rigid plank, lower chest to floor, elbows tucked ~45 degrees."
+  },
+  {
+    "id": "rack_pull",
+    "name": "Rack Pull",
+    "primary_muscle": "traps",
+    "secondary_muscles": [
+      "upper_back",
+      "lower_back",
+      "glutes",
+      "forearms"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "traps_shrug",
+    "default_rep_low": 5,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bar at knee height in rack, flat back, pull to lockout and let traps hang heavy."
+  },
+  {
+    "id": "reverse_ez_bar_curl",
+    "name": "Reverse EZ-Bar Curl",
+    "primary_muscle": "forearms",
+    "secondary_muscles": [
+      "biceps"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "ez_curl_bar"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "forearm_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Overhand grip, elbows pinned, curl up keeping wrists firm; hits brachioradialis/extensors."
+  },
+  {
+    "id": "reverse_hack_squat",
+    "name": "Reverse Hack Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "hack_squat_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Face the pad, chest supported, sit deep with knees forward, drive through mid-foot."
+  },
+  {
+    "id": "reverse_hyper",
+    "name": "Reverse Hyperextension",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings",
+      "lower_back"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hips on a high bench, torso supported, swing legs up to extension, squeeze glutes, control down."
+  },
+  {
+    "id": "reverse_lunge",
+    "name": "Dumbbell Reverse Lunge",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "quad_lunge",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Step back, drop knee toward floor, drive through front heel to stand."
+  },
+  {
+    "id": "reverse_pec_deck",
+    "name": "Reverse Pec Deck",
+    "primary_muscle": "rear_delts",
+    "secondary_muscles": [
+      "upper_back",
+      "traps"
+    ],
+    "pattern": "rear_delt",
+    "equipment": [
+      "pec_deck"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "rear_delt_fly",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Chest on pad, sweep handles back and out, lead with pinkies, squeeze."
+  },
+  {
+    "id": "ring_dip",
+    "name": "Ring Dip",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts",
+      "abs"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 4,
+    "cues": "Dip on rings, keep them close, control the wobble, lower to depth, press to lockout."
+  },
+  {
+    "id": "ring_dip_rto",
+    "name": "Ring Dip with Rings Turned Out",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts",
+      "abs"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 5,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 5,
+    "cues": "Dip then turn rings out (palms forward) at lockout for a hard support; control throughout."
+  },
+  {
+    "id": "ring_support_hold",
+    "name": "Ring Support Hold",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "front_delts",
+      "abs"
+    ],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "dip_vertical_push",
+    "default_rep_low": 10,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "dip_line",
+    "progression_level": 3,
+    "cues": "Support at the top of the rings, arms locked, rings turned slightly out, hold (seconds)."
+  },
+  {
+    "id": "romanian_deadlift",
+    "name": "Barbell Romanian Deadlift",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "glutes",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "barbell",
+      "power_rack"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "hamstring_hinge",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Soft knees, push hips back, bar close, feel deep hamstring stretch, drive hips forward."
+  },
+  {
+    "id": "seal_row",
+    "name": "Seal Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "barbell",
+      "adjustable_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 8,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Chest on a high bench, no torso English, row bar to bench underside, full squeeze."
+  },
+  {
+    "id": "seated_cable_row",
+    "name": "Seated Cable Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "seated_row_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Tall chest, pull handle to navel, retract shoulder blades, control stretch."
+  },
+  {
+    "id": "seated_calf_raise",
+    "name": "Seated Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "seated_calf_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "calf_seated",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Knees bent under pad to bias soleus, full stretch and contraction each rep."
+  },
+  {
+    "id": "seated_dumbbell_press",
+    "name": "Seated Dumbbell Shoulder Press",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Upright back support, press dumbbells up and slightly in, full stretch at bottom."
+  },
+  {
+    "id": "seated_leg_curl",
+    "name": "Seated Leg Curl",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "calves"
+    ],
+    "pattern": "leg_curl",
+    "equipment": [
+      "leg_curl_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "hamstring_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hips flexed for greater stretch, curl heels under, squeeze, control up."
+  },
+  {
+    "id": "shoulder_press_machine",
+    "name": "Shoulder Press Machine",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "shoulder_press_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "shoulder_vertical_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Align handles with shoulders, press up smoothly, no harsh lockout."
+  },
+  {
+    "id": "shrimp_squat",
+    "name": "Shrimp Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings",
+      "abs"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 5,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 5,
+    "cues": "Hold the rear foot behind you, drop the rear knee toward floor, drive up on one leg."
+  },
+  {
+    "id": "single_arm_cable_pushdown",
+    "name": "Single-Arm Cable Pushdown",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 11,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Reverse grip or neutral handle, elbow pinned, push to full lockout, control return."
+  },
+  {
+    "id": "single_arm_dumbbell_row",
+    "name": "Single-Arm Dumbbell Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 9,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Knee and hand on bench, flat back, row dumbbell to hip, control the stretch."
+  },
+  {
+    "id": "single_leg_hip_thrust",
+    "name": "Single-Leg Hip Thrust",
+    "primary_muscle": "glutes",
+    "secondary_muscles": [
+      "hamstrings"
+    ],
+    "pattern": "hip_thrust",
+    "equipment": [
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "glute_hip_thrust",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Upper back on bench, one foot planted, drive hips to full lockout, squeeze, level hips."
+  },
+  {
+    "id": "single_leg_rdl",
+    "name": "Single-Leg Dumbbell RDL",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "glutes",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "hamstring_hinge",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Balance on one leg, hinge as the rear leg rises, flat back, drive hip to stand tall."
+  },
+  {
+    "id": "single_leg_seated_calf_raise",
+    "name": "Single-Leg Seated Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "calf_seated",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Knee bent ~90 with dumbbell on the thigh, ball of foot on a step, full stretch and squeeze."
+  },
+  {
+    "id": "sissy_squat",
+    "name": "Sissy Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [],
+    "pattern": "leg_extension",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "quad_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Heels up, knees travel forward as you lean back, keep hips extended, feel the quad stretch."
+  },
+  {
+    "id": "smith_machine_calf_raise",
+    "name": "Smith Machine Standing Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "smith_machine",
+      "bench_or_box"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "calf_standing",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bar on traps, balls of feet on a block, legs straight, deep stretch then full plantarflexion."
+  },
+  {
+    "id": "smith_machine_incline_press",
+    "name": "Smith Machine Incline Press",
+    "primary_muscle": "chest",
+    "secondary_muscles": [
+      "front_delts",
+      "triceps"
+    ],
+    "pattern": "incline_press",
+    "equipment": [
+      "smith_machine",
+      "adjustable_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "chest_incline_press",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Bench ~30 degrees under the bar path, touch upper chest, press without locking hard."
+  },
+  {
+    "id": "smith_machine_squat",
+    "name": "Smith Machine Squat",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "squat",
+    "equipment": [
+      "smith_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "quad_squat",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Feet slightly forward, descend deep, drive through whole foot, fixed bar path."
+  },
+  {
+    "id": "spider_curl",
+    "name": "Spider Curl",
+    "primary_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "curl",
+    "equipment": [
+      "dumbbells",
+      "adjustable_bench"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "biceps_curl",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Chest on incline bench, arms hang straight down, curl up with a hard peak squeeze."
+  },
+  {
+    "id": "split_squat_progression",
+    "name": "Split Squat (Progression)",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "single_leg_squat_progression",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "pistol_squat_line",
+    "progression_level": 2,
+    "cues": "Split stance, drop straight down until rear knee nears floor, drive through front heel."
+  },
+  {
+    "id": "standing_ab_wheel",
+    "name": "Standing Ab Wheel Rollout",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "lower_back"
+    ],
+    "pattern": "anti_extension",
+    "equipment": [
+      "ab_wheel"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "core_anti_extension_progression",
+    "default_rep_low": 3,
+    "default_rep_high": 8,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "core_anti_extension_line",
+    "progression_level": 4,
+    "cues": "From standing, roll out and back to your feet without letting the hips sag; very advanced."
+  },
+  {
+    "id": "standing_calf_raise",
+    "name": "Standing Calf Raise",
+    "primary_muscle": "calves",
+    "secondary_muscles": [],
+    "pattern": "calf_raise",
+    "equipment": [
+      "standing_calf_machine"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "calf_standing",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Legs straight, drop heels for full stretch, rise to full plantarflexion, pause."
+  },
+  {
+    "id": "step_up",
+    "name": "Dumbbell Step-Up",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "dumbbells",
+      "bench_or_box"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "quad_lunge",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Plant whole foot on box, drive through the heel to stand, control the descent."
+  },
+  {
+    "id": "stiff_leg_deadlift",
+    "name": "Barbell Stiff-Leg Deadlift",
+    "primary_muscle": "hamstrings",
+    "secondary_muscles": [
+      "glutes",
+      "lower_back"
+    ],
+    "pattern": "hip_hinge",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "hamstring_hinge",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Minimal knee bend, hinge to a deep hamstring stretch, bar close, drive hips through."
+  },
+  {
+    "id": "straddle_front_lever",
+    "name": "Straddle Front Lever Hold",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "abs",
+      "lower_back"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "pullup_bar"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 3,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 4,
+    "cues": "Legs straight and split wide, body flat and horizontal, straight arms, hold (seconds)."
+  },
+  {
+    "id": "straddle_planche",
+    "name": "Straddle Planche",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "chest",
+      "abs",
+      "lower_back",
+      "biceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "low",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 3,
+    "default_rep_high": 20,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 6,
+    "cues": "Legs straight and split wide, body flat and parallel, full protraction, hold (seconds)."
+  },
+  {
+    "id": "straight_arm_pulldown",
+    "name": "Straight-Arm Cable Pulldown",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "cable_stack"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 7,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Arms nearly straight, sweep bar down to thighs in an arc, feel lats, no elbow bend."
+  },
+  {
+    "id": "suspension_row",
+    "name": "Suspension Trainer Inverted Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "suspension_trainer"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lean back on straps, rigid body, row chest to handles."
+  },
+  {
+    "id": "t_bar_row",
+    "name": "T-Bar Row",
+    "primary_muscle": "upper_back",
+    "secondary_muscles": [
+      "lats",
+      "rear_delts",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "t_bar_row"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "back_horizontal_row",
+    "default_rep_low": 8,
+    "default_rep_high": 12,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hinge with flat back, pull handles to chest, full squeeze."
+  },
+  {
+    "id": "tate_press",
+    "name": "Tate Press",
+    "primary_muscle": "triceps",
+    "secondary_muscles": [],
+    "pattern": "triceps_extension",
+    "equipment": [
+      "dumbbells",
+      "flat_bench"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 10,
+    "e1rm_substitution_group": "triceps_extension",
+    "default_rep_low": 10,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Lying, elbows flared, lower dumbbells to chest with plates turning in, extend up."
+  },
+  {
+    "id": "trap_bar_shrug",
+    "name": "Trap-Bar Shrug",
+    "primary_muscle": "traps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "pattern": "shrug",
+    "equipment": [
+      "barbell"
+    ],
+    "sfr_class": "high",
+    "is_gold_standard": false,
+    "preferred_rank": 5,
+    "e1rm_substitution_group": "traps_shrug",
+    "default_rep_low": 8,
+    "default_rep_high": 15,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Neutral handles at sides, shrug straight up, pause, no rolling."
+  },
+  {
+    "id": "tuck_front_lever_row",
+    "name": "Tuck Front Lever Row",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "upper_back",
+      "rear_delts",
+      "abs",
+      "biceps"
+    ],
+    "pattern": "horizontal_pull",
+    "equipment": [
+      "gymnastic_rings"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 2,
+    "e1rm_substitution_group": "front_lever_horizontal_pull",
+    "default_rep_low": 6,
+    "default_rep_high": 12,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "front_lever_pull_line",
+    "progression_level": 2,
+    "cues": "Knees tucked, body horizontal under the rings/bar, row to the hips, keep hips up."
+  },
+  {
+    "id": "tuck_lsit",
+    "name": "Tuck L-Sit",
+    "primary_muscle": "abs",
+    "secondary_muscles": [
+      "triceps",
+      "front_delts",
+      "quads"
+    ],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 6,
+    "e1rm_substitution_group": "lsit_flexion_progression",
+    "default_rep_low": 10,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "lsit_line",
+    "progression_level": 2,
+    "cues": "Support on parallettes, lift knees tucked to chest off the floor, depress shoulders, hold (seconds)."
+  },
+  {
+    "id": "tuck_planche",
+    "name": "Tuck Planche",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "chest",
+      "abs",
+      "lower_back",
+      "biceps"
+    ],
+    "pattern": "horizontal_press",
+    "equipment": [
+      "parallettes"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "planche_horizontal_push",
+    "default_rep_low": 5,
+    "default_rep_high": 30,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "planche_push_line",
+    "progression_level": 4,
+    "cues": "Knees tucked to chest, lean shoulders forward past hands, protract hard, hold (seconds)."
+  },
+  {
+    "id": "walking_lunge",
+    "name": "Dumbbell Walking Lunge",
+    "primary_muscle": "quads",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "pattern": "lunge",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 4,
+    "e1rm_substitution_group": "quad_lunge",
+    "default_rep_low": 10,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": true,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Step forward, drop rear knee toward floor, drive through front heel, alternate legs."
+  },
+  {
+    "id": "wall_handstand_pushup",
+    "name": "Wall Handstand Push-up",
+    "primary_muscle": "front_delts",
+    "secondary_muscles": [
+      "side_delts",
+      "triceps",
+      "traps"
+    ],
+    "pattern": "vertical_press",
+    "equipment": [
+      "none_bodyweight"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "handstand_vertical_push",
+    "default_rep_low": 5,
+    "default_rep_high": 10,
+    "loadable": false,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "extended",
+    "modality": "calisthenics",
+    "progression_group": "handstand_push_line",
+    "progression_level": 3,
+    "cues": "Kick up to a wall handstand, lower head to floor under control, press to lockout."
+  },
+  {
+    "id": "weighted_crunch",
+    "name": "Weighted Crunch",
+    "primary_muscle": "abs",
+    "secondary_muscles": [],
+    "pattern": "trunk_flexion",
+    "equipment": [
+      "dumbbells"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": false,
+    "preferred_rank": 3,
+    "e1rm_substitution_group": "abs_flexion",
+    "default_rep_low": 12,
+    "default_rep_high": 20,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": true,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Hold weight on chest, curl ribs toward pelvis, full crunch, slow lower."
+  },
+  {
+    "id": "weighted_pullup",
+    "name": "Weighted Pull-up",
+    "primary_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "upper_back",
+      "rear_delts"
+    ],
+    "pattern": "vertical_pull",
+    "equipment": [
+      "pullup_bar",
+      "dip_belt"
+    ],
+    "sfr_class": "moderate",
+    "is_gold_standard": true,
+    "preferred_rank": 1,
+    "e1rm_substitution_group": "lats_vertical_pull",
+    "default_rep_low": 6,
+    "default_rep_high": 10,
+    "loadable": true,
+    "unilateral": false,
+    "home_hotel_friendly": false,
+    "tier": "core",
+    "modality": "hypertrophy",
+    "progression_group": null,
+    "progression_level": null,
+    "cues": "Full hang, drive elbows down and back, chest to bar."
+  }
+]

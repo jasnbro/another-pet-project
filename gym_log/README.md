@@ -42,7 +42,7 @@ were done under.
 Add one line to `data/exercises.yaml`:
 
 ```yaml
-step_up: { name: Step-up, what: "Step onto the bench holding dumbbells; drive through the front heel.", muscles: [quads, glutes], equipment: [powerblocks, flybird_bench], load: db_per_hand }
+step_up: { catalog: step-up, name: Step-up, what: "Step onto the bench holding dumbbells; drive through the front heel.", muscles: [quads, glutes], equipment: [powerblocks, flybird_bench], load: db_per_hand }
 ```
 
 - The key (`step_up`) is permanent. Lowercase, underscores, never reused.
@@ -51,6 +51,12 @@ step_up: { name: Step-up, what: "Step onto the bench holding dumbbells; drive th
   `bodyweight`, `seconds` (timed hold), `band`.
 - Optional `alt: other_key`: shown instead whenever this exercise's
   equipment isn't all `owned` (like `bench` → `floor_press`).
+- Optional `catalog: some-id`: links the exercise to a row in
+  `data/catalog.csv` (302 exercises from Workout Guide, plus a few custom
+  ones). Exercises with an illustration show it as a short loop on the
+  Today card and the Exercises page. Find the id by searching the CSV for
+  the exercise name. An exercise with no match can leave `catalog:` out, or
+  get a custom row (see `catalog/README.md`).
 - **Put quotes around text that has a comma**, or YAML splits it and CI
   fails: `name: "Single-arm row, lat-biased"`.
 
@@ -89,6 +95,9 @@ step. Each problem is one line naming the file. The common ones:
 | `more than one plan has active: true` / `no plan has active: true` | Exactly one plan file needs `active: true`. |
 | `low ... is greater than high` / `sets must be at least 1` | Fix the numbers: `reps: [low, high]`, `sets` 1 or more. |
 | `schedule.odd.mon is day 'C'` | The schedule names a day that isn't under `days:`. |
+| `has catalog 'x', which isn't in catalog.csv` | The `catalog:` id is misspelled. Search `data/catalog.csv` for the exercise's name and copy its `id`. |
+| `catalog.csv: missing column(s)` / `appears twice` | The CSV was hand-edited. Run `uv run python catalog/build_catalog.py` and commit the result. |
+| `test_catalog_csv_is_up_to_date` failed | `catalog/build_catalog.py` changed but `data/catalog.csv` wasn't regenerated (or the CSV was hand-edited). Run the builder and commit. |
 | `plan id '…' must match the file name` | `plan:` was changed. Put it back to the file's name and use `name:` for the plan's display name. |
 
 The app runs the same check when it starts and won't start if it fails, so

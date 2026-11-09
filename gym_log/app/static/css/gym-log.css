@@ -277,6 +277,35 @@ textarea {
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; font-variant-numeric: tabular-nums; }
 
+.credits { font-size: 0.85rem; margin: 20px 0 0; }
+
+/* --- exercise illustration loop ------------------------------------------------------
+   Frames are white-on-transparent PNGs (Workout Guide), drawn as masks so they take the
+   theme's ink color; the files themselves are never modified (CC BY-SA). Three frames
+   play start, mid, end, mid: 0.5 s per pose. Reduced motion: start pose only. */
+.demo {
+  --demo-size: 76px;
+  position: relative; flex: none; display: block;
+  width: var(--demo-size); height: var(--demo-size);
+  border-radius: 8px; background: var(--surface-2);
+}
+.demo--lg { --demo-size: 128px; float: right; margin: 0 0 8px 12px; }
+.demo__frame {
+  position: absolute; inset: 4px; opacity: 0; background-color: var(--ink);
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+.demo__frame--1 { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .demo--loop .demo__frame { animation: 2s step-end infinite; }
+  .demo--loop .demo__frame--1 { animation-name: demo-start; }
+  .demo--loop .demo__frame--2 { animation-name: demo-mid; }
+  .demo--loop .demo__frame--3 { animation-name: demo-end; }
+}
+@keyframes demo-start { 0% { opacity: 1; } 25%, 100% { opacity: 0; } }
+@keyframes demo-mid { 0% { opacity: 0; } 25% { opacity: 1; } 50% { opacity: 0; } 75%, 100% { opacity: 1; } }
+@keyframes demo-end { 0%, 25% { opacity: 0; } 50% { opacity: 1; } 75%, 100% { opacity: 0; } }
+
 .equipment { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .equipment li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
 .equipment li > * + * { margin-top: 4px; }
@@ -294,4 +323,6 @@ textarea {
   .timer__clock { font-size: 1.5rem; }
   .facts { grid-template-columns: 1fr; }
   .facts dd { margin-bottom: 6px; }
+  .demo { --demo-size: 60px; }
+  .demo--lg { --demo-size: 96px; }
 }
