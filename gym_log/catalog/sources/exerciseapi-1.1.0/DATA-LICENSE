@@ -1,0 +1,41 @@
+ExerciseAPI Dataset License
+===========================
+
+The ExerciseAPI exercise catalog (data/exercises.json, all versioned snapshot
+artifacts derived from it, and the curated metadata it contains) is licensed
+under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+You are free to:
+
+  Share — copy and redistribute the data in any medium or format
+  Adapt — remix, transform, and build upon the data for any purpose,
+          even commercially
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit to "ExerciseAPI"
+  (with a link to the project where practical), provide a link to the
+  license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Preferred attribution
+---------------------
+
+Any product, service, or publication using this data (directly or via the
+API) must credit ExerciseAPI. Preferred forms:
+
+  Text:  Exercise data by ExerciseAPI (https://exercise-api.com),
+         licensed under CC BY 4.0.
+
+  HTML:  Exercise data by <a href="https://exercise-api.com">ExerciseAPI</a>,
+         licensed under
+         <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+
+Space-constrained apps may instead credit "ExerciseAPI" with a link on an
+about/credits screen. If you modified the data, say so. This attribution
+text is also served machine-readably in `GET /v1/meta` (`license` object).
+
+The source code of this repository is separately licensed under MIT (see
+LICENSE). Provenance and citations for the dataset are documented in
+data/SOURCE.md.
