@@ -30,7 +30,6 @@ A single-user home gym log for the iPad: today's workout from the active plan, a
 | `cloudflared/` | Cloudflare tunnel for external access without open ports |
 | `mindless_meals/` | The app, containerized |
 | `gym_log/` | Gym Log, containerized |
-| `jellyfin/` | Personal media server |
 
 Server runbook: [docs/atlas.md](docs/atlas.md).
 
