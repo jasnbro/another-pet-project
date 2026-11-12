@@ -5,11 +5,11 @@ Runbook for the self-hosted home server that runs these services. Moved here fro
 
 Services
 --------
-Jellyfin
+Mindless Meals
+Gym Log
 
 Location
 --------
-~/services/jellyfin
 ~/services/mindless_meals
 ~/services/gym_log
 
@@ -33,14 +33,6 @@ Logs
 cd ~/services/<service_name>
 docker compose logs -f
 
-Access
-------
-LAN:
-http://<atlas-lan-ip>:8096
-
-Tailscale:
-http://<atlas-tailscale-ip>:8096
-
 Infrastructure Services
 -----------------------
 postgres
@@ -55,7 +47,6 @@ postgres
 
 Application Services
 --------------------
-jellyfin
 mindless_meals
 gym_log (gym.undercurrentlabs.dev, behind Cloudflare Access; see gym_log/README.md)
 future applications
@@ -64,8 +55,6 @@ Notes
 -----
 - Use the jasmine user for day-to-day administration.
 - Avoid working as root unless performing OS-level maintenance.
-- Jellyfin uses HTTP by default.
-- Safari may attempt HTTPS and show SSL errors.
 - Tailscale connectivity must be active on the client device.
 - All self-hosted services should live under ~/services.
 - Each service should contain its own compose.yml and persistent data.
