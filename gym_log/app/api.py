@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 from flask import Blueprint, Response, abort, current_app, jsonify, request, url_for
 
+from .accounts import ensure_demo, viewer
 from .db import GymSession, GymSet, db
 from .loader import Catalog
 from .models import LOAD_LABELS
@@ -106,6 +107,22 @@ def session_json(s: GymSession):
 
 # --- routes ----------------------------------------------------------------
 
+@api.get("/me")
+def me():
+    """Who's looking: drives the demo banner and the account link."""
+    who = viewer()
+    return jsonify(
+        {
+            "signed_in": who.signed_in,
+            "can_write": who.can_write,
+            "demo": who.demo,
+            "name": who.name,
+            "sign_in_url": "/auth/sign-in?next=/",
+            "account_url": "/auth/account",
+        }
+    )
+
+
 @api.get("/catalog")
 def get_catalog():
     cat = catalog()
@@ -131,7 +148,7 @@ def _last_time(exercise_key, before: date):
     """Sets from the most recent earlier session that logged this exercise."""
     last_date = (
         db.session.query(GymSet.session_date)
-        .filter(GymSet.exercise_key == exercise_key, GymSet.session_date < before)
+        .filter(GymSet.user_id == viewer().user_id, GymSet.exercise_key == exercise_key, GymSet.session_date < before)
         .order_by(GymSet.session_date.desc())
         .limit(1)
         .scalar()
@@ -139,7 +156,7 @@ def _last_time(exercise_key, before: date):
     if last_date is None:
         return None
     sets = (
-        GymSet.query.filter_by(session_date=last_date, exercise_key=exercise_key)
+        GymSet.query.filter_by(user_id=viewer().user_id, session_date=last_date, exercise_key=exercise_key)
         .order_by(GymSet.set_no)
         .all()
     )
@@ -189,10 +206,13 @@ def get_today():
     if override is not None and override not in plan.days:
         raise Invalid(f"day must be one of {sorted(plan.days)} (got {override!r})", status=400)
 
+    who = viewer()
+    if who.demo:
+        ensure_demo(on)
     week = plan_week(plan, on)
     deload = is_deload(plan, week)
     scheduled = scheduled_day(plan, on)
-    session = db.session.get(GymSession, on)
+    session = db.session.get(GymSession, (who.user_id, on))
     code = override or (session.day_code if session and session.day_code in plan.days else None) or scheduled
     upcoming = next_session(plan, on)
 
@@ -221,7 +241,10 @@ def get_today():
 
 @api.get("/sessions")
 def list_sessions():
-    query = GymSession.query
+    who = viewer()
+    if who.demo:
+        ensure_demo(datetime.now(HOME_TZ).date())
+    query = GymSession.query.filter_by(user_id=who.user_id)
     since = request.args.get("since")
     if since:
         query = query.filter(GymSession.session_date >= parse_date(since, "since"))
@@ -230,7 +253,7 @@ def list_sessions():
 
 @api.get("/sessions/<day>")
 def get_session(day):
-    session = db.session.get(GymSession, parse_date(day))
+    session = db.session.get(GymSession, (viewer().user_id, parse_date(day)))
     if session is None:
         abort(404)
     return jsonify(session_json(session))
@@ -297,6 +320,11 @@ def _parse_sets(raw_sets):
 @api.put("/sessions/<day>")
 def put_session(day):
     """Upsert one session and replace all its sets, in one transaction."""
+    who = viewer()
+    if not who.can_write:
+        if who.signed_in:
+            raise Invalid("Your account doesn't have access to Gym Log, so this demo is read-only.", status=403)
+        raise Invalid("This is the demo, so nothing is saved. Sign in to log your own workouts.", status=401)
     cat = catalog()
     on = parse_date(day)
     body = request.get_json(silent=True)
@@ -319,9 +347,9 @@ def put_session(day):
     rope_rounds = _bool_list(body, "rope_rounds")
     sets = _parse_sets(body.get("sets", []))
 
-    session = db.session.get(GymSession, on)
+    session = db.session.get(GymSession, (who.user_id, on))
     if session is None:
-        session = GymSession(session_date=on)
+        session = GymSession(user_id=who.user_id, session_date=on)
         db.session.add(session)
     session.plan = plan_id
     session.day_code = day_code
@@ -344,7 +372,7 @@ def progress(exercise_key):
     if exercise_key not in catalog().exercises:
         abort(404)
     rows = (
-        GymSet.query.filter_by(exercise_key=exercise_key)
+        GymSet.query.filter_by(user_id=viewer().user_id, exercise_key=exercise_key)
         .order_by(GymSet.session_date, GymSet.set_no)
         .all()
     )
@@ -372,7 +400,11 @@ def export_csv():
     writer.writerow(["date", "plan", "day", "exercise_key", "exercise_name", "set", "weight_lb", "band", "reps"])
     rows = (
         db.session.query(GymSet, GymSession)
-        .join(GymSession, GymSet.session_date == GymSession.session_date)
+        .join(
+            GymSession,
+            (GymSet.user_id == GymSession.user_id) & (GymSet.session_date == GymSession.session_date),
+        )
+        .filter(GymSet.user_id == viewer().user_id)
         .order_by(GymSet.session_date, GymSet.exercise_key, GymSet.set_no)
         .all()
     )

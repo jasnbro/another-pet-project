@@ -1,0 +1,26 @@
+{% extends "undercurrent_identity/base.html" %}
+{% block title %}Account · Undercurrent{% endblock %}
+{% block content %}
+<h1>{{ user.display_name }}</h1>
+<p class="uc-muted">{{ user.email }}</p>
+<h2>Apps</h2>
+{% if user.apps %}<p>{% for a in user.apps | sort %}{{ app_label(a) }}{% if not loop.last %}, {% endif %}{% endfor %}</p>{% else %}<p class="uc-muted">No apps yet.</p>{% endif %}
+<h2>Passkeys</h2>
+<ul class="uc-list">
+  {% for p in passkeys %}
+  <li>
+    <span><strong>{{ p.name }}</strong><br><span class="uc-muted">added {{ p.created_at.strftime("%b %-d, %Y") }}{% if p.last_used_at %} · last used {{ p.last_used_at.strftime("%b %-d") }}{% endif %}</span></span>
+    {% if passkeys | length > 1 %}<button type="button" class="uc-btn" data-uc-delete-passkey="{{ p.credential_id }}">Remove</button>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+<button type="button" class="uc-btn" data-uc-register data-next="/auth/account">Add a passkey on this device</button>
+<p class="uc-auth__status" role="status" aria-live="polite"></p>
+<h2>Sign out</h2>
+<form method="post" action="/auth/sign-out" class="uc-row">
+  <input type="hidden" name="next" value="/">
+  <button type="submit" class="uc-btn">Sign out</button>
+  <button type="submit" class="uc-btn" name="everywhere" value="1">Sign out everywhere</button>
+</form>
+<p><a href="/">Back to {{ app_label(app_name) }}</a></p>
+{% endblock %}

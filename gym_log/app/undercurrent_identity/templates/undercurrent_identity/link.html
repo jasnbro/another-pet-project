@@ -1,0 +1,20 @@
+{% extends "undercurrent_identity/base.html" %}
+{% block title %}{{ "Welcome" if link.kind == "invite" else "Recover your account" }} · Undercurrent{% endblock %}
+{% block content %}
+{% if link.kind == "invite" %}
+  <h1>{{ "Add a passkey" if existing else "Welcome to Undercurrent" }}</h1>
+  <p>This invite is for <strong>{{ link.email }}</strong>{% if link.apps %} and gives access to <strong>{% for a in link.apps %}{{ app_label(a) }}{% if not loop.last %}, {% endif %}{% endfor %}</strong>{% endif %}.</p>
+  {% if not existing %}
+  <label class="uc-field">Your name
+    <input type="text" id="uc-display-name" autocomplete="name" maxlength="120" placeholder="What should apps call you?">
+  </label>
+  {% endif %}
+{% else %}
+  <h1>Recover your account</h1>
+  <p>Set up a new passkey for <strong>{{ link.email }}</strong>. Your existing passkeys keep working.</p>
+{% endif %}
+<p class="uc-muted">Your device will ask to create a passkey with Face ID, Touch ID, your PIN, or a security key. Nothing to remember, nothing to type.</p>
+<button type="button" class="uc-btn uc-btn--primary uc-btn--wide" data-uc-register data-token="{{ token }}" data-next="/">Create passkey</button>
+<p class="uc-auth__status" role="status" aria-live="polite"></p>
+<p class="uc-muted">This link works once and expires {{ link.expires_at.strftime("%b %-d") }}.</p>
+{% endblock %}

@@ -38,6 +38,13 @@ log "Deploying $IMAGE to $SERVICE_DIR"
 for net in atlas-proxy postgres_default; do
   docker network inspect "$net" >/dev/null 2>&1 || die "Docker network '$net' is missing"
 done
+# Apps using shared Undercurrent sign-in need the shared identity database;
+# without it they would keep accounts in a throwaway file inside the container.
+if [[ -d "$REPO_DIR/$APP/app/undercurrent_identity" ]] \
+   && grep -qE '^DATABASE_URL=["'"'"']?postgresql' "$SERVICE_DIR/.env" \
+   && ! grep -qE '^IDENTITY_DATABASE_URL=["'"'"']?postgresql' "$SERVICE_DIR/.env"; then
+  die "$APP uses Undercurrent sign-in: set IDENTITY_DATABASE_URL (and IDENTITY_RP_ID, IDENTITY_COOKIE_DOMAIN, IDENTITY_PUBLIC_URL) in $SERVICE_DIR/.env first. See shared/undercurrent-identity/README.md. Nothing was changed."
+fi
 
 # --- 1. Build ------------------------------------------------------------
 # --pull refreshes the base image so OS and Python security patches land on every deploy.
@@ -90,6 +97,22 @@ $tables_out"
     alembic upgrade head || die "migration failed. $previous is still running; latest backup is in $BACKUP_DIR"
   else
     log "No pending migrations ($current_rev)"
+  fi
+
+  # Shared Undercurrent identity database (shared/undercurrent-identity),
+  # used by every app that has IDENTITY_DATABASE_URL. Back it up, then bring
+  # its schema up to date with the NEW image, still before the switch.
+  id_url="$(grep -E '^IDENTITY_DATABASE_URL=' "$SERVICE_DIR/.env" | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true)"
+  if [[ "$id_url" == postgresql* ]]; then
+    id_user="$(sed -E 's#^[^:]+://([^:@/]+).*#\1#' <<<"$id_url")"
+    id_name="$(sed -E 's#^.*/([^/?]+)(\?.*)?$#\1#' <<<"$id_url")"
+    log "Backing up identity database '$id_name'"
+    DB_ROLE="$id_user" BACKUP_DIR="$BACKUP_DIR" "$REPO_DIR/postgres/scripts/backup.sh" "$id_name"
+    log "Migrating the identity database"
+    docker compose -p "$APP" --project-directory "$SERVICE_DIR" \
+        -f "$REPO_DIR/$APP/compose.yml" -f "$candidate" \
+        run --rm --no-deps -T "$APP" flask --app app identity migrate \
+      || die "identity database migration failed. ${previous:-nothing} is still running; latest backup is in $BACKUP_DIR"
   fi
   rm -f "$candidate"
 else

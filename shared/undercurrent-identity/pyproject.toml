@@ -1,0 +1,22 @@
+[project]
+name = "undercurrent-identity"
+version = "0.1.0"
+description = "Shared Undercurrent sign-in (passkeys, invite-only, per-app grants). Copied into each app by sync.sh."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "flask",
+    "sqlalchemy",
+    "alembic",
+    "webauthn",
+]
+
+[dependency-groups]
+dev = ["pytest", "psycopg2-binary"]
+
+[tool.uv]
+# Not built as a package: apps get a copy via sync.sh, tests import it in place.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -7,6 +7,7 @@ import yaml
 
 from app import create_app
 from app.db import db
+from app.undercurrent_identity.testing import sign_in
 
 DATA = Path(__file__).resolve().parents[1] / "data"
 
@@ -42,7 +43,7 @@ def data_dir(tmp_path):
 
 
 @pytest.fixture
-def make_app(data_dir):
+def make_app(data_dir, tmp_path):
     apps = []
 
     def _make():
@@ -50,6 +51,7 @@ def make_app(data_dir):
             {
                 "SQLALCHEMY_DATABASE_URI": "sqlite://",
                 "GYM_DATA_DIR": str(data_dir.path),
+                "IDENTITY_DATABASE_URL": f"sqlite:///{tmp_path / f'identity{len(apps)}.db'}",
                 "TESTING": True,
             }
         )
@@ -63,7 +65,24 @@ def make_app(data_dir):
             db.drop_all()
 
 
+def owner_client(app):
+    client = app.test_client()
+    sign_in(client, app.extensions["undercurrent_identity"], "owner@example.com")
+    return client
+
+
 @pytest.fixture
 def client(make_app, data_dir):
+    """Signed in as the owner, with access to Gym Log."""
+    data_dir.own_everything()
+    app = make_app()
+    client = app.test_client()
+    sign_in(client, app.extensions["undercurrent_identity"], "owner@example.com")
+    return client
+
+
+@pytest.fixture
+def anon(make_app, data_dir):
+    """Signed out: sees the read-only demo."""
     data_dir.own_everything()
     return make_app().test_client()

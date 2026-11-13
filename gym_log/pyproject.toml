@@ -13,6 +13,7 @@ dependencies = [
     # zoneinfo data for the America/New_York fallback "today"; python:slim
     # images don't ship the system tz database.
     "tzdata",
+    "webauthn>=3.0.1",
 ]
 
 [dependency-groups]

@@ -64,6 +64,7 @@ check "empty DB: switched to new image" test "$(running)" = mindless_meals:3b3b3
 # 3c. Another app (APP=gym_log) uses its own image, service dir and database
 setup; export APP=gym_log CONTAINER=gym_log FAKE_CURRENT="" FAKE_TABLES=0
 echo 'DATABASE_URL="postgresql+psycopg2://gym_log_app:secret@postgres:5432/gym_log"' > "$T/svc/.env"
+echo 'IDENTITY_DATABASE_URL="postgresql+psycopg2://undercurrent_identity_app:secret@postgres:5432/undercurrent_identity"' >> "$T/svc/.env"
 quiet "$deploy" 3c3c3c3c3c3c3c3c; rc=$?
 check "gym_log deploy exits 0" test $rc -eq 0
 check "gym_log: built its own folder" grep -q 'docker build .* -t gym_log:3c3c3c3c3c3c .*/gym_log$' "$FAKE_DIR/calls"
@@ -71,6 +72,43 @@ check "gym_log: backed up its own database" bash -c "ls '$T/backups' | grep -q '
 check "gym_log: backup used its own role" grep -q 'pg_dump -U gym_log_app' "$FAKE_DIR/calls"
 check "gym_log: image pinned" grep -q 'image: gym_log:3c3c3c3c3c3c' "$T/svc/compose.override.yml"
 unset APP CONTAINER
+
+# 3d. Identity database: backed up and migrated with the new image, before the switch
+setup
+echo 'IDENTITY_DATABASE_URL=postgresql+psycopg2://undercurrent_identity_app:s3cret@postgres:5432/undercurrent_identity' >> "$T/svc/.env"
+quiet "$deploy" 3d3d3d3d3d3d3d3d; rc=$?
+check "identity: deploy exits 0" test $rc -eq 0
+check "identity: migrated" grep -q identity-migrate "$FAKE_DIR/migrations"
+check "identity: backed up with its own role" grep -q 'pg_dump -U undercurrent_identity_app' "$FAKE_DIR/calls"
+check "identity: backup file written" bash -c "ls '$T/backups' | grep -q '^undercurrent_identity_.*\.sql\.gz$'"
+check "identity: migrated before the switch" bash -c "grep -n 'identity migrate\| up ' '$FAKE_DIR/calls' | head -1 | grep -q 'identity migrate'"
+check "identity: password never logged" bash -c "! grep -q s3cret '$T/out'"
+
+# 3e. Identity migration fails -> old version keeps running, service dir untouched
+setup; export FAKE_IDENTITY_FAIL=1
+echo 'IDENTITY_DATABASE_URL=postgresql+psycopg2://u:p@postgres:5432/undercurrent_identity' >> "$T/svc/.env"
+quiet "$deploy" 3e3e3e3e3e3e3e3e; rc=$?
+check "identity fail: exits non-zero" test $rc -ne 0
+check "identity fail: says so" grep -q "identity database migration failed" "$T/out"
+check "identity fail: old version still running" test "$(running)" = mindless_meals_old:latest
+check "identity fail: service dir untouched" test ! -f "$T/svc/compose.override.yml"
+export FAKE_IDENTITY_FAIL=""
+
+# 3g. An app with sign-in but no IDENTITY_DATABASE_URL -> refuse before building
+setup; export APP=gym_log CONTAINER=gym_log
+echo 'DATABASE_URL="postgresql+psycopg2://gym_log_app:secret@postgres:5432/gym_log"' > "$T/svc/.env"
+quiet "$deploy" 3g3g3g3g3g3g3g3g; rc=$?
+if [[ -d "$here/../../gym_log/app/undercurrent_identity" ]]; then
+  check "sign-in app without identity db: refused" test $rc -ne 0
+  check "sign-in app without identity db: says what to set" grep -q "set IDENTITY_DATABASE_URL" "$T/out"
+  check "sign-in app without identity db: nothing built" bash -c "! grep -qs 'docker build' '$FAKE_DIR/calls'"
+fi
+unset APP CONTAINER
+
+# 3f. No IDENTITY_DATABASE_URL -> identity untouched
+setup
+quiet "$deploy" 3f3f3f3f3f3f3f3f
+check "no identity url: identity not migrated" bash -c "! grep -qs identity-migrate '$FAKE_DIR/migrations'"
 
 # 4. Database unreachable -> clear error, nothing changed
 setup; export FAKE_DB_DOWN=1

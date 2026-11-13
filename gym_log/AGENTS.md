@@ -19,9 +19,14 @@ editing YAML; keep it that way.
 | `app/db.py` | The two Postgres tables (`gym_sessions`, `gym_sets`). |
 | `app/api.py` | `/api/gym/*` routes. |
 | `app/static/js/gym-log.js` | The front end (plain JS). Helpers in `logic.js`, Lucide icons in `icons.js`. |
+| `app/accounts.py` | Whose data a request sees: your own (signed in with the Gym Log grant) or the read-only `demo` account's. |
+| `app/undercurrent_identity/` | **A copy** of `shared/undercurrent-identity`. Edit it there, then run its `sync.sh gym_log`. |
 | `migrations/` | Alembic. Postgres only; SQLite (dev/tests) uses `create_all()`. |
 
 ## Rules
+
+- **Every query is scoped to one account** (`viewer().user_id`). Writes need
+  `viewer().can_write`. The demo is read-only and is never someone's real data.
 
 - **Keys are permanent.** Never rename, reuse or delete an exercise or
   equipment key: logs store keys. Retire with `retired: true` /

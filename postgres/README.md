@@ -159,7 +159,7 @@ Encryption uses [age](https://age-encryption.org) with a key pair:
    the restore test straight after:
    ```
    MAILTO=""
-   15 2 * * * cd ~/services/postgres/scripts && { doppler run -p atlas-backups -c prd -- ./nightly_backup.sh mindless_meals gym_log && doppler run -p atlas-backups -c prd -- ./restore_test.sh mindless_meals && doppler run -p atlas-backups -c prd -- ./restore_test.sh gym_log; } >> ~/backups/postgres-nightly.log 2>&1
+   15 2 * * * cd ~/services/postgres/scripts && { doppler run -p atlas-backups -c prd -- ./nightly_backup.sh mindless_meals gym_log undercurrent_identity && doppler run -p atlas-backups -c prd -- ./restore_test.sh mindless_meals && doppler run -p atlas-backups -c prd -- ./restore_test.sh gym_log && doppler run -p atlas-backups -c prd -- ./restore_test.sh undercurrent_identity; } >> ~/backups/postgres-nightly.log 2>&1
    ```
    Add each new app's database to `nightly_backup.sh` and give it its own
    `restore_test.sh` (it takes one database at a time), e.g. `capacity` once it exists.
