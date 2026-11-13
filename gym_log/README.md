@@ -119,6 +119,25 @@ a bad file can never go live.
 - **Install on the iPad:** open the site in Safari → Share → Add to Home
   Screen. It opens full screen.
 
+## Accounts and the demo
+
+Gym Log uses the shared Undercurrent sign-in
+([`shared/undercurrent-identity`](../shared/undercurrent-identity/README.md)):
+one passkey for every Undercurrent app, invite-only.
+
+- **Signed in, with access to Gym Log:** your own workouts, saved as you go.
+  Every account only ever sees its own sessions.
+- **Anyone else** (signed out, or an account without the Gym Log grant):
+  the **demo**. It shows sample sessions from the last few weeks, and
+  nothing entered there is saved. This is what visitors from
+  undercurrentlabs.dev see.
+- **Your account name** at the top opens your account page: passkeys,
+  sign out.
+
+**Workouts logged before accounts existed** belong to nobody until you
+claim them. After signing up, run this once:
+`docker compose exec gym_log flask --app app gym claim you@example.com`.
+
 ## Run it locally
 
 No database server needed (SQLite in `instance/`):
@@ -134,6 +153,10 @@ node --test tests/*.test.js             # JavaScript tests
 Against Postgres: set `DATABASE_URL` (see `.env.example`) and run
 `uv run alembic upgrade head` first.
 
+To sign in locally (passkeys work on `localhost`):
+`uv run flask --app app identity invite you@example.com --apps gym_log`,
+then open the printed `http://localhost:5000/auth/invite/…` link.
+
 ## Deploying (one-time setup on ATLAS)
 
 Day to day, merging deploys. The first time only:
@@ -142,27 +165,28 @@ Day to day, merging deploys. The first time only:
    `postgres/scripts/create_app_database.sh gym_log`. It creates the
    `gym_log` database and the `gym_log_app` role, and prints the
    `DATABASE_URL` once.
-2. **Service folder.** `mkdir -p ~/services/gym_log` and put that line in
-   `~/services/gym_log/.env` (`chmod 600`).
+2. **Settings.** `mkdir -p ~/services/gym_log`, then put that line in
+   Doppler project `gym-log` (config `prd`). Or put it in
+   `~/services/gym_log/.env` (`chmod 600`). See `deploy/README.md` →
+   *Settings*.
 3. **First deploy.** GitHub → Actions → **Gym Log** → Run workflow →
    `deploy`. The database is empty, so the deploy creates the tables.
 4. **Tunnel.** Cloudflare Zero Trust → Networks → Tunnels → the ATLAS
    tunnel → Public hostname: `gym.undercurrentlabs.dev` → service
    `http://gym_log:8000`. (The tunnel config lives in Cloudflare, not in
    `cloudflared/compose.yml`.)
-5. **Access.** Zero Trust → Access → Applications → Add a self-hosted app
-   for `gym.undercurrentlabs.dev`, policy: allow your email. Do this
-   **before** sharing the URL; the app has no login of its own.
-6. **Backups.** Add `gym_log` to the nightly cron (`crontab -e`):
-   `.../postgres/scripts/backup.sh mindless_meals gym_log`. Every deploy
-   also backs up first.
-7. **Test a restore** before relying on it:
-   ```
-   docker exec postgres psql -U madamada -d postgres -c "CREATE DATABASE gym_log_restore_test OWNER gym_log_app;"
-   DB_ROLE=gym_log_app postgres/scripts/restore.sh ~/backups/postgres/gym_log_<latest>.sql.gz gym_log_restore_test
-   docker exec postgres psql -U gym_log_app -d gym_log_restore_test -c "SELECT count(*) FROM gym_sets;"
-   docker exec postgres psql -U madamada -d postgres -c "DROP DATABASE gym_log_restore_test;"
-   ```
+5. **Sign-in.** Set up the shared identity database and the `IDENTITY_*`
+   settings (Doppler or `.env`) **before** this version deploys
+   ([`shared/undercurrent-identity/README.md`](../shared/undercurrent-identity/README.md)
+   → *One-time setup*). Deploys refuse to run until those lines are there.
+   Then invite yourself, sign up, and claim your existing workouts (see
+   *Accounts and the demo*). No Cloudflare Access is needed: visitors get
+   the read-only demo.
+6. **Backups.** `gym_log` is in the nightly encrypted backup to the SSD,
+   followed by an automatic restore test (`postgres/README.md` → *Backups*).
+   Every deploy also takes its own backup first.
+7. **Test a restore** before relying on it: run the nightly cron command by
+   hand and check it ends with `Restore test PASSED` for `gym_log`.
 
 Rollback, logs and failures work exactly as for Mindless Meals:
 see `deploy/README.md`.

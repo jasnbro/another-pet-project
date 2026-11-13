@@ -2,6 +2,8 @@
 import csv
 import io
 
+from .conftest import owner_client
+
 PUT = "/api/gym/sessions/"
 
 
@@ -102,7 +104,7 @@ def test_last_time_and_progression_cue(client):
 def test_swap_to_alt_when_bench_not_owned(make_app, data_dir):
     data_dir.own_everything()
     data_dir.edit("equipment.yaml", lambda eq: eq["flybird_bench"].update(status="planned"))
-    client = make_app().test_client()  # unowned gear is only a warning
+    client = owner_client(make_app())  # unowned gear is only a warning
     items = client.get("/api/gym/today?date=2026-11-09").json["items"]
     a2 = items[1]
     assert (a2["key"], a2["planned_key"], a2["swapped_for"]) == ("floor_press", "bench", "Dumbbell bench press")
@@ -170,5 +172,5 @@ def test_csv_export_one_row_per_set(client):
 def test_rep_range_change_needs_no_code(make_app, data_dir):
     data_dir.own_everything()
     data_dir.edit("plans/home-gym-v1.yaml", lambda p: p["days"]["A"][0].update(reps=[6, 10]))
-    items = make_app().test_client().get("/api/gym/today?date=2026-11-09").json["items"]
+    items = owner_client(make_app()).get("/api/gym/today?date=2026-11-09").json["items"]
     assert items[0]["reps"] == [6, 10]

@@ -8,11 +8,15 @@ import os
 import sys
 from pathlib import Path
 
+import click
+
 from flask import Flask, jsonify, render_template, send_from_directory, url_for
 
+from .accounts import APP_NAME
 from .api import api
-from .db import db
+from .db import UNCLAIMED, GymSession, GymSet, db
 from .loader import CatalogError, load_catalog
+from .undercurrent_identity import Identity
 
 APP_DIR = Path(__file__).resolve().parent
 # Exercise illustration frames (Workout Guide). Kept outside app/ so the
@@ -49,8 +53,51 @@ def create_app(config_overrides=None):
         print(f"Gym Log warning: {warning}", file=sys.stderr)
     app.extensions["gym_catalog"] = catalog
 
+    if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgresql") and not (
+        app.config.get("IDENTITY_DATABASE_URL") or os.environ.get("IDENTITY_DATABASE_URL")
+    ):
+        # Otherwise accounts would live in a SQLite file inside the container,
+        # lost on every deploy.
+        raise SystemExit(
+            "Gym Log on Postgres needs IDENTITY_DATABASE_URL (the shared undercurrent_identity database). "
+            "See shared/undercurrent-identity/README.md."
+        )
     db.init_app(app)
     app.register_blueprint(api)
+    # Shared Undercurrent sign-in: /auth/* pages, `flask identity ...`.
+    identity = Identity(app, app_name=APP_NAME)
+
+    @app.cli.group("gym")
+    def gym_cli():
+        """Gym Log data tools."""
+
+    @gym_cli.command("claim")
+    @click.argument("email")
+    def claim(email):
+        """Give the workouts logged before accounts existed to EMAIL's account."""
+        user = identity.store.get_user_by_email(email)
+        if user is None:
+            raise click.ClickException(f"No Undercurrent account for {email}. Sign up with your invite link first.")
+        clash = sorted(
+            d.isoformat()
+            for (d,) in db.session.query(GymSession.session_date)
+            .filter(GymSession.user_id == UNCLAIMED)
+            .filter(
+                GymSession.session_date.in_(
+                    db.session.query(GymSession.session_date).filter(GymSession.user_id == user.id)
+                )
+            )
+        )
+        if clash:
+            raise click.ClickException(
+                f"{user.email} already has sessions on {', '.join(clash)}, which unclaimed sessions also use. "
+                "Delete one of each pair first; nothing was moved."
+            )
+        n_sets = GymSet.query.filter_by(user_id=UNCLAIMED).count()
+        # Sets follow their sessions (ON UPDATE CASCADE).
+        n_sessions = GymSession.query.filter_by(user_id=UNCLAIMED).update({"user_id": user.id})
+        db.session.commit()
+        click.echo(f"Moved {n_sessions} session(s) and {n_sets} set(s) to {user.email}.")
 
     with app.app_context():
         # SQLite (dev/tests) only. On Postgres the schema is Alembic's job,

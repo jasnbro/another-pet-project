@@ -62,10 +62,11 @@
 # Configuration (environment variables):
 #   POSTGRES_CONTAINER   Container name/ID to exec into (default: postgres)
 #   POSTGRES_ADMIN_USER    Superuser role to connect as -- defaults to
-#                           POSTGRES_USER (whatever the server's superuser
-#                           was set to at first init -- see
-#                           postgres/README.md), falling back to "postgres"
-#                           if that isn't set either
+#                           POSTGRES_USER if set in your shell, otherwise
+#                           the running container's own POSTGRES_USER (the
+#                           superuser it was initialised with -- see
+#                           postgres/README.md), and only then "postgres".
+#                           On ATLAS the role "postgres" doesn't exist.
 #   APP_DB_PASSWORD         Use this exact password instead of generating one
 #                           (only takes effect when the role doesn't exist yet)
 #
@@ -76,7 +77,13 @@ set -euo pipefail
 DB_NAME="${1:?Usage: create_app_database.sh <db_name> [role_name]}"
 ROLE_NAME="${2:-${DB_NAME}_app}"
 CONTAINER="${POSTGRES_CONTAINER:-postgres}"
-ADMIN_USER="${POSTGRES_ADMIN_USER:-${POSTGRES_USER:-postgres}}"
+ADMIN_USER="${POSTGRES_ADMIN_USER:-${POSTGRES_USER:-}}"
+if [ -z "$ADMIN_USER" ]; then
+  # Ask the container which superuser it was initialised with.
+  ADMIN_USER="$(docker exec "$CONTAINER" printenv POSTGRES_USER 2>/dev/null || true)"
+  ADMIN_USER="${ADMIN_USER:-postgres}"
+fi
+echo "Connecting to '${CONTAINER}' as superuser '${ADMIN_USER}'"
 
 for identifier in "$DB_NAME" "$ROLE_NAME"; do
   if ! [[ "$identifier" =~ ^[a-z][a-z0-9_]*$ ]]; then

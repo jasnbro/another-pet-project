@@ -13,6 +13,40 @@ CONTAINER="${CONTAINER:-$APP}"
 log() { printf '[%s] %s\n' "$(date -u +%H:%M:%S)" "$*"; }
 die() { log "ERROR: $*" >&2; exit 1; }
 
+# --- Settings: ~/services/<app>/.env, or Doppler ---------------------------
+# With a .env in the service dir, everything works as it always has. Without
+# one, the script re-runs itself under `doppler run` for the app's Doppler
+# project (gym_log -> gym-log, config prd), so settings come from Doppler and
+# nothing secret is written to the service dir. Compose fills ${VAR} in
+# compose.yml from the .env file or, failing that, from this environment.
+DOPPLER="${DOPPLER:-doppler}"
+DOPPLER_PROJECT="${DOPPLER_PROJECT:-${APP//_/-}}"
+DOPPLER_CONFIG="${DOPPLER_CONFIG:-prd}"
+
+use_settings() { # usage: use_settings "$0" "$@"  (may exec; call before anything else)
+  [[ -f "$SERVICE_DIR/.env" ]] && return 0
+  [[ "${UC_SETTINGS:-}" == doppler ]] && return 0
+  # An app whose compose.yml uses no ${SETTINGS} (the static Undercurrent
+  # site) needs neither a .env nor Doppler.
+  # shellcheck disable=SC2016  # a literal "${", not an expansion
+  if [[ -f "$REPO_DIR/$APP/compose.yml" ]] && ! grep -qF '${' "$REPO_DIR/$APP/compose.yml"; then
+    return 0
+  fi
+  command -v "$DOPPLER" >/dev/null 2>&1 \
+    || die "no $SERVICE_DIR/.env, and the Doppler CLI isn't installed. Put the settings in Doppler project '$DOPPLER_PROJECT' (config $DOPPLER_CONFIG) or in a .env file (deploy/README.md). Nothing was changed."
+  log "Settings: Doppler project '$DOPPLER_PROJECT' ($DOPPLER_CONFIG)"
+  UC_SETTINGS=doppler exec "$DOPPLER" run --project "$DOPPLER_PROJECT" --config "$DOPPLER_CONFIG" -- "$@"
+}
+
+# The value of one setting, from .env if there is one, else the environment.
+setting() {
+  if [[ -f "$SERVICE_DIR/.env" ]]; then
+    grep -E "^$1=" "$SERVICE_DIR/.env" | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true
+  else
+    printf '%s' "${!1:-}"
+  fi
+}
+
 take_lock() {
   mkdir -p "$STATE_DIR"
   exec 9>"$STATE_DIR/lock"

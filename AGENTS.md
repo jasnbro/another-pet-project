@@ -121,3 +121,11 @@ paragraph, concrete and specific, not general advice.
   passed locally and failed only in that workflow. Unset such variables
   in the test's `setup()`, and reproduce CI failures with the workflow's
   `env:` exported locally.
+
+- **Bash `set -e` does nothing inside a function called from `if`, `||`,
+  `&&` or `!`, even inside a subshell.** A loop like
+  `if ! ( do_one "$x" ); then ...` runs `do_one` with errexit off. A failed
+  pipeline then falls through to the next line, e.g. an `mv` that publishes
+  a half-written file. Give every step its own `|| return 1`. Then
+  mutation-test by deleting the guard to confirm a test fails.
+  (postgres/scripts/backup.sh.)

@@ -96,6 +96,13 @@
   function scheduleSave() {
     var t = state.today;
     if (!t || !t.day) return;
+    if (state.me && !state.me.can_write) {
+      // The demo: edits stay on screen, nothing is sent.
+      saveStatusEl.hidden = false;
+      saveStatusEl.dataset.status = "demo";
+      saveStatusEl.textContent = "Demo: not saved";
+      return;
+    }
     saver.schedule({
       date: t.date,
       body: {
@@ -680,7 +687,32 @@
     el.insertAdjacentHTML("afterbegin", icon(el.dataset.icon));
   });
 
-  getJSON("/api/gym/catalog").then(function (c) {
+  // Who's looking: your own log, or the read-only demo (shared Undercurrent sign-in).
+  function renderAccount(me) {
+    var link = document.getElementById("account-link");
+    var banner = document.getElementById("demo-banner");
+    link.hidden = false;
+    if (me.signed_in) {
+      link.href = me.account_url;
+      link.textContent = me.name || "Account";
+      link.title = "Your Undercurrent account";
+    } else {
+      link.href = me.sign_in_url;
+      link.textContent = "Sign in";
+    }
+    banner.hidden = !me.demo;
+    if (me.demo) {
+      banner.innerHTML = me.signed_in
+        ? "<strong>Demo.</strong> Your account doesn't have access to Gym Log yet, so this is sample data and nothing is saved."
+        : '<strong>Demo.</strong> Sample data; nothing you enter is saved. <a href="' + esc(me.sign_in_url) + '">Sign in</a> to log your own workouts.';
+    }
+  }
+
+  getJSON("/api/gym/me").then(function (me) {
+    state.me = me;
+    renderAccount(me);
+    return getJSON("/api/gym/catalog");
+  }).then(function (c) {
     state.catalog = c;
     state.view = null;
     route();

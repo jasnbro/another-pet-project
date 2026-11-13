@@ -1,0 +1,19 @@
+{# Undercurrent identity pages (shared; see shared/undercurrent-identity/README.md). #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="same-origin">
+  <title>{% block title %}Undercurrent{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('undercurrent_identity.static', filename='identity.css') }}">
+</head>
+<body>
+  <main class="uc-auth">
+    <p class="uc-auth__brand"><a href="https://undercurrentlabs.dev">Undercurrent</a></p>
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('undercurrent_identity.static', filename='identity.js') }}"></script>
+</body>
+</html>

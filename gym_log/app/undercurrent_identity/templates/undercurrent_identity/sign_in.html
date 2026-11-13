@@ -1,0 +1,15 @@
+{% extends "undercurrent_identity/base.html" %}
+{% block title %}Sign in · Undercurrent{% endblock %}
+{% block content %}
+<h1>Sign in</h1>
+{% if user %}
+  <p>You're signed in as <strong>{{ user.display_name }}</strong> ({{ user.email }}).</p>
+  <p><a class="uc-btn uc-btn--primary" href="{{ next }}">Continue</a> <a class="uc-btn" href="/auth/account">Account</a></p>
+{% else %}
+  <p>Use the passkey you set up for your Undercurrent account. One passkey works for every Undercurrent app.</p>
+  <button type="button" class="uc-btn uc-btn--primary uc-btn--wide" data-uc-sign-in data-next="{{ next }}">Sign in with a passkey</button>
+  <p class="uc-auth__status" role="status" aria-live="polite"></p>
+  <p class="uc-muted">Accounts are invite-only. Lost your passkey? Ask the owner for a recovery link.</p>
+  <p><a href="{{ next }}">Back without signing in</a></p>
+{% endif %}
+{% endblock %}
