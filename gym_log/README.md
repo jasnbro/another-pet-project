@@ -153,16 +153,11 @@ Day to day, merging deploys. The first time only:
 5. **Access.** Zero Trust → Access → Applications → Add a self-hosted app
    for `gym.undercurrentlabs.dev`, policy: allow your email. Do this
    **before** sharing the URL; the app has no login of its own.
-6. **Backups.** Add `gym_log` to the nightly cron (`crontab -e`):
-   `.../postgres/scripts/backup.sh mindless_meals gym_log`. Every deploy
-   also backs up first.
-7. **Test a restore** before relying on it:
-   ```
-   docker exec postgres psql -U madamada -d postgres -c "CREATE DATABASE gym_log_restore_test OWNER gym_log_app;"
-   DB_ROLE=gym_log_app postgres/scripts/restore.sh ~/backups/postgres/gym_log_<latest>.sql.gz gym_log_restore_test
-   docker exec postgres psql -U gym_log_app -d gym_log_restore_test -c "SELECT count(*) FROM gym_sets;"
-   docker exec postgres psql -U madamada -d postgres -c "DROP DATABASE gym_log_restore_test;"
-   ```
+6. **Backups.** `gym_log` is in the nightly encrypted backup to the SSD,
+   followed by an automatic restore test (`postgres/README.md` → *Backups*).
+   Every deploy also takes its own backup first.
+7. **Test a restore** before relying on it: run the nightly cron command by
+   hand and check it ends with `Restore test PASSED` for `gym_log`.
 
 Rollback, logs and failures work exactly as for Mindless Meals:
 see `deploy/README.md`.

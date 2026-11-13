@@ -106,26 +106,92 @@ Useful psql commands once connected: `\l` (list databases), `\dt`
 (list tables in the current database), `\d <table>` (describe a
 table), `\q` (quit).
 
-Backup and restore
---------------------
-Back up one database:
+Backups
+--------
+Every night, each database is dumped, gzip-compressed, **encrypted**, and
+written to the external backup SSD. Backups older than 14 days are
+deleted. A restore into a scratch database runs right afterwards to prove
+the backup works. Every deploy also takes its own unencrypted backup before
+running migrations (`deploy/deploy.sh`, kept in `~/backups/postgres`).
 
-    docker exec postgres pg_dump -U madamada mindless_meals > mindless_meals_backup.sql
+| Script (`postgres/scripts/`) | What it does |
+|---|---|
+| `nightly_backup.sh db ...` | The scheduled job. Refuses to run unless encryption and the SSD mount guard are both configured |
+| `backup.sh [db ...]` | Does the dump. Encryption and the mount guard are optional, so the deploy can use it too |
+| `restore_test.sh db` | Restores the newest backup into `<db>_restore_test`, compares every table's row count with the live database, then drops the scratch copy. The live database is only read |
+| `restore.sh file db` | Restores a backup (`.sql.gz` or `.sql.gz.age`) into an existing, empty database |
 
-Restore it (into an existing, empty database of the same name):
+Tests: `bash postgres/tests/test_backup.sh` (runs in CI).
 
-    cat mindless_meals_backup.sql | docker exec -i postgres psql -U madamada -d mindless_meals
+### How the encryption works
+Encryption uses [age](https://age-encryption.org) with a key pair:
+- The **public key** (`age1...`) encrypts. It's all the nightly job
+  needs, and it can't decrypt anything.
+- The **private key** (`AGE-SECRET-KEY-...`) decrypts. It's needed only
+  to restore, and it lives in two places: Doppler, and an **offline copy**
+  outside Doppler (a USB stick or printed copy, stored somewhere other
+  than with ATLAS). If both are lost, every backup is unreadable.
 
-Back up *everything* on the server (all databases + roles) in one file:
+### One-time setup on ATLAS (~20 minutes)
+1. **Install age and the Doppler CLI:** `sudo apt install age`, then
+   follow Doppler's Linux install instructions and run `doppler login`.
+2. **Make the key pair. Do this on your laptop, not on ATLAS:**
+   `age-keygen -o atlas-backup.key`. It prints the public key. Save the
+   file to the offline location, then delete the copy on the laptop.
+3. **Create a Doppler project** `atlas-backups` with config `prd`, holding:
+   - `BACKUP_AGE_RECIPIENT`: the public key
+   - `BACKUP_AGE_IDENTITY`: the full contents of the private key file
+   - `BACKUP_REQUIRE_MOUNT=/mnt/backup-ssd`
+   - `BACKUP_DIR=/mnt/backup-ssd/postgres`
+   - `DB_ROLE`: the Postgres superuser name (from `postgres/.env`)
 
-    docker exec postgres pg_dumpall -U madamada > all_databases_backup.sql
+   The commands below name the project and config explicitly, so no `doppler setup` is needed.
+4. **Mount the SSD by UUID** so it can't swap device names:
+   - Run `sudo blkid` and copy the SSD's `UUID`, then `sudo mkdir -p /mnt/backup-ssd`.
+   - Add this to `/etc/fstab` (use your filesystem type if it isn't ext4):
+     `UUID=<uuid>  /mnt/backup-ssd  ext4  defaults,nofail  0  2`
+   - Run `sudo mount -a && mountpoint /mnt/backup-ssd`.
+   - Run `sudo mkdir /mnt/backup-ssd/postgres && sudo chown jasmine: /mnt/backup-ssd/postgres`.
 
-For routine backups use `scripts/backup.sh`, which takes one or more
-database names (`scripts/backup.sh mindless_meals gym_log`) and writes
-timestamped, gzipped dumps; `scripts/restore.sh` restores one into a
-fresh database. Each deploy backs up its app's database first; a nightly
-cron entry (see the top of `backup.sh`) covers the rest. Copy backups off
-this machine separately.
+   `nofail` lets ATLAS boot without the SSD attached. The backup then
+   fails loudly instead of writing to the main disk.
+5. **Schedule it** with `crontab -e` as `jasmine`. Backup at 2:15am, then
+   the restore test straight after:
+   ```
+   MAILTO=""
+   15 2 * * * cd ~/services/postgres/scripts && { doppler run -p atlas-backups -c prd -- ./nightly_backup.sh mindless_meals gym_log && doppler run -p atlas-backups -c prd -- ./restore_test.sh mindless_meals && doppler run -p atlas-backups -c prd -- ./restore_test.sh gym_log; } >> ~/backups/postgres-nightly.log 2>&1
+   ```
+   Add each new app's database to `nightly_backup.sh` and give it its own
+   `restore_test.sh` (it takes one database at a time), e.g. `capacity` once it exists.
+6. **Prove it once, by hand:**
+   - Run the cron command yourself; it must end with `Restore test PASSED`.
+   - Then run `sudo umount /mnt/backup-ssd`, run `doppler run -p atlas-backups -c prd -- ./nightly_backup.sh mindless_meals gym_log` again, and confirm it errors and nothing new appears in `~/` or `/mnt`.
+   - Remount the SSD.
+
+### Checking on it
+- Last good backup: `ls -l /mnt/backup-ssd/postgres/.last_success`.
+  Anything older than a day means the last run failed.
+- What happened: `tail -50 ~/backups/postgres-nightly.log`.
+
+### Restoring for real
+Restore into a **new** database, check it, then point the app at it (or
+swap names). Never restore over the live database.
+```
+docker exec -it postgres psql -U <POSTGRES_USER> -c "CREATE DATABASE mindless_meals_restored;"
+doppler run -p atlas-backups -c prd -- ./restore.sh /mnt/backup-ssd/postgres/mindless_meals_<timestamp>.sql.gz.age mindless_meals_restored
+```
+Without Doppler (e.g. ATLAS rebuilt from scratch), use the offline key:
+`BACKUP_AGE_IDENTITY_FILE=/media/usb/atlas-backup.key ./restore.sh ...`.
+The full disaster-recovery runbook is in `docs/recovery.md`.
+
+### Not covered yet
+The SSD protects against main-disk failure, not against losing ATLAS itself
+(theft, fire, a power surge). An off-site copy is tracked in #27.
+
+Ad-hoc dumps (before a risky manual change):
+
+    docker exec postgres pg_dump -U <POSTGRES_USER> mindless_meals > mindless_meals_backup.sql
+    docker exec postgres pg_dumpall -U <POSTGRES_USER> > all_databases_backup.sql   # every database + roles
 
 Changing the password
 ------------------------

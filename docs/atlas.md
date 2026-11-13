@@ -13,6 +13,11 @@ Location
 ~/services/mindless_meals
 ~/services/gym_log
 
+Recovery
+--------
+When something breaks beyond a bad deploy: docs/recovery.md.
+Backups (nightly, encrypted, SSD): postgres/README.md#backups.
+
 Deploying
 ---------
 Mindless Meals and Gym Log deploy themselves when a PR merges to main:
