@@ -41,6 +41,10 @@ plus `SoftPasskey`, a software passkey that makes real signatures.
 1. **Database.** From a checkout on ATLAS:
    `postgres/scripts/create_app_database.sh undercurrent_identity`.
    It prints a `DATABASE_URL` once; you'll use it as `IDENTITY_DATABASE_URL`.
+   It connects as the Postgres container's own superuser. If it says
+   `role "postgres" does not exist`, you have an older copy of the script;
+   prefix the command with `POSTGRES_ADMIN_USER=<POSTGRES_USER from
+   ~/services/postgres/.env>`.
 2. **Each app's `.env`** (`~/services/<app>/.env`) gets:
    ```
    IDENTITY_DATABASE_URL=postgresql+psycopg2://undercurrent_identity_app:<password>@postgres:5432/undercurrent_identity
