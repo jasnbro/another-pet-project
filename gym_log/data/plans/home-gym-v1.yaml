@@ -21,7 +21,7 @@ days:
     - { key: bench,    pair: A2, sets: 3, reps: [8, 12],  start: "15–20 lb/hand" }
     - { key: csrow,    pair: B1, sets: 3, reps: [10, 12], start: "15–20 lb/hand" }
     - { key: rdl,      pair: B2, sets: 3, reps: [8, 12],  start: "20–25 lb/hand" }
-    - { key: towel,    pair: C1, sets: 2, reps: [8, 12] }
+    - { key: seatcurl, pair: C1, sets: 2, reps: [12, 15] }
     - { key: deadbug,  pair: C2, sets: 2, reps: [8, 8] }
   B:
     - { key: lunge,    pair: A1, sets: 3, reps: [8, 10],  start: "10–15 lb/hand" }

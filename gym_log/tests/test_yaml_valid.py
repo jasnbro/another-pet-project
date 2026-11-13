@@ -70,8 +70,8 @@ def test_plan_with_unknown_exercise_fails(data_dir):
 # --- rule: plan uses a retired exercise ----------------------------------------------
 
 def test_plan_with_retired_exercise_fails(data_dir):
-    data_dir.edit("exercises.yaml", lambda ex: ex["towel"].update(retired=True))
-    assert "day A uses 'towel', which is retired" in errors_for(data_dir)
+    data_dir.edit("exercises.yaml", lambda ex: ex["deadbug"].update(retired=True))
+    assert "day A uses 'deadbug', which is retired" in errors_for(data_dir)
 
 
 def test_retired_exercise_not_in_any_plan_is_fine(data_dir):
@@ -114,7 +114,7 @@ def test_unowned_equipment_with_an_owned_alt_is_fine(data_dir):
     # Only bench has an alt, so park the other bench exercises in a plan
     # that uses no bench at all: keep the test about the swap.
     def strip(p):
-        p["days"]["A"] = [i for i in p["days"]["A"] if i["key"] in ("goblet", "bench", "rdl", "towel", "deadbug")]
+        p["days"]["A"] = [i for i in p["days"]["A"] if i["key"] in ("goblet", "bench", "rdl", "seatcurl", "deadbug")]
         p["days"]["B"] = [i for i in p["days"]["B"] if i["key"] in ("lunge", "bandcurl", "pushup", "hollow")]
     data_dir.edit(PLAN, strip)
     catalog = load_catalog(data_dir.path)
