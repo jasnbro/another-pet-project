@@ -121,7 +121,7 @@ def test_catalog(client):
     assert c["plan"]["name"] == "Fall 2026"
     assert c["exercises"]["goblet"]["what"].startswith("Squat holding")
     assert "goblet" in c["equipment"]["squat_wedges"]["supports"]
-    assert c["exercises"]["towel"]["equipment"] == []
+    assert c["exercises"]["deadbug"]["equipment"] == []
 
 
 def test_frames_for_the_looping_illustration(client):
