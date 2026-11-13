@@ -26,6 +26,12 @@ DOPPLER_CONFIG="${DOPPLER_CONFIG:-prd}"
 use_settings() { # usage: use_settings "$0" "$@"  (may exec; call before anything else)
   [[ -f "$SERVICE_DIR/.env" ]] && return 0
   [[ "${UC_SETTINGS:-}" == doppler ]] && return 0
+  # An app whose compose.yml uses no ${SETTINGS} (the static Undercurrent
+  # site) needs neither a .env nor Doppler.
+  # shellcheck disable=SC2016  # a literal "${", not an expansion
+  if [[ -f "$REPO_DIR/$APP/compose.yml" ]] && ! grep -qF '${' "$REPO_DIR/$APP/compose.yml"; then
+    return 0
+  fi
   command -v "$DOPPLER" >/dev/null 2>&1 \
     || die "no $SERVICE_DIR/.env, and the Doppler CLI isn't installed. Put the settings in Doppler project '$DOPPLER_PROJECT' (config $DOPPLER_CONFIG) or in a .env file (deploy/README.md). Nothing was changed."
   log "Settings: Doppler project '$DOPPLER_PROJECT' ($DOPPLER_CONFIG)"
