@@ -9,15 +9,16 @@ doesn't.
 | Thing | Where | Committed? |
 |---|---|---|
 | Code | This repo; running versions are tagged images (`mindless_meals:<sha>`, `gym_log:<sha>`) | Yes |
-| App settings | `~/services/<app>/.env` on ATLAS | No |
+| App settings | Doppler projects `gym-log`, `mindless-meals` (`prd`), or `~/services/<app>/.env` for an app not moved yet (`deploy/README.md` → *Settings*) | No |
 | Postgres superuser | `~/services/postgres/.env` | No |
 | Backup settings and the decryption key | Doppler project `atlas-backups` (`prd`) | No |
 | Offline copy of the decryption key | USB stick or printed copy, kept away from ATLAS | No |
 | Nightly backups | `/mnt/backup-ssd/postgres/*.sql.gz.age` (14 days) | No |
 | Pre-deploy backups | `~/backups/postgres/*.sql.gz` | No |
 
-The `.env` files aren't backed up anywhere. Keep a copy of each one in
-Doppler or your password manager.
+Settings kept in Doppler survive losing ATLAS. Any `.env` file still on
+ATLAS isn't backed up anywhere: move it to Doppler (`deploy/README.md` →
+*Settings*) or keep a copy in your password manager.
 
 ## Health checks
 

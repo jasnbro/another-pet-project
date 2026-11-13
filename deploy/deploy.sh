@@ -14,6 +14,8 @@
 #   4. If it isn't healthy, switch back to the previous image and fail.
 #
 # Never touches other services, ./data, or .env. Safe to re-run.
+# Settings come from $SERVICE_DIR/.env, or from Doppler when there is no
+# .env (see use_settings in common.sh and deploy/README.md).
 #
 # Env overrides: APP (default mindless_meals), SERVICE_DIR (default ~/services/$APP),
 # BACKUP_DIR (default ~/backups/postgres), HEALTH_TIMEOUT (default 90s),
@@ -30,20 +32,20 @@ KEEP_IMAGES="${KEEP_IMAGES:-5}"
 # Prints how many tables DATABASE_URL's database has (run in the new image).
 COUNT_TABLES='import os, sqlalchemy as sa; print(len(sa.inspect(sa.create_engine(os.environ["DATABASE_URL"])).get_table_names()))'
 
+use_settings "$0" "$@"
 take_lock
 log "Deploying $IMAGE to $SERVICE_DIR"
 
 # --- Preflight: fail before changing anything ---------------------------
-[[ -f "$SERVICE_DIR/.env" ]] || die "$SERVICE_DIR/.env not found (it holds DATABASE_URL and is never in git)"
 for net in atlas-proxy postgres_default; do
   docker network inspect "$net" >/dev/null 2>&1 || die "Docker network '$net' is missing"
 done
 # Apps using shared Undercurrent sign-in need the shared identity database;
 # without it they would keep accounts in a throwaway file inside the container.
 if [[ -d "$REPO_DIR/$APP/app/undercurrent_identity" ]] \
-   && grep -qE '^DATABASE_URL=["'"'"']?postgresql' "$SERVICE_DIR/.env" \
-   && ! grep -qE '^IDENTITY_DATABASE_URL=["'"'"']?postgresql' "$SERVICE_DIR/.env"; then
-  die "$APP uses Undercurrent sign-in: set IDENTITY_DATABASE_URL (and IDENTITY_RP_ID, IDENTITY_COOKIE_DOMAIN, IDENTITY_PUBLIC_URL) in $SERVICE_DIR/.env first. See shared/undercurrent-identity/README.md. Nothing was changed."
+   && [[ "$(setting DATABASE_URL)" == postgresql* ]] \
+   && [[ "$(setting IDENTITY_DATABASE_URL)" != postgresql* ]]; then
+  die "$APP uses Undercurrent sign-in: set IDENTITY_DATABASE_URL (and IDENTITY_RP_ID, IDENTITY_COOKIE_DOMAIN, IDENTITY_PUBLIC_URL) in its settings (Doppler or .env) first. See shared/undercurrent-identity/README.md. Nothing was changed."
 fi
 
 # --- 1. Build ------------------------------------------------------------
@@ -54,7 +56,7 @@ previous="$(running_image)"
 log "Currently running: ${previous:-nothing}"
 
 # --- 2. Database: back up, then migrate -----------------------------------
-db_url="$(grep -E '^DATABASE_URL=' "$SERVICE_DIR/.env" | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true)"
+db_url="$(setting DATABASE_URL)"
 if [[ "$db_url" == postgresql* ]]; then
   # Run Alembic in the NEW image, with the service's real .env and networks,
   # without touching the running container.
@@ -102,7 +104,7 @@ $tables_out"
   # Shared Undercurrent identity database (shared/undercurrent-identity),
   # used by every app that has IDENTITY_DATABASE_URL. Back it up, then bring
   # its schema up to date with the NEW image, still before the switch.
-  id_url="$(grep -E '^IDENTITY_DATABASE_URL=' "$SERVICE_DIR/.env" | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true)"
+  id_url="$(setting IDENTITY_DATABASE_URL)"
   if [[ "$id_url" == postgresql* ]]; then
     id_user="$(sed -E 's#^[^:]+://([^:@/]+).*#\1#' <<<"$id_url")"
     id_name="$(sed -E 's#^.*/([^/?]+)(\?.*)?$#\1#' <<<"$id_url")"

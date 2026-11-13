@@ -11,7 +11,15 @@ services:
     build: .
     image: gym_log:local
     container_name: gym_log
-    env_file: .env
+    # Settings: compose fills these from .env in this folder or, with no
+    # .env, from the environment `doppler run` provides (deploy/README.md).
+    # A setting the app reads must be listed here to reach the container.
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is not set. Add it to .env here or run through Doppler; see deploy/README.md}
+      IDENTITY_DATABASE_URL: ${IDENTITY_DATABASE_URL:-}
+      IDENTITY_RP_ID: ${IDENTITY_RP_ID:-}
+      IDENTITY_COOKIE_DOMAIN: ${IDENTITY_COOKIE_DOMAIN:-}
+      IDENTITY_PUBLIC_URL: ${IDENTITY_PUBLIC_URL:-}
     # No published port: cloudflared reaches it as http://gym_log:8000 on
     # the atlas-proxy network.
     expose:

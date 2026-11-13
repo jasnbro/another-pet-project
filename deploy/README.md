@@ -109,7 +109,7 @@ Manual commands in `~/services/mindless_meals` (`docker compose logs`,
 | `.github/workflows/gym-log.yml` | The same for Gym Log (`APP=gym_log`); see below |
 | `deploy/deploy-undercurrent.sh <sha>` | The Undercurrent site deploy (static, no database), run by `.github/workflows/undercurrent-checks.yml`; roll back with `APP=undercurrent deploy/rollback.sh` |
 
-Settings (environment variables, all optional): `APP` (default
+Script settings (environment variables, all optional): `APP` (default
 `mindless_meals`), `SERVICE_DIR` (default `~/services/$APP`), `BACKUP_DIR` (default `~/backups/postgres`),
 `HEALTH_TIMEOUT` (default 90s), `KEEP_IMAGES` (default 5).
 
@@ -127,3 +127,55 @@ creates the schema from scratch; an untracked database that already has
 tables is still refused (Mindless Meals' one-time adoption case).
 One-time setup (database, `.env`, tunnel hostname, Cloudflare Access,
 backups): `gym_log/README.md` → *Deploying*.
+
+## Settings: Doppler, or a .env file
+
+An app's settings (`DATABASE_URL`, the `IDENTITY_*` lines) come from one of:
+
+- **Doppler**, project named after the app with dashes (`gym-log`,
+  `mindless-meals`), config `prd`. This is used whenever
+  `~/services/<app>/.env` doesn't exist. Deploys and rollbacks re-run
+  themselves under `doppler run`, so nothing secret is kept in the service
+  folder, and changing a setting means editing it in Doppler, not a file.
+- **`~/services/<app>/.env`**, the old way. If the file exists, it wins
+  and Doppler isn't consulted. You can move one app at a time.
+
+`compose.yml` lists every setting an app reads. A deploy stops early if
+`DATABASE_URL` is missing from both places, instead of quietly starting on
+SQLite.
+
+### Moving an app to Doppler (once per app, ~5 minutes)
+
+On ATLAS, as `jasmine`, with the Doppler CLI installed and `doppler login`
+done. This is the same login the nightly backups use.
+
+1. `doppler projects create gym-log`. It comes with a `prd` config.
+2. `doppler secrets upload --project gym-log --config prd ~/services/gym_log/.env`
+3. Check the names (values stay hidden):
+   `doppler secrets --project gym-log --config prd --only-names`
+4. `mv ~/services/gym_log/.env ~/gym_log.env.bak`, then redeploy:
+   **Actions → Gym Log → Run workflow → deploy**. The log should say
+   `Settings: Doppler project 'gym-log' (prd)`.
+5. Once it's healthy: `shred -u ~/gym_log.env.bak`. If anything went
+   wrong, move the file back: the deploy changes nothing until its checks
+   pass.
+
+The settings every app shares (`IDENTITY_DATABASE_URL`, `IDENTITY_RP_ID`,
+`IDENTITY_COOKIE_DOMAIN`) can live once in a Doppler project
+`undercurrent-identity`. Each app's `prd` config then references them, e.g.
+`IDENTITY_DATABASE_URL = ${undercurrent-identity.prd.IDENTITY_DATABASE_URL}`.
+If your Doppler plan doesn't allow cross-project references, paste them
+into each app instead.
+
+### Day to day with Doppler
+
+| I want to… | Do this |
+|---|---|
+| Change a setting | Edit it in Doppler, then **Run workflow → deploy**. The running container keeps the old value until then |
+| Start or restart by hand | `cd ~/services/gym_log && doppler run -p gym-log -c prd -- docker compose up -d` (plain `restart` also works; it keeps the current values) |
+| Run an admin command | `docker compose exec gym_log flask --app app identity …`. No Doppler step needed: it runs inside the running container |
+
+If a deploy log shows a Doppler error (not logged in, unknown project),
+nothing was changed. Fix the login or the project name and run it again.
+Containers keep their settings in Docker's own root-only files under
+`/var/lib/docker`, so a reboot needs no Doppler step.

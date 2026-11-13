@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Stand-in for `doppler run --project P --config C -- cmd...` in deploy tests:
+# exports KEY=value lines from $FAKE_DIR/doppler-<P>-<C>.env, then runs cmd.
+#   FAKE_DOPPLER_FAIL  1 = fail like an unknown project / not logged in
+set -uo pipefail
+[[ "$1" == run ]] || { echo "fake-doppler: only 'run' is supported" >&2; exit 2; }
+shift
+project="" config=""
+while (($#)); do
+  case "$1" in
+    --project) project="$2"; shift 2 ;;
+    --config) config="$2"; shift 2 ;;
+    --) shift; break ;;
+    *) shift ;;
+  esac
+done
+echo "doppler run --project $project --config $config" >> "$FAKE_DIR/calls"
+[[ "${FAKE_DOPPLER_FAIL:-}" == 1 ]] && { echo "Doppler Error: Could not find requested project" >&2; exit 1; }
+settings="$FAKE_DIR/doppler-$project-$config.env"
+[[ -f "$settings" ]] || { echo "Doppler Error: no config $project/$config" >&2; exit 1; }
+set -a
+# shellcheck disable=SC1090
+source "$settings"
+set +a
+exec "$@"

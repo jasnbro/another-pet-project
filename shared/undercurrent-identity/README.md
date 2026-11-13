@@ -45,7 +45,11 @@ plus `SoftPasskey`, a software passkey that makes real signatures.
    `role "postgres" does not exist`, you have an older copy of the script;
    prefix the command with `POSTGRES_ADMIN_USER=<POSTGRES_USER from
    ~/services/postgres/.env>`.
-2. **Each app's `.env`** (`~/services/<app>/.env`) gets:
+2. **Each app's settings** get these lines: its Doppler `prd` config, or
+   `~/services/<app>/.env` if it still uses one (`deploy/README.md` →
+   *Settings*). The first three are the same for every app, so they can
+   live once in a Doppler project `undercurrent-identity` and be referenced
+   from each app.
    ```
    IDENTITY_DATABASE_URL=postgresql+psycopg2://undercurrent_identity_app:<password>@postgres:5432/undercurrent_identity
    IDENTITY_RP_ID=undercurrentlabs.dev

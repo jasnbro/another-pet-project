@@ -165,8 +165,10 @@ Day to day, merging deploys. The first time only:
    `postgres/scripts/create_app_database.sh gym_log`. It creates the
    `gym_log` database and the `gym_log_app` role, and prints the
    `DATABASE_URL` once.
-2. **Service folder.** `mkdir -p ~/services/gym_log` and put that line in
-   `~/services/gym_log/.env` (`chmod 600`).
+2. **Settings.** `mkdir -p ~/services/gym_log`, then put that line in
+   Doppler project `gym-log` (config `prd`). Or put it in
+   `~/services/gym_log/.env` (`chmod 600`). See `deploy/README.md` →
+   *Settings*.
 3. **First deploy.** GitHub → Actions → **Gym Log** → Run workflow →
    `deploy`. The database is empty, so the deploy creates the tables.
 4. **Tunnel.** Cloudflare Zero Trust → Networks → Tunnels → the ATLAS
@@ -174,7 +176,7 @@ Day to day, merging deploys. The first time only:
    `http://gym_log:8000`. (The tunnel config lives in Cloudflare, not in
    `cloudflared/compose.yml`.)
 5. **Sign-in.** Set up the shared identity database and the `IDENTITY_*`
-   lines in `~/services/gym_log/.env` **before** this version deploys
+   settings (Doppler or `.env`) **before** this version deploys
    ([`shared/undercurrent-identity/README.md`](../shared/undercurrent-identity/README.md)
    → *One-time setup*). Deploys refuse to run until those lines are there.
    Then invite yourself, sign up, and claim your existing workouts (see

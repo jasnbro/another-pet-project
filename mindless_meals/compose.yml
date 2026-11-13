@@ -10,7 +10,11 @@ services:
     build: .
     image: mindless_meals:local
     container_name: mindless_meals
-    env_file: .env
+    # Settings: compose fills these from .env in this folder or, with no
+    # .env, from the environment `doppler run` provides (deploy/README.md).
+    # A setting the app reads must be listed here to reach the container.
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is not set. Add it to .env here or run through Doppler; see deploy/README.md}
     ports:
       - "8000:8000"
     volumes:

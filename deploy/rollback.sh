@@ -17,6 +17,7 @@ if [[ "${1:-}" == "--list" ]]; then
   exit 0
 fi
 
+use_settings "$0" "$@"
 take_lock
 
 if [[ -n "${1:-}" ]]; then
