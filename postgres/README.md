@@ -147,11 +147,36 @@ Encryption uses [age](https://age-encryption.org) with a key pair:
 
    The commands below name the project and config explicitly, so no `doppler setup` is needed.
 4. **Mount the SSD by UUID** so it can't swap device names:
-   - Run `sudo blkid` and copy the SSD's `UUID`, then `sudo mkdir -p /mnt/backup-ssd`.
-   - Add this to `/etc/fstab` (use your filesystem type if it isn't ext4):
-     `UUID=<uuid>  /mnt/backup-ssd  ext4  defaults,nofail  0  2`
-   - Run `sudo mount -a && mountpoint /mnt/backup-ssd`.
-   - Run `sudo mkdir /mnt/backup-ssd/postgres && sudo chown jasmine: /mnt/backup-ssd/postgres`.
+   - **Find the right partition.** Run `lsblk -o NAME,SIZE,FSTYPE,TRAN,MODEL`.
+     The external drive shows `usb` under `TRAN`. Ignore its small `EFI`
+     partition. **Never** use the partition ATLAS runs from
+     (`findmnt -n -o SOURCE /`).
+   - Run `sudo blkid` and copy that partition's `UUID` and `TYPE`, then
+     `sudo mkdir -p /mnt/backup-ssd`.
+   - If it was auto-mounted (`findmnt /dev/sdXN` shows a path such as
+     `/media/...`), run `sudo umount /dev/sdXN` first.
+   - Add **one** of these lines to `/etc/fstab`, depending on `TYPE`:
+     - **`ext4`:**
+       ```
+       UUID=<uuid>  /mnt/backup-ssd  ext4  defaults,nofail  0  2
+       ```
+     - **`exfat`** (ATLAS's current drive, `ArmorATD`, UUID `5D06-F845`).
+       First run `sudo apt install exfatprogs`. exFAT can't store Linux
+       owners, so the mount sets them. Use the numbers from `id -u jasmine`
+       and `id -g jasmine`:
+       ```
+       UUID=5D06-F845  /mnt/backup-ssd  exfat  defaults,nofail,uid=1000,gid=1000,umask=077,x-systemd.device-timeout=10s  0  0
+       ```
+       `umask=077` keeps the backups private to `jasmine`. exFAT has no
+       journal, so a power cut mid-write can damage it. The nightly restore
+       test catches that the next morning. The upside: if ATLAS dies, macOS
+       can read the drive, and `age` can decrypt the backups on a Mac.
+   - Run `sudo systemctl daemon-reload && sudo mount -a && mountpoint /mnt/backup-ssd`.
+   - Make the backup folder:
+     - **ext4:** `sudo mkdir /mnt/backup-ssd/postgres && sudo chown jasmine: /mnt/backup-ssd/postgres`
+     - **exfat:** `mkdir /mnt/backup-ssd/postgres` (the mount already makes `jasmine` the owner)
+   - Check that `jasmine` can write there:
+     `touch /mnt/backup-ssd/postgres/.write-test && rm /mnt/backup-ssd/postgres/.write-test && echo OK`.
 
    `nofail` lets ATLAS boot without the SSD attached. The backup then
    fails loudly instead of writing to the main disk.
