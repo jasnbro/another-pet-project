@@ -222,6 +222,7 @@ h3.block__title { margin-top: 24px; }
 
 .how summary { cursor: pointer; color: var(--muted); font-size: 0.9rem; min-height: 32px; display: flex; align-items: center; }
 .how p { font-size: 0.95rem; }
+.how { display: flow-root; }  /* contains the floated illustration */
 
 .rounds { display: flex; flex-wrap: wrap; gap: 10px; }
 .round {

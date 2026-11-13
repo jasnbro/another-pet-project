@@ -344,7 +344,6 @@
     var html = '<article class="exercise" data-key="' + esc(item.key) + '">' +
       '<header class="exercise__head">' +
       (item.pair ? '<span class="pair">' + esc(item.pair) + "</span>" : "") +
-      demoHtml(item.name, item.frames) +
       '<div class="exercise__title"><h3>' + esc(item.name) + "</h3>" +
       (item.swapped_for ? '<p class="swap">' + icon("repeat") + " Swap for " + esc(item.swapped_for) + "</p>" : "") +
       "</div>" +
@@ -395,7 +394,8 @@
         "</div>";
     });
     html += "</div>" +
-      '<details class="how"><summary>How to do it</summary><p>' + esc(item.what) + "</p>" +
+      '<details class="how"><summary>How to do it</summary>' +
+      demoHtml(item.name, item.frames, "demo--lg") + '<p>' + esc(item.what) + "</p>" +
       '<p class="muted">Key <code>' + esc(item.key) + "</code> · " + esc(item.muscles.join(", ")) + "</p></details>" +
       "</article>";
     return html;
@@ -469,7 +469,6 @@
     Object.keys(c.exercises).forEach(function (key) {
       var ex = c.exercises[key];
       html += '<article class="glossary__item' + (ex.retired ? " is-retired" : "") + '" id="ex-' + esc(key) + '">' +
-        demoHtml(ex.name, ex.frames, "demo--lg") +
         '<header><code class="key">' + esc(key) + "</code><h3>" + esc(ex.name) + "</h3>" +
         (ex.retired ? '<span class="tag">retired</span>' : "") + "</header>" +
         "<p>" + esc(ex.what) + "</p><dl class=\"facts\">" +
